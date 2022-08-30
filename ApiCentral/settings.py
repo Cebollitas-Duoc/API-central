@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': f"{dbHost}:1521/xe",
-        'USER': 'system',
-        'PASSWORD': '1234',
+        'USER': 'USR_TURISMO_REAL',
+        'PASSWORD': 'USR_TURISMO_REAL',
         'TEST': {
             'USER': 'default_test',
             'TBLSPACE': 'default_test_tbls',

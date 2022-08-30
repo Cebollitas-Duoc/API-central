@@ -16,4 +16,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     print(queryset)
     serializer_class = UsuarioSerializer
     permission_classes = []
+
+# class UsuarioViewSet(viewsets.ModelViewSet):
+#     queryset = Usuario.objects.all()
+#     print("####")
+#     print(queryset)
+#     serializer_class = UsuarioSerializer
+#     permission_classes = []
     
