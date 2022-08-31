@@ -22,5 +22,6 @@ router = routers.DefaultRouter()
 router.register(r'getUsers', auth_views.UsuarioViewSet, basename='getUsers')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('auth/', include(router.urls)),
+    path('auth/Login/', auth_views.Login, name="Login"),
 ]
