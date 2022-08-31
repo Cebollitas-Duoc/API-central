@@ -21,7 +21,8 @@ def Login(request):
     formPassword = request.data["Password"]
     userData = userLoginData(formEmail)
     data = userData
-    data["Valid Password"] = validatePassword(formPassword, userData["password"])
+    if (userData["UserExist"]):
+        data["Valid Password"] = validatePassword(formPassword, userData["password"])
     return Response(data=data)
 
 #TODO reemplazar con procedimientos almacenados
