@@ -4,16 +4,11 @@ from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import hashlib
-from enum import Enum
 import string
 import random
 from datetime import datetime, timedelta
 
 # Create your views here.
-
-class ReturnCodes(Enum):
-    Valid = 1
-    Invalid = 2
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
@@ -25,7 +20,9 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 @api_view(('GET', 'POST'))
 def Login(request):
     data = {}
-    if (validateLoginData(request.data) is ReturnCodes.Invalid):
+    validationResult = validateLoginData(request.data)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
         return Response(data=data)
         
     formEmail, formPassword = request.data["Email"], request.data["Password"]
@@ -42,6 +39,17 @@ def Login(request):
     if (isPasswordValid):
         expirationDate = datetime.now() + timedelta(days=7)
         data["SessionKey"] = createSession(userData["ID_usuario"], expirationDate)
+
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+def CreateUser(request):
+    data = {}
+    validationResult = validateCreateUserData(request.data)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
 
     return Response(data=data)
 
@@ -94,9 +102,30 @@ def sha256(var):
     return hashlib.sha256(str(var).encode('utf-8')).hexdigest()
 
 def validateLoginData(data):
-    if ("Email" in data and "Password" in data):
-        return ReturnCodes.Valid 
-    return ReturnCodes.Invalid
+    data = {"Valid": True}
+    if ("Email" in data):
+        data["Valid"] = False
+        data["Error"] = "Falta el email"
+    elif ("Password" in data):
+        data["Valid"] = False 
+        data["Error"] = "Falta la contraseña"
+
+    return data
+
+def validateCreateUserData(data):
+    data = {"Valid": True}
+    if ("Email" in data):
+        data["Valid"] = False
+        data["Error"] = "Falta el email"
+    elif ("Password" in data):
+        data["Valid"] = False 
+        data["Error"] = "Falta la contraseña"
+    elif ("Password2" in data):
+        data["Valid"] = False 
+        data["Error"] = "Falta la repeticion de la contraseña"
+    
+    return data
+
 
 def generateSessionId(size=64):
    return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(size))
