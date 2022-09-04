@@ -103,10 +103,10 @@ def sha256(var):
 
 def validateLoginData(data):
     data = {"Valid": True}
-    if ("Email" in data):
+    if isInDictionary("Email", data, invalidValue=""):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif ("Password" in data):
+    elif isInDictionary("Password", data, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
 
@@ -114,18 +114,24 @@ def validateLoginData(data):
 
 def validateCreateUserData(data):
     data = {"Valid": True}
-    if ("Email" in data):
+    if isInDictionary("Email", data, invalidValue=""):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif ("Password" in data):
+    elif isInDictionary("Password", data, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
-    elif ("Password2" in data):
+    elif isInDictionary("Password2", data, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la repeticion de la contraseña"
     
     return data
 
+def isInDictionary(data, dic, invalidValue=None):
+    if (data not in dic):
+        return False
+    elif (dic[data] == invalidValue):
+        return False
+    return True
 
 def generateSessionId(size=64):
    return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(size))
