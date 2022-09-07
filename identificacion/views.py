@@ -50,6 +50,20 @@ def CreateUser(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
     
+    elif isInDictionary("Name2", data, invalidValue=None):
+        data["Name2"] = "" 
+    elif isInDictionary("LastName2", data, invalidValue=None):
+        data["LastName2"] = "" 
+
+    CreateUser(
+        data["email"], 
+        data["hashedPassword"], 
+        data["name"], 
+        data["name2"], 
+        data["lastName"], 
+        data["lastName2"]  
+        )
+    
 
     return Response(data=data)
 
@@ -75,6 +89,26 @@ def createSession(id_Usuario, expiracion):
     sesion.llave = key
     data["Key"] = str(key)
     sesion.save()
+    return data
+
+#TODO reemplazar con procedimientos almacenados
+def CreateUser(email, hashedPassword, name, name2, lastName, lastName2):
+    data = {}
+    key = generateSessionId()
+    usuario = Usuario()
+    cliente = Cliente()
+    cliente.id_usuario = usuario.id_usuario
+
+    usuario.email = email
+    usuario.password = hashedPassword
+
+    cliente.primerNombre = name
+    cliente.segundoNombre = name2
+    cliente.primerApellido = lastName
+    cliente.segundoApellido = lastName2
+
+    usuario.save()
+    cliente.save()
     return data
 
 def validatePassword(password, encriptedPassword):
@@ -123,6 +157,13 @@ def validateCreateUserData(data):
     elif isInDictionary("Password2", data, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la repeticion de la contraseña"
+    elif isInDictionary("Name", data, invalidValue=""):
+        data["Valid"] = False 
+        data["Error"] = "Falta el primer nombre"
+    elif isInDictionary("LastName", data, invalidValue=""):
+        data["Valid"] = False 
+        data["Error"] = "Falta el primer apellido"
+    
     
     return data
 
