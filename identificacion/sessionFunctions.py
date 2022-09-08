@@ -18,6 +18,7 @@ def sparatePassword(password):
     return password.split("#")
 
 def calculateHash(algorithm, var):
+    algorithm = int(algorithm)
     if algorithm == 1:
         return sha256(var)
 
