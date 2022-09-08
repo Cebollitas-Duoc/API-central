@@ -1,21 +1,11 @@
-from rest_framework import viewsets
+from identificacion.sessionFunctions import hashPassword, validatePassword
 from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import hashlib
-import string
-import random
 from datetime import datetime, timedelta
-
-# Create your views here.
-
-class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all()
-    print("####")
-    print(queryset)
-    serializer_class = UsuarioSerializer
-    permission_classes = []
+from .validation import isInDictionary, validateLoginData, validateCreateUserData
+from .sessionFunctions import validatePassword, hashPassword
 
 @api_view(('GET', 'POST'))
 def Login(request):
@@ -53,27 +43,16 @@ def CreateUser(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
     
-    userData["Email"] = request.data["Email"]
-    userData["Password"] = request.data["Password"]
+    userData["Email"]     = request.data["Email"]
+    userData["Password"]  = request.data["Password"]
     userData["Password2"] = request.data["Password2"]
-    userData["Name"] = request.data["Name"]
-    userData["LastName"] = request.data["LastName"]
+    userData["Name"]      = request.data["Name"]
+    userData["LastName"]  = request.data["LastName"]
 
     if not isInDictionary("Name2", userData, invalidValue=None):
-        pass
         userData["Name2"] = "" 
     if not isInDictionary("LastName2", userData, invalidValue=None):
-        pass
         userData["LastName2"] = ""
-
-    print(
-        userData["Email"], 
-        hashPassword(userData["Password"]), 
-        userData["Name"], 
-        userData["Name2"], 
-        userData["LastName"], 
-        userData["LastName2"]  
-        )
 
     CreateUserPA(
         userData["Email"], 
@@ -85,7 +64,8 @@ def CreateUser(request):
         )
     
     return Response(data=data)
-
+    
+#region procedimientos
 #TODO reemplazar con procedimientos almacenados
 def userLoginDataPA(email):
     data = {}
@@ -130,82 +110,4 @@ def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     cliente.save()
 
     return data
-
-def validatePassword(password, encriptedPassword):
-    encriptedPassword = sparatePassword(encriptedPassword)
-    algorithm = int(encriptedPassword[0])
-    weight = int(encriptedPassword[1])
-    salt = encriptedPassword[2]
-    hash = encriptedPassword[3]
-
-    saltedPass = password+salt
-    for i in range(weight):
-        newHash = calculateHash(algorithm, saltedPass+str(i))
-        if (newHash == hash):
-            return True
-    return False
-
-def sparatePassword(password):
-    return password.split("#")
-
-def calculateHash(algorithm, var):
-    if algorithm == 1:
-        return sha256(var)
-
-def sha256(var):
-    return hashlib.sha256(str(var).encode('utf-8')).hexdigest()
-
-def validateLoginData(userData):
-    data = {"Valid": True}
-    if not isInDictionary("Email", userData, invalidValue=""):
-        data["Valid"] = False
-        data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData, invalidValue=""):
-        data["Valid"] = False 
-        data["Error"] = "Falta la contraseña"
-
-    return data
-
-def validateCreateUserData(userData):
-    data = {"Valid": True}
-    if not isInDictionary("Email", userData, invalidValue=""):
-        data["Valid"] = False
-        data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData, invalidValue=""):
-        data["Valid"] = False 
-        data["Error"] = "Falta la contraseña"
-    elif not isInDictionary("Password2", userData, invalidValue=""):
-        data["Valid"] = False
-        data["Error"] = "Falta La validacion de la contraseña"
-    elif not isInDictionary("Name", userData, invalidValue=""):
-        data["Valid"] = False 
-        data["Error"] = "Falta el nombre"
-    elif not isInDictionary("LastName", userData, invalidValue=""):
-        data["Valid"] = False 
-        data["Error"] = "Falta el primer apellido"
-    elif userData["Password"] != userData["Password2"]:
-        data["Valid"] = False 
-        data["Error"] = "Las contraseñas no son iguales"
-    
-    return data
-
-def isInDictionary(data, dic, invalidValue=None):
-    if (data not in dic):
-        return False
-    elif (dic[data] == invalidValue):
-        return False
-    return True
-
-def generateRandomStr(size=64):
-   return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(size))
-
-def hashPassword(password):
-    algorithm = "01"
-    weight = "40"
-    salt = generateRandomStr(8)
-    randomNumber = random.randrange(0, int(weight))
-    password = f"{password}{salt}{randomNumber}"
-    hashedPassword = f"{algorithm}#{weight}#{salt}#{calculateHash(algorithm, password)}"
-
-    return hashedPassword
-    
+#endregion procedimientos

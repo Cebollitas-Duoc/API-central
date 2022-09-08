@@ -19,10 +19,8 @@ from rest_framework import routers
 from identificacion import views as auth_views
 
 router = routers.DefaultRouter()
-router.register(r'getUsers', auth_views.UsuarioViewSet, basename='getUsers')
 
 urlpatterns = [
-    path('auth/', include(router.urls)),
     path('auth/Login/', auth_views.Login, name="Login"),
     path('auth/CreateUser/', auth_views.CreateUser, name="CreateUser"),
 ]
