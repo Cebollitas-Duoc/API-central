@@ -1,6 +1,4 @@
-import hashlib
-import string
-import random
+import hashlib, string, random
 
 def validatePassword(password, encriptedPassword):
     encriptedPassword = sparatePassword(encriptedPassword)

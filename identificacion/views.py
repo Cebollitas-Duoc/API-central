@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from .validation import isInDictionary, validateLoginData, validateCreateUserData
-from .sessionFunctions import validatePassword, hashPassword
+from .sessionFunctions import validatePassword, hashPassword, generateRandomStr
 
 @api_view(('GET', 'POST'))
 def Login(request):
