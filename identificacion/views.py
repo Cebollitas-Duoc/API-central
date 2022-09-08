@@ -26,7 +26,7 @@ def Login(request):
         return Response(data=data)
         
     formEmail, formPassword = request.data["Email"], request.data["Password"]
-    userData = userLoginData(formEmail)
+    userData = userLoginDataPA(formEmail)
     isPasswordValid = False
 
     if (userData["UserExist"]):
@@ -38,37 +38,56 @@ def Login(request):
 
     if (isPasswordValid):
         expirationDate = datetime.now() + timedelta(days=7)
-        data["SessionKey"] = createSession(userData["ID_usuario"], expirationDate)
+        expirationDate = expirationDate.timestamp()
+        data["SessionKey"] = createSessionPA(userData["ID_usuario"], expirationDate)
 
     return Response(data=data)
 
 @api_view(('GET', 'POST'))
 def CreateUser(request):
+    userData = {}
     data = {}
+
     validationResult = validateCreateUserData(request.data)
     if (not validationResult["Valid"]):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
     
-    elif isInDictionary("Name2", data, invalidValue=None):
-        data["Name2"] = "" 
-    elif isInDictionary("LastName2", data, invalidValue=None):
-        data["LastName2"] = "" 
+    userData["Email"] = request.data["Email"]
+    userData["Password"] = request.data["Password"]
+    userData["Password2"] = request.data["Password2"]
+    userData["Name"] = request.data["Name"]
+    userData["LastName"] = request.data["LastName"]
 
-    CreateUser(
-        data["email"], 
-        data["hashedPassword"], 
-        data["name"], 
-        data["name2"], 
-        data["lastName"], 
-        data["lastName2"]  
+    if not isInDictionary("Name2", userData, invalidValue=None):
+        pass
+        userData["Name2"] = "" 
+    if not isInDictionary("LastName2", userData, invalidValue=None):
+        pass
+        userData["LastName2"] = ""
+
+    print(
+        userData["Email"], 
+        hashPassword(userData["Password"]), 
+        userData["Name"], 
+        userData["Name2"], 
+        userData["LastName"], 
+        userData["LastName2"]  
+        )
+
+    CreateUserPA(
+        userData["Email"], 
+        hashPassword(userData["Password"]), 
+        userData["Name"], 
+        userData["Name2"], 
+        userData["LastName"], 
+        userData["LastName2"]  
         )
     
-
     return Response(data=data)
 
 #TODO reemplazar con procedimientos almacenados
-def userLoginData(email):
+def userLoginDataPA(email):
     data = {}
     user = Usuario.objects.filter(email=email, id_estadousuario=1).first()
     if (user != None):
@@ -80,9 +99,9 @@ def userLoginData(email):
     return data
 
 #TODO reemplazar con procedimientos almacenados
-def createSession(id_Usuario, expiracion):
+def createSessionPA(id_Usuario, expiracion):
     data = {}
-    key = generateSessionId()
+    key = generateRandomStr()
     sesion = Sesion()
     sesion.id_usuario = Usuario.objects.get(id_usuario=id_Usuario)
     sesion.expiracion = expiracion
@@ -92,23 +111,24 @@ def createSession(id_Usuario, expiracion):
     return data
 
 #TODO reemplazar con procedimientos almacenados
-def CreateUser(email, hashedPassword, name, name2, lastName, lastName2):
+def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     data = {}
-    key = generateSessionId()
     usuario = Usuario()
     cliente = Cliente()
-    cliente.id_usuario = usuario.id_usuario
 
     usuario.email = email
     usuario.password = hashedPassword
+    usuario.id_permiso = Permiso.objects.get(id_permiso=0)
+    usuario.id_estadousuario = Estadousuario.objects.get(id_estadousuario=1)
+    usuario.save()
 
+    cliente.id_usuario = usuario.id_usuario
     cliente.primerNombre = name
     cliente.segundoNombre = name2
     cliente.primerApellido = lastName
     cliente.segundoApellido = lastName2
-
-    usuario.save()
     cliente.save()
+
     return data
 
 def validatePassword(password, encriptedPassword):
@@ -135,35 +155,37 @@ def calculateHash(algorithm, var):
 def sha256(var):
     return hashlib.sha256(str(var).encode('utf-8')).hexdigest()
 
-def validateLoginData(data):
+def validateLoginData(userData):
     data = {"Valid": True}
-    if isInDictionary("Email", data, invalidValue=""):
+    if not isInDictionary("Email", userData, invalidValue=""):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif isInDictionary("Password", data, invalidValue=""):
+    elif not isInDictionary("Password", userData, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
 
     return data
 
-def validateCreateUserData(data):
+def validateCreateUserData(userData):
     data = {"Valid": True}
-    if isInDictionary("Email", data, invalidValue=""):
+    if not isInDictionary("Email", userData, invalidValue=""):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif isInDictionary("Password", data, invalidValue=""):
+    elif not isInDictionary("Password", userData, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
-    elif isInDictionary("Password2", data, invalidValue=""):
+    elif not isInDictionary("Password2", userData, invalidValue=""):
+        data["Valid"] = False
+        data["Error"] = "Falta La validacion de la contraseña"
+    elif not isInDictionary("Name", userData, invalidValue=""):
         data["Valid"] = False 
-        data["Error"] = "Falta la repeticion de la contraseña"
-    elif isInDictionary("Name", data, invalidValue=""):
-        data["Valid"] = False 
-        data["Error"] = "Falta el primer nombre"
-    elif isInDictionary("LastName", data, invalidValue=""):
+        data["Error"] = "Falta el nombre"
+    elif not isInDictionary("LastName", userData, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta el primer apellido"
-    
+    elif userData["Password"] != userData["Password2"]:
+        data["Valid"] = False 
+        data["Error"] = "Las contraseñas no son iguales"
     
     return data
 
@@ -174,5 +196,16 @@ def isInDictionary(data, dic, invalidValue=None):
         return False
     return True
 
-def generateSessionId(size=64):
+def generateRandomStr(size=64):
    return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(size))
+
+def hashPassword(password):
+    algorithm = "01"
+    weight = "40"
+    salt = generateRandomStr(8)
+    randomNumber = random.randrange(0, int(weight))
+    password = f"{password}{salt}{randomNumber}"
+    hashedPassword = f"{algorithm}#{weight}#{salt}#{calculateHash(algorithm, password)}"
+
+    return hashedPassword
+    
