@@ -1,6 +1,5 @@
 from identificacion.sessionFunctions import hashPassword, validatePassword
 from .models import *
-from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
@@ -64,7 +63,7 @@ def CreateUser(request):
         )
     
     return Response(data=data)
-    
+
 #region procedimientos
 #TODO reemplazar con procedimientos almacenados
 def userLoginDataPA(email):

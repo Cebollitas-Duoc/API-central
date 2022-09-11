@@ -21,6 +21,6 @@ from identificacion import views as auth_views
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('auth/Login/', auth_views.Login, name="Login"),
-    path('auth/CreateUser/', auth_views.CreateUser, name="CreateUser"),
+    path("auth/", include("identificacion.urls")),
+    path("profile/", include("perfiles.urls")),
 ]

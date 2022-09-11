@@ -20,7 +20,7 @@ SECRET_KEY = "django-insecure-5qt-rxlin*x8_2o34h3viu=gxn7#piy28n(hg8a@vt%g55+yb2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["host.docker.internal"]
 
 
 # Application definition
@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "identificacion.apps.IdentificacionConfig",
+    "perfiles.apps.PerfilesConfig",
     'rest_framework',
 ]
 

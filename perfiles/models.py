@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class Sesion(models.Model):
     id_sesion = models.FloatField(primary_key=True)
     llave = models.CharField(max_length=64, blank=True, null=True)
