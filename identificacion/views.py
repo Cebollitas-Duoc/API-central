@@ -3,7 +3,7 @@ from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
-from .validation import isInDictionary, validateLoginData, validateCreateUserData
+from .validation import *
 from .sessionFunctions import validatePassword, hashPassword, generateRandomStr
 
 @api_view(('GET', 'POST'))
@@ -62,6 +62,23 @@ def CreateUser(request):
         userData["LastName2"]  
         )
     
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+def ValidateSession(request):
+    data = {"Valid": False}
+
+    validationResult = validateSessionKey(request.headers)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    sessionKey = request.headers["Sessionkey"]
+    session = Sesion.objects.filter(llave=sessionKey).first()
+
+    if (session != None):
+        data["Valid"] = True
+
     return Response(data=data)
 
 #region procedimientos

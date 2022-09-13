@@ -38,3 +38,11 @@ def validateCreateUserData(userData):
         data["Error"] = "Las contraseñas no son iguales"
     
     return data
+
+def validateSessionKey(requestHeaders):
+    data = {"Valid": True}
+    if not isInDictionary("SessionKey", requestHeaders, invalidValue=""):
+        data["Valid"] = False
+        data["Error"] = "Usuario no se encuntra logeado"
+    
+    return data

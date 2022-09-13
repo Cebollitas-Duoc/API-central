@@ -3,6 +3,7 @@ from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .validation import *
+from identificacion.validation import validateSessionKey
 
 @api_view(('GET',))
 def GetUserProfile(request):
