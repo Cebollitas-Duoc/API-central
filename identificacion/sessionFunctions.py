@@ -14,6 +14,10 @@ def validatePassword(password, encriptedPassword):
             return True
     return False
 
+def validSession(sessionKey):
+    session = Sesion.objects.filter(llave=sessionKey).first()
+    return session != None
+
 def sparatePassword(password):
     return password.split("#")
 
