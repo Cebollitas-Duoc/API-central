@@ -38,6 +38,42 @@ def GetMyProfile(request):
 
     return Response(data=profiledata)
 
+#TODO: terminar
+@api_view(('POST',))
+def EditMyProfile(request):
+    data = {}
+
+    validationResult = validateEditProfile(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    sessionKey = request.headers["Sessionkey"]
+    session = Sesion.objects.filter(llave=sessionKey).first()
+
+    if (session == None):
+        data["Error"] = "Sesion invalida"
+        return Response(data=data)
+
+    cliente = Cliente.objects.filter(id_usuario=session.id_usuario).first()
+    if (cliente == None):
+        data["Error"] = "Usuario sin perfil"
+        return Response(data=data)
+    
+    try:
+        cliente.primernombre = request.data["PrimerNombre"]
+        cliente.segundonombre = request.data["SegundoNombre"]
+        cliente.primerapellido = request.data["PrimerApellido"]
+        cliente.segundoapellido = request.data["SegundoApellido"]
+        cliente.direccion = request.data["Direccion"]
+        cliente.telefono = request.data["Telefono"]
+        cliente.save()
+        #cliente.foto = request.data[""] TODO:Cambiar la foto de perfil
+    except:
+        data["Error"] = "No se pudo editar el perfil"
+
+    return Response(data=data)
+
 #TODO: cambiar esta uncion por un procedimiento almacenado
 def getProfileData(id, validated=False):
     data = {}
