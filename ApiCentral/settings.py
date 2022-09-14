@@ -21,6 +21,7 @@ SECRET_KEY = "django-insecure-5qt-rxlin*x8_2o34h3viu=gxn7#piy28n(hg8a@vt%g55+yb2
 DEBUG = True
 
 ALLOWED_HOSTS = ["host.docker.internal"]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -35,6 +36,8 @@ INSTALLED_APPS = [
     "identificacion.apps.IdentificacionConfig",
     "perfiles.apps.PerfilesConfig",
     'rest_framework',
+
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -45,6 +48,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "ApiCentral.urls"
