@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from .validation import *
 from .sessionFunctions import validatePassword, hashPassword, generateRandomStr, validSession
 from django.db import connection
+import time
 
 @api_view(('GET', 'POST'))
 def Login(request):
@@ -94,17 +95,14 @@ def userLoginDataPA(email):
         data["UserExist"] = False
     return data
 
-#TODO reemplazar con procedimientos almacenados
 def createSessionPA(id_Usuario, expiracion):
     key = generateRandomStr()
-    sesion = Sesion()
-    sesion.id_usuario = Usuario.objects.get(id_usuario=id_Usuario)
-    sesion.expiracion = expiracion
-    sesion.llave = key
-    sesion.save()
+    epoch_time = int(time.time())
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("PCK_SESION.P_AGREGAR_SESION", [key,expiracion,id_Usuario,epoch_time])
     return str(key)
 
-#TODO reemplazar con procedimientos almacenados
 def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     data = {}
     id_permiso = Permiso.objects.get(id_permiso=0).id_permiso
@@ -114,4 +112,3 @@ def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword,name, name2, lastName, lastName2])
 
     return data
-#endregion procedimientos
