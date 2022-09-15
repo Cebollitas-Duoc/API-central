@@ -1,5 +1,8 @@
 import hashlib, string, random
 
+from sympy import true
+from .models import *
+
 def validatePassword(password, encriptedPassword):
     encriptedPassword = sparatePassword(encriptedPassword)
     algorithm = int(encriptedPassword[0])
@@ -16,7 +19,9 @@ def validatePassword(password, encriptedPassword):
 
 def validSession(sessionKey):
     session = Sesion.objects.filter(llave=sessionKey).first()
-    return session != None
+    if (session != None):
+        return (True, session.id_usuario.id_usuario)
+    return (False, 0)
 
 def sparatePassword(password):
     return password.split("#")
