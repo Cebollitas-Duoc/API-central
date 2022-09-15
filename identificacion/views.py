@@ -21,7 +21,7 @@ def Login(request):
 
     if (userData["UserExist"]):
         isPasswordValid = validatePassword(formPassword, userData["Password"])
-        data["Valid Password"] = isPasswordValid 
+        data["ValidPassword"] = isPasswordValid 
     else:
         data["ErrorCode"] = 0
         data["Error"] = "Usuario no existe"
@@ -75,7 +75,9 @@ def ValidateSession(request):
         return Response(data=data)
 
     sessionKey = request.headers["Sessionkey"]
-    data["Valid"] = validSession(sessionKey)
+    result = validSession(sessionKey)
+    data["Valid"] = result[0]
+    data["userId"] = result[1]
 
     return Response(data=data)
 
@@ -94,15 +96,13 @@ def userLoginDataPA(email):
 
 #TODO reemplazar con procedimientos almacenados
 def createSessionPA(id_Usuario, expiracion):
-    data = {}
     key = generateRandomStr()
     sesion = Sesion()
     sesion.id_usuario = Usuario.objects.get(id_usuario=id_Usuario)
     sesion.expiracion = expiracion
     sesion.llave = key
-    data["Key"] = str(key)
     sesion.save()
-    return data
+    return str(key)
 
 #TODO reemplazar con procedimientos almacenados
 def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
