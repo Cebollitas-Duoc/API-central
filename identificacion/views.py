@@ -107,26 +107,11 @@ def createSessionPA(id_Usuario, expiracion):
 #TODO reemplazar con procedimientos almacenados
 def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     data = {}
-    usuario = Usuario()
-    cliente = Cliente()
-
-    usuario.email = email
-    usuario.password = hashedPassword
-    usuario.id_permiso = Permiso.objects.get(id_permiso=0)
     id_permiso = Permiso.objects.get(id_permiso=0).id_permiso
-    usuario.id_estadousuario = Estadousuario.objects.get(id_estadousuario=1)
     id_estadousuario = Estadousuario.objects.get(id_estadousuario=1).id_estadousuario
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword])
-    ##usuario.save()
-
-    cliente.id_usuario = usuario.id_usuario
-    cliente.primerNombre = name
-    cliente.segundoNombre = name2
-    cliente.primerApellido = lastName
-    cliente.segundoApellido = lastName2
-    cliente.save()
+    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword,name, name2, lastName, lastName2])
 
     return data
 #endregion procedimientos
