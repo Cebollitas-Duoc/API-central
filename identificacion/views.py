@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from .validation import *
 from .sessionFunctions import validatePassword, hashPassword, generateRandomStr, validSession
+from django.db import connection
 
 @api_view(('GET', 'POST'))
 def Login(request):
@@ -112,8 +113,13 @@ def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
     usuario.email = email
     usuario.password = hashedPassword
     usuario.id_permiso = Permiso.objects.get(id_permiso=0)
+    id_permiso = Permiso.objects.get(id_permiso=0)
     usuario.id_estadousuario = Estadousuario.objects.get(id_estadousuario=1)
-    usuario.save()
+    id_estadousuario = Estadousuario.objects.get(id_estadousuario=1)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword])
+    ##usuario.save()
 
     cliente.id_usuario = usuario.id_usuario
     cliente.primerNombre = name
