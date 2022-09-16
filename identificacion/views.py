@@ -1,3 +1,4 @@
+from http import client
 from identificacion.sessionFunctions import hashPassword, validatePassword
 from .models import *
 from rest_framework.decorators import api_view
@@ -22,7 +23,7 @@ def Login(request):
 
     if (userData["UserExist"]):
         isPasswordValid = validatePassword(formPassword, userData["Password"])
-        data["ValidPassword"] = isPasswordValid 
+        data["ValidPassword"] = isPasswordValid
     else:
         data["ErrorCode"] = 0
         data["Error"] = "Usuario no existe"
@@ -31,6 +32,8 @@ def Login(request):
         expirationDate = datetime.now() + timedelta(days=7)
         expirationDate = expirationDate.timestamp()
         data["SessionKey"] = createSessionPA(userData["ID_usuario"], expirationDate)
+        data["Nombre"] = userData["Nombre"]   
+        data["Foto"] = userData["Foto"]    
 
     return Response(data=data)
 
@@ -87,10 +90,13 @@ def ValidateSession(request):
 def userLoginDataPA(email):
     data = {}
     user = Usuario.objects.filter(email=email, id_estadousuario=1).first()
+    cliente = Cliente.objects.filter(id_usuario=user).first()
     if (user != None):
-        data["UserExist"] = True
+        data["UserExist"]  = True
         data["ID_usuario"] = user.id_usuario
-        data["Password"] = user.password
+        data["Password"]   = user.password
+        data["Nombre"]     = f"{cliente.primernombre} {cliente.primerapellido}"
+        data["Foto"]       = cliente.foto
     else:
         data["UserExist"] = False
     return data
