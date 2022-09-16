@@ -90,13 +90,12 @@ def ValidateSession(request):
 def userLoginDataPA(email):
     data = {}
     user = Usuario.objects.filter(email=email, id_estadousuario=1).first()
-    cliente = Cliente.objects.filter(id_usuario=user).first()
     if (user != None):
         data["UserExist"]  = True
         data["ID_usuario"] = user.id_usuario
         data["Password"]   = user.password
-        data["Nombre"]     = f"{cliente.primernombre} {cliente.primerapellido}"
-        data["Foto"]       = cliente.foto
+        data["Nombre"]     = f"{user.primernombre} {user.primerapellido}"
+        data["Foto"]       = user.foto
     else:
         data["UserExist"] = False
     return data
@@ -110,11 +109,11 @@ def createSessionPA(id_Usuario, expiracion):
     return str(key)
 
 def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
-    data = {}
     id_permiso = Permiso.objects.get(id_permiso=0).id_permiso
     id_estadousuario = Estadousuario.objects.get(id_estadousuario=1).id_estadousuario
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword,name, name2, lastName, lastName2])
+    outCursor = django_cursor.connection.cursor()
+    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword,name, name2, lastName, lastName2, outCursor])
 
-    return data
+    return outCursor

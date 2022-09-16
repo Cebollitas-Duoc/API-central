@@ -54,20 +54,20 @@ def EditMyProfile(request):
         data["Error"] = "Sesion invalida"
         return Response(data=data)
 
-    cliente = Cliente.objects.filter(id_usuario=session.id_usuario).first()
-    if (cliente == None):
+    usuario = Usuario.objects.filter(id_usuario=session.id_usuario).first()
+    if (usuario == None):
         data["Error"] = "Usuario sin perfil"
         return Response(data=data)
     
     try:
-        cliente.primernombre = request.data["PrimerNombre"]
-        cliente.segundonombre = request.data["SegundoNombre"]
-        cliente.primerapellido = request.data["PrimerApellido"]
-        cliente.segundoapellido = request.data["SegundoApellido"]
-        cliente.direccion = request.data["Direccion"]
-        cliente.telefono = request.data["Telefono"]
-        cliente.save()
-        #cliente.foto = request.data[""] TODO:Cambiar la foto de perfil
+        usuario.primernombre = request.data["PrimerNombre"]
+        usuario.segundonombre = request.data["SegundoNombre"]
+        usuario.primerapellido = request.data["PrimerApellido"]
+        usuario.segundoapellido = request.data["SegundoApellido"]
+        usuario.direccion = request.data["Direccion"]
+        usuario.telefono = request.data["Telefono"]
+        usuario.save()
+        #usuario.rutafotoperfil = request.data[""] TODO:Cambiar la foto de perfil
     except:
         data["Error"] = "No se pudo editar el perfil"
 
@@ -78,21 +78,20 @@ def getProfileData(id, validated=False):
     data = {}
     
     usuario = Usuario.objects.filter(id_usuario=id, id_estadousuario=1).first()
-    cliente = Cliente.objects.filter(id_usuario=id).first()
 
-    if (cliente == None):
-        data["Error"] = "Cliente no existe"
+    if (usuario == None):
+        data["Error"] = "Usuario no existe"
         return data
 
     data["Email"] = usuario.email
-    data["PrimerNombre"] = cliente.primernombre
-    data["SegundoNombre"] = cliente.segundonombre
-    data["PrimerApellido"] = cliente.primerapellido
-    data["SegundoApellido"] = cliente.segundoapellido
-    data["Foto"] = cliente.foto
+    data["PrimerNombre"] = usuario.primernombre
+    data["SegundoNombre"] = usuario.segundonombre
+    data["PrimerApellido"] = usuario.primerapellido
+    data["SegundoApellido"] = usuario.segundoapellido
+    data["Foto"] = usuario.foto
 
     if (validated):
-        data["direccion"] = cliente.direccion
-        data["telefono"] = cliente.telefono
+        data["direccion"] = usuario.direccion
+        data["telefono"] = usuario.telefono
 
     return data
