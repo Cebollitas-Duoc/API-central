@@ -47,27 +47,26 @@ def CreateUser(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
     
-    userData["Email"]     = request.data["Email"]
-    userData["Password"]  = request.data["Password"]
-    userData["Password2"] = request.data["Password2"]
-    userData["Name"]      = request.data["Name"]
-    userData["LastName"]  = request.data["LastName"]
+    #request.data es constante y necesitamos poder agregar unos valores en caso de que no esten
+    userData = request.data
 
     if not isInDictionary("Name2", userData, invalidValue=None):
         userData["Name2"] = "" 
     if not isInDictionary("LastName2", userData, invalidValue=None):
         userData["LastName2"] = ""
 
-    CreateUserPA(
+    returnCode = CreateUserPA(
         userData["Email"], 
         hashPassword(userData["Password"]), 
         userData["Name"], 
         userData["Name2"], 
         userData["LastName"], 
-        userData["LastName2"]  
+        userData["LastName2"],
+        userData["Address"],
+        userData["Phone"],
         )
     
-    return Response(data=data)
+    return Response(data=returnCode)
 
 @api_view(('GET', 'POST'))
 def ValidateSession(request):
@@ -89,7 +88,7 @@ def ValidateSession(request):
 #TODO reemplazar con procedimientos almacenados
 def userLoginDataPA(email):
     data = {}
-    user = Usuario.objects.filter(email=email, id_estadousuario=1).first()
+    user = TUsuario.objects.filter(email=email, id_estadousuario=1).first()
     if (user != None):
         data["UserExist"]  = True
         data["ID_usuario"] = user.id_usuario
@@ -108,12 +107,8 @@ def createSessionPA(id_Usuario, expiracion):
     cursor.callproc("PCK_SESION.P_AGREGAR_SESION", [key,expiracion,id_Usuario,epoch_time])
     return str(key)
 
-def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2):
-    id_permiso = Permiso.objects.get(id_permiso=0).id_permiso
-    id_estadousuario = Estadousuario.objects.get(id_estadousuario=1).id_estadousuario
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    outCursor = django_cursor.connection.cursor()
-    cursor.callproc("PCK_USUARIOS.P_AGREGAR_ACTUALIZAR_USUARIO", [0,email,id_permiso,id_estadousuario,hashedPassword,name, name2, lastName, lastName2, outCursor])
-
-    return outCursor
+def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2, address, phone):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, address, phone, "", 0])
+    returncode = r[-1]
+    return returncode

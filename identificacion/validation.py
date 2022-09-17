@@ -15,7 +15,7 @@ def validateLoginData(userData):
         data["Error"] = "Falta la contraseña"
 
     return data
-
+#address, phone):
 def validateCreateUserData(userData):
     data = {"Valid": True}
     if not isInDictionary("Email", userData, invalidValue=""):
@@ -33,6 +33,12 @@ def validateCreateUserData(userData):
     elif not isInDictionary("LastName", userData, invalidValue=""):
         data["Valid"] = False 
         data["Error"] = "Falta el primer apellido"
+    elif not isInDictionary("Address", userData, invalidValue=""):
+        data["Valid"] = False 
+        data["Error"] = "Falta la direccion"
+    elif not isInDictionary("Phone", userData, invalidValue=""):
+        data["Valid"] = False 
+        data["Error"] = "Falta el telefono"
     elif userData["Password"] != userData["Password2"]:
         data["Valid"] = False 
         data["Error"] = "Las contraseñas no son iguales"

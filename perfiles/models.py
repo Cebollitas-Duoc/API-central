@@ -1,6 +1,6 @@
 from django.db import models
 
-class Sesion(models.Model):
+class TSesion(models.Model):
     id_sesion = models.FloatField(primary_key=True)
     llave = models.CharField(max_length=64, blank=True, null=True)
     expiracion = models.BigIntegerField(blank=True, null=True)
@@ -11,7 +11,7 @@ class Sesion(models.Model):
         managed = False
         db_table = 't_sesion'
 
-class Permiso(models.Model):
+class TPermiso(models.Model):
     id_permiso = models.FloatField(primary_key=True)
     nombre = models.CharField(max_length=4000, blank=True, null=True)
     descripcion = models.CharField(max_length=4000, blank=True, null=True)
@@ -20,7 +20,7 @@ class Permiso(models.Model):
         managed = False
         db_table = 't_permiso'
 
-class Estadousuario(models.Model):
+class TEstadousuario(models.Model):
     id_estadousuario = models.FloatField(primary_key=True)
     descripcion = models.CharField(max_length=50, blank=True, null=True)
 
@@ -28,11 +28,11 @@ class Estadousuario(models.Model):
         managed = False
         db_table = 't_estadousuario'
 
-class Usuario(models.Model):
+class TUsuario(models.Model):
     id_usuario = models.FloatField(primary_key=True)
     password = models.CharField(max_length=80, blank=True, null=True)
-    id_permiso = models.ForeignKey(Permiso, models.DO_NOTHING, db_column='id_permiso')
-    id_estadousuario = models.ForeignKey(Estadousuario, models.DO_NOTHING, db_column='id_estadousuario')
+    id_permiso = models.ForeignKey(TPermiso, models.DO_NOTHING, db_column='id_permiso')
+    id_estadousuario = models.ForeignKey(TEstadousuario, models.DO_NOTHING, db_column='id_estadousuario')
     email = models.CharField(max_length=50, blank=True, null=True)
     primernombre = models.CharField(max_length=50, blank=True, null=True)
     segundonombre = models.CharField(max_length=50, blank=True, null=True)
