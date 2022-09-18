@@ -32,9 +32,10 @@ def Login(request):
     if (isPasswordValid):
         expirationDate = datetime.now() + timedelta(days=7)
         expirationDate = expirationDate.timestamp()
-        data["SessionKey"] = procedimientos.createSession(userData["ID_usuario"], expirationDate)
-        #data["Nombre"] = userData["Nombre"]   
-        #data["Foto"] = userData["Foto"]    
+        sessionData = procedimientos.createSession(userData["ID_usuario"], expirationDate)
+        data["SessionKey"] = sessionData["SessionKey"]
+        data["Nombre"] = sessionData["Nombre"]   
+        data["Foto"] = sessionData["Foto"]    
 
     return Response(data=data)
 

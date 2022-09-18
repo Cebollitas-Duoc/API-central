@@ -17,8 +17,9 @@ def validatePassword(password, encriptedPassword):
             return True
     return False
 
+#TODO: pasar a procedimiento
 def validSession(sessionKey):
-    session = Sesion.objects.filter(llave=sessionKey).first()
+    session = TSesion.objects.filter(llave=sessionKey).first()
     if (session != None):
         return (True, session.id_usuario.id_usuario)
     return (False, 0)

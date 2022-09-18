@@ -20,7 +20,7 @@ def createSession(id_Usuario, expiracion):
     r = cursor.callproc("PCK_SESION.P_AGREGAR_SESION", [key, id_Usuario, expiracion, epoch_time, "", "", 0])
     data["SessionKey"] = key
     data["Nombre"] = r[4]
-    data["foto"]   = r[5]
+    data["Foto"]   = r[5]
     return data
 
 def createUser(email, hashedPassword, name, name2, lastName, lastName2, address, phone):
