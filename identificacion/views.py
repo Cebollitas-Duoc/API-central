@@ -1,3 +1,4 @@
+from sympy import false
 import identificacion.procedimientos as procedimientos
 from http import client
 from identificacion.sessionFunctions import hashPassword, validatePassword
@@ -42,12 +43,12 @@ def Login(request):
 @api_view(('GET', 'POST'))
 def CreateUser(request):
     userData = {}
-    data = {}
+    returnInfo = {"UserCreated": False}
 
     validationResult = validateCreateUserData(request.data)
     if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
-        return Response(data=data)
+        returnInfo["Error"] = validationResult["Error"]
+        return Response(data=returnInfo)
     
     #request.data es constante y necesitamos poder agregar unos valores en caso de que no esten
     userData = request.data
@@ -56,6 +57,11 @@ def CreateUser(request):
         userData["Name2"] = "" 
     if not isInDictionary("LastName2", userData, invalidValue=None):
         userData["LastName2"] = ""
+
+    userCredentials = procedimientos.userCredentials(userData["Email"])
+    if (userCredentials["UserExist"]):
+        returnInfo["Error"] = "Correo ya utilizado"
+        return Response(data=returnInfo)
 
     returnCode = procedimientos.createUser(
         userData["Email"], 
@@ -68,7 +74,9 @@ def CreateUser(request):
         userData["Phone"],
         )
     
-    return Response(data=returnCode)
+    returnInfo["UserCreated"] = returnCode
+
+    return Response(data=returnInfo)
 
 @api_view(('GET', 'POST'))
 def ValidateSession(request):

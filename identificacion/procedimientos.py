@@ -6,7 +6,7 @@ def userCredentials(email):
     data = {}
     cursor = connection.cursor()
     r = cursor.callproc("PCK_SESION.P_USER_CREADENTIALS", [email, "", "", "", 0])
-    data["UserExist"]  = r[1]
+    data["UserExist"]  = r[1] == "True"
     data["ID_usuario"] = r[2]
     data["Password"]   = r[3]
     return data
@@ -26,5 +26,5 @@ def createSession(id_Usuario, expiracion):
 def createUser(email, hashedPassword, name, name2, lastName, lastName2, address, phone):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, address, phone, "", 0])
-    returncode = r[-1]
+    returncode = r[-1] == 1
     return returncode
