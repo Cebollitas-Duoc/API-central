@@ -18,7 +18,7 @@ def Login(request):
         return Response(data=data)
         
     formEmail, formPassword = request.data["Email"], request.data["Password"]
-    userData = userLoginDataPA(formEmail)
+    userData = userCredentials(formEmail)
     isPasswordValid = False
 
     if (userData["UserExist"]):
@@ -31,9 +31,9 @@ def Login(request):
     if (isPasswordValid):
         expirationDate = datetime.now() + timedelta(days=7)
         expirationDate = expirationDate.timestamp()
-        data["SessionKey"] = createSessionPA(userData["ID_usuario"], expirationDate)
-        data["Nombre"] = userData["Nombre"]   
-        data["Foto"] = userData["Foto"]    
+        data["SessionKey"] = createSession(userData["ID_usuario"], expirationDate)
+        #data["Nombre"] = userData["Nombre"]   
+        #data["Foto"] = userData["Foto"]    
 
     return Response(data=data)
 
@@ -84,28 +84,27 @@ def ValidateSession(request):
 
     return Response(data=data)
 
-#region procedimientos
-#TODO reemplazar con procedimientos almacenados
-def userLoginDataPA(email):
+
+def userCredentials(email):
     data = {}
-    user = TUsuario.objects.filter(email=email, id_estadousuario=1).first()
-    if (user != None):
-        data["UserExist"]  = True
-        data["ID_usuario"] = user.id_usuario
-        data["Password"]   = user.password
-        data["Nombre"]     = f"{user.primernombre} {user.primerapellido}"
-        data["Foto"]       = user.foto
-    else:
-        data["UserExist"] = False
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_SESION.P_USER_CREADENTIALS", [email, "", "", "", 0])
+    data["UserExist"]  = r[1]
+    data["ID_usuario"] = r[2]
+    data["Password"]   = r[3]
     return data
 
-def createSessionPA(id_Usuario, expiracion):
+def createSession(id_Usuario, expiracion):
+    data = {}
     key = generateRandomStr()
     epoch_time = int(time.time())
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("PCK_SESION.P_AGREGAR_SESION", [key,expiracion,id_Usuario,epoch_time])
-    return str(key)
+    r = cursor.callproc("PCK_SESION.P_AGREGAR_SESION", [key, id_Usuario, expiracion, epoch_time, "", "", 0])
+    data["SessionKey"] = key
+    data["Nombre"] = r[4]
+    data["foto"]   = r[5]
+    return data
 
 def CreateUserPA(email, hashedPassword, name, name2, lastName, lastName2, address, phone):
     cursor = connection.cursor()
