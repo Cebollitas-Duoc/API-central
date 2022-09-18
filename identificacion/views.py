@@ -1,6 +1,4 @@
-from sympy import false
 import identificacion.procedimientos as procedimientos
-from http import client
 from identificacion.sessionFunctions import hashPassword, validatePassword
 from .models import *
 from rest_framework.decorators import api_view

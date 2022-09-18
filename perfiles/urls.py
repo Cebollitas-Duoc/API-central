@@ -4,6 +4,6 @@ from . import views
 app_name = "perfiles"
 
 urlpatterns = [
-    path('GetUserProfile/', views.GetUserProfile, name="GetUserProfile"),
-    path('GetMyProfile/', views.GetMyProfile, name="GetMyProfile"),
+    path('getuserprofile/', views.GetUserProfile, name="GetUserProfile"),
+    path('getsessionprofile/', views.GetSessionProfile, name="GetSessionProfile"),
 ]
