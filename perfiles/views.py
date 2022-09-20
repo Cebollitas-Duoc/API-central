@@ -30,9 +30,8 @@ def GetSessionProfile(request):
     data = procedimientos.getSessionProfile(sessionKey)
     return Response(data=data)
 
-#TODO: terminar
 @api_view(('POST',))
-def EditMyProfile(request):
+def EditSessionProfile(request):
     data = {}
 
     validationResult = validateEditProfile(request)
@@ -47,24 +46,21 @@ def EditMyProfile(request):
         data["Error"] = "Sesion invalida"
         return Response(data=data)
 
-    usuario = TUsuario.objects.filter(id_usuario=session.id_usuario).first()
-    if (usuario == None):
-        data["Error"] = "Usuario sin perfil"
-        return Response(data=data)
-    
-    try:
-        usuario.primernombre = request.data["PrimerNombre"]
-        usuario.segundonombre = request.data["SegundoNombre"]
-        usuario.primerapellido = request.data["PrimerApellido"]
-        usuario.segundoapellido = request.data["SegundoApellido"]
-        usuario.direccion = request.data["Direccion"]
-        usuario.telefono = request.data["Telefono"]
-        usuario.save()
-        #usuario.rutafotoperfil = request.data[""] TODO:Cambiar la foto de perfil
-    except:
-        data["Error"] = "No se pudo editar el perfil"
+    returnCode = procedimientos.editSessionProfile(
+        request.headers["SessionKey"],     
+        request.data["Email"],  
+        request.data["PrimerNombre"],
+        request.data["SegundoNombre"],
+        request.data["PrimerApellido"],
+        request.data["SegundoApellido"],
+        request.data["Direccion"],    
+        request.data["Telefono"],          
+        "",
+    )
 
-    return Response(data=data)
+    return Response(data=returnCode)
+
+    
 
 #TODO: cambiar esta uncion por un procedimiento almacenado
 def getProfileData(id, validated=False):

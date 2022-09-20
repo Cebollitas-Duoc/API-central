@@ -17,3 +17,8 @@ def getSessionProfile(session):
 
     data["ValidSession"] = r[9]
     return data
+
+def editSessionProfile(session, email, primernombre, segundonombre, primerapellido, segundoapellido, direccion, telefono, rutafotoperfil):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_USUARIOS.P_EDIT_SESSION_PROFILE", [session, email, primernombre, segundonombre, primerapellido, segundoapellido, direccion, telefono, rutafotoperfil, 0])
+    return r[9] == 1
