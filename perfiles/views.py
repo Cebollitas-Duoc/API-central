@@ -1,5 +1,3 @@
-from requests import session
-from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .validation import *
@@ -59,28 +57,3 @@ def EditSessionProfile(request):
     )
 
     return Response(data=returnCode)
-
-    
-
-#TODO: cambiar esta uncion por un procedimiento almacenado
-def getProfileData(id, validated=False):
-    data = {}
-    
-    usuario = TUsuario.objects.filter(id_usuario=id, id_estadousuario=1).first()
-
-    if (usuario == None):
-        data["Error"] = "Usuario no existe"
-        return data
-
-    data["Email"] = usuario.email
-    data["PrimerNombre"] = usuario.primernombre
-    data["SegundoNombre"] = usuario.segundonombre
-    data["PrimerApellido"] = usuario.primerapellido
-    data["SegundoApellido"] = usuario.segundoapellido
-    data["Foto"] = usuario.foto
-
-    if (validated):
-        data["direccion"] = usuario.direccion
-        data["telefono"] = usuario.telefono
-
-    return data
