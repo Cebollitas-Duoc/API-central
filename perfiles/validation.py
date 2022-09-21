@@ -2,7 +2,7 @@ from identificacion.validation import isInDictionary
 
 def validateGetUserProfile(userData):
     data = {"Valid": True}
-    if not isInDictionary("User", userData, invalidValue=""):
+    if not isInDictionary("User", userData):
         data["Valid"] = False
         data["Error"] = "Falta id usuario en el url"
     
@@ -12,28 +12,28 @@ def validateGetUserProfile(userData):
 #TODO: importante! los valores del formulario se encontraran dentro de equest.data y la llave de S en request.headers
 def validateEditProfile(request):
     data = {"Valid": True}
-    if not isInDictionary("SessionKey", request.headers, invalidValue=""):
+    if not isInDictionary("SessionKey", request.data):
         data["Valid"] = False
         data["Error"] = "Usuario no se encuntra logeado"
-    elif not isInDictionary("Email", request.data, invalidValue=""):
+    elif not isInDictionary("Email", request.data):
         data["Valid"] = False
         data["Error"] = "No hay Email"
-    elif not isInDictionary("PrimerNombre", request.data, invalidValue=""):
+    elif not isInDictionary("PrimerNombre", request.data):
         data["Valid"] = False
         data["Error"] = "No hay nombre"
-    elif not isInDictionary("SegundoNombre", request.data, invalidValue=""):
+    elif not isInDictionary("SegundoNombre", request.data):
         data["Valid"] = False
         data["Error"] = "No hay segundo nombre"
-    elif not isInDictionary("PrimerApellido", request.data, invalidValue=""):
+    elif not isInDictionary("PrimerApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay apellido"
-    elif not isInDictionary("SegundoApellido", request.data, invalidValue=""):
+    elif not isInDictionary("SegundoApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay segundo apellido"
-    elif not isInDictionary("Direccion", request.data, invalidValue=""):
+    elif not isInDictionary("Direccion", request.data):
         data["Valid"] = False
         data["Error"] = "No hay direccion"
-    elif not isInDictionary("Telefono", request.data, invalidValue=""):
+    elif not isInDictionary("Telefono", request.data):
         data["Valid"] = False
         data["Error"] = "No hay telefono"
 

@@ -23,7 +23,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["host.docker.internal"]
 CORS_ALLOW_ALL_ORIGINS = True
 
-
 # Application definition
 
 INSTALLED_APPS = [

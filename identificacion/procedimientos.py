@@ -1,6 +1,7 @@
 from django.db import connection
 from .sessionFunctions import generateRandomStr
 import time
+from .models import *
 
 def userCredentials(email):
     data = {}
@@ -28,3 +29,10 @@ def createUser(email, hashedPassword, name, name2, lastName, lastName2, address,
     r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, address, phone, "", 0])
     returncode = r[-1] == 1
     return returncode
+
+#TODO: pasar a procedimiento
+def validSession(sessionKey):
+    session = TSesion.objects.filter(llave=sessionKey).first()
+    if (session != None):
+        return (True, session.id_usuario.id_usuario)
+    return (False, 0)

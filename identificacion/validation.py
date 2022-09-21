@@ -1,16 +1,14 @@
-def isInDictionary(data, dic, invalidValue=None):
-    if (data not in dic):
-        return False
-    elif (dic[data] == invalidValue):
+def isInDictionary(data, dic):
+    if ((data not in dic) or (dic[data] == "")):
         return False
     return True
 
 def validateLoginData(userData):
     data = {"Valid": True}
-    if not isInDictionary("Email", userData, invalidValue=""):
+    if not isInDictionary("Email", userData):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData, invalidValue=""):
+    elif not isInDictionary("Password", userData):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
 
@@ -18,25 +16,25 @@ def validateLoginData(userData):
 #address, phone):
 def validateCreateUserData(userData):
     data = {"Valid": True}
-    if not isInDictionary("Email", userData, invalidValue=""):
+    if not isInDictionary("Email", userData):
         data["Valid"] = False
         data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData, invalidValue=""):
+    elif not isInDictionary("Password", userData):
         data["Valid"] = False 
         data["Error"] = "Falta la contraseña"
-    elif not isInDictionary("Password2", userData, invalidValue=""):
+    elif not isInDictionary("Password2", userData):
         data["Valid"] = False
         data["Error"] = "Falta La validacion de la contraseña"
-    elif not isInDictionary("Name", userData, invalidValue=""):
+    elif not isInDictionary("Name", userData):
         data["Valid"] = False 
         data["Error"] = "Falta el nombre"
-    elif not isInDictionary("LastName", userData, invalidValue=""):
+    elif not isInDictionary("LastName", userData):
         data["Valid"] = False 
         data["Error"] = "Falta el primer apellido"
-    elif not isInDictionary("Address", userData, invalidValue=""):
+    elif not isInDictionary("Address", userData):
         data["Valid"] = False 
         data["Error"] = "Falta la direccion"
-    elif not isInDictionary("Phone", userData, invalidValue=""):
+    elif not isInDictionary("Phone", userData):
         data["Valid"] = False 
         data["Error"] = "Falta el telefono"
     elif userData["Password"] != userData["Password2"]:
@@ -45,9 +43,9 @@ def validateCreateUserData(userData):
     
     return data
 
-def validateSessionKey(requestHeaders):
+def validateSessionKey(dictionary):
     data = {"Valid": True}
-    if not isInDictionary("SessionKey", requestHeaders, invalidValue=""):
+    if not isInDictionary("SessionKey", dictionary):
         data["Valid"] = False
         data["Error"] = "Usuario no se encuntra logeado"
     

@@ -1,7 +1,5 @@
 import hashlib, string, random
-
 from sympy import true
-from .models import *
 
 def validatePassword(password, encriptedPassword):
     encriptedPassword = sparatePassword(encriptedPassword)
@@ -16,13 +14,6 @@ def validatePassword(password, encriptedPassword):
         if (newHash == hash):
             return True
     return False
-
-#TODO: pasar a procedimiento
-def validSession(sessionKey):
-    session = TSesion.objects.filter(llave=sessionKey).first()
-    if (session != None):
-        return (True, session.id_usuario.id_usuario)
-    return (False, 0)
 
 def sparatePassword(password):
     return password.split("#")

@@ -5,9 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from .validation import *
-from .sessionFunctions import validatePassword, hashPassword, validSession
-
-
+from .sessionFunctions import validatePassword, hashPassword
 
 @api_view(('GET', 'POST'))
 def Login(request):
@@ -86,7 +84,7 @@ def ValidateSession(request):
         return Response(data=data)
 
     sessionKey = request.headers["Sessionkey"]
-    result = validSession(sessionKey)
+    result = procedimientos.validSession(sessionKey)
     data["Valid"] = result[0]
     data["userId"] = result[1]
 
