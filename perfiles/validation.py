@@ -9,7 +9,6 @@ def validateGetUserProfile(userData):
     return data
 
 #TODO: agregar otros valores necesarios para la edicion 
-#TODO: importante! los valores del formulario se encontraran dentro de equest.data y la llave de S en request.headers
 def validateEditProfile(request):
     data = {"Valid": True}
     if not isInDictionary("SessionKey", request.data):

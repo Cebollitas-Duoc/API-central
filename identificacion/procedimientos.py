@@ -29,10 +29,12 @@ def createUser(email, hashedPassword, name, name2, lastName, lastName2, address,
     r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, address, phone, "", 0])
     returncode = r[-1] == 1
     return returncode
+    
+def isSessionValid(sessionKey):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_SESION.P_SESION_Valida", [sessionKey, "", 0, 0, 0])
+    isValid    = r[1] == "True"
+    id_usuario = r[2]
+    id_permiso = r[3]
 
-#TODO: pasar a procedimiento
-def validSession(sessionKey):
-    session = TSesion.objects.filter(llave=sessionKey).first()
-    if (session != None):
-        return (True, session.id_usuario.id_usuario)
-    return (False, 0)
+    return (isValid, id_usuario, id_permiso)

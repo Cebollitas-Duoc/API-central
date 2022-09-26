@@ -3,16 +3,15 @@ from rest_framework.response import Response
 from .validation import *
 from identificacion.validation import validateSessionKey
 import identificacion.procedimientos as authP
+import identificacion.decorators as authD
 import perfiles.procedimientos as procedimientos
 
 @api_view(('GET',))
+@authD.isUserLogged()
 def GetSessionProfile(request):
-    validationResult = validateSessionKey(request.headers)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
-        return Response(data=data)
+    data = {}
 
-    sessionKey = request.headers["Sessionkey"]
+    sessionKey = request.data["SessionKey"]
     data = procedimientos.getSessionProfile(sessionKey)
     return Response(data=data)
 

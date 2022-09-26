@@ -49,9 +49,9 @@ def CreateUser(request):
     #request.data es constante y necesitamos poder agregar unos valores en caso de que no esten
     userData = request.data
 
-    if not isInDictionary("Name2", userData, invalidValue=None):
+    if not isInDictionary("Name2", userData):
         userData["Name2"] = "" 
-    if not isInDictionary("LastName2", userData, invalidValue=None):
+    if not isInDictionary("LastName2", userData):
         userData["LastName2"] = ""
 
     userCredentials = procedimientos.userCredentials(userData["Email"])
@@ -84,7 +84,7 @@ def ValidateSession(request):
         return Response(data=data)
 
     sessionKey = request.headers["Sessionkey"]
-    result = procedimientos.validSession(sessionKey)
+    result = procedimientos.isSessionValid(sessionKey)
     data["Valid"] = result[0]
     data["userId"] = result[1]
 
