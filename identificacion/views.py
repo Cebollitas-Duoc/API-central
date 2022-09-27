@@ -1,5 +1,6 @@
 import identificacion.procedimientos as procedimientos
 from identificacion.sessionFunctions import hashPassword, validatePassword
+from identificacion.decorators import *
 from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -90,4 +91,54 @@ def ValidateSession(request):
 
     return Response(data=data)
 
+@api_view(('GET', 'POST'))
+@isUserLogged()
+def ChangePassword(request):
+    userData = {}
 
+    validationResult = ValidateChangePassword(request.data)
+    if (not validationResult["Valid"]):
+        returnInfo["Error"] = validationResult["Error"]
+        return Response(data=returnInfo)
+    
+    #request.data es constante y necesitamos poder agregar unos valores en caso de que no esten
+    userData = request.data
+
+    sessionKey    = request.data["SessionKey"]
+    old_password  = request.data["OldPassword"]
+    new_password  = request.data["NewPassword"]
+    new_password2 = request.data["NewPassword2"]
+
+    #TODO: crear procedimiento sessionCredentials
+    userData = procedimientos.sessionCredentials(sessionKey) 
+    isPasswordValid = False
+
+    if (userData["UserExist"]):
+        isPasswordValid = validatePassword(formPassword, userData["Password"])
+        data["ValidPassword"] = isPasswordValid
+    else:
+        data["ErrorCode"] = 0
+        data["Error"] = "Usuario no existe"
+
+    if (isPasswordValid):
+        expirationDate = datetime.now() + timedelta(days=7)
+        expirationDate = expirationDate.timestamp()
+        sessionData = procedimientos.createSession(userData["ID_usuario"], expirationDate)
+        data["SessionKey"] = sessionData["SessionKey"]
+        data["Nombre"] = sessionData["Nombre"]   
+        data["Foto"] = sessionData["Foto"]   
+
+    returnCode = procedimientos.createUser(
+        userData["Email"], 
+        hashPassword(userData["Password"]), 
+        userData["Name"], 
+        userData["Name2"], 
+        userData["LastName"], 
+        userData["LastName2"],
+        userData["Address"],
+        userData["Phone"],
+        )
+    
+    returnInfo["UserCreated"] = returnCode
+
+    return Response(data=returnInfo)

@@ -50,3 +50,12 @@ def validateSessionKey(dictionary):
         data["Error"] = "Usuario no se encuntra logeado"
     
     return data
+
+#TODO: VALIDAR
+def ValidateChangePassword(dictionary):
+    data = {"Valid": True}
+    if not isInDictionary("SessionKey", dictionary):
+        data["Valid"] = False
+        data["Error"] = "Usuario no se encuntra logeado"
+    
+    return data
