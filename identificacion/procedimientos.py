@@ -12,6 +12,15 @@ def userCredentials(email):
     data["Password"]   = r[3]
     return data
 
+def sessionCredentials(sessionKey):
+    data = {}
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_SESION.P_SESSION_CREADENTIALS", [sessionKey, "", "", "", 0])
+    data["ValidSession"]  = r[1] == "True"
+    data["ID_usuario"]    = r[2]
+    data["Password"]      = r[3]
+    return data
+
 def createSession(id_Usuario, expiracion):
     data = {}
     key = generateRandomStr()
@@ -38,3 +47,9 @@ def isSessionValid(sessionKey):
     id_permiso = r[3]
 
     return (isValid, id_usuario, id_permiso)
+
+def updatePassword(id_usuario, password):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_SESION.P_UPDATE_PASSWORD", [id_usuario, password, 0])
+
+    return r[2] == 1

@@ -9,8 +9,6 @@ import perfiles.procedimientos as procedimientos
 @api_view(('GET',))
 @authD.isUserLogged()
 def GetSessionProfile(request):
-    data = {}
-
     sessionKey = request.data["SessionKey"]
     data = procedimientos.getSessionProfile(sessionKey)
     return Response(data=data)

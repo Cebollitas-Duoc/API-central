@@ -51,11 +51,19 @@ def validateSessionKey(dictionary):
     
     return data
 
-#TODO: VALIDAR
 def ValidateChangePassword(dictionary):
     data = {"Valid": True}
-    if not isInDictionary("SessionKey", dictionary):
+    if not isInDictionary("OldPassword", dictionary):
         data["Valid"] = False
-        data["Error"] = "Usuario no se encuntra logeado"
+        data["Error"] = "Falta la vieja contraseña"
+    elif not isInDictionary("NewPassword", dictionary):
+        data["Valid"] = False
+        data["Error"] = "Falta la nueva contraseña"
+    elif not isInDictionary("NewPassword2", dictionary):
+        data["Valid"] = False
+        data["Error"] = "Falta la repeticion de la nueva contraseña"
+    elif dictionary["NewPassword"] != dictionary["NewPassword2"]:
+        data["Valid"] = False
+        data["Error"] = "La repeticion de la contraseña no es igual a la ingresada"
     
     return data
