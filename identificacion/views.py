@@ -6,36 +6,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from .validation import *
-from .sessionFunctions import validatePassword, hashPassword
+from .sessionFunctions import validatePassword, hashPassword, LoginProcess
 
 @api_view(('GET', 'POST'))
 def Login(request):
-    data = {}
-    validationResult = validateLoginData(request.data)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
-        return Response(data=data)
-        
-    formEmail, formPassword = request.data["Email"], request.data["Password"]
-    userData = procedimientos.userCredentials(formEmail)
-    isPasswordValid = False
+    return LoginProcess(request)
 
-    if (userData["UserExist"]):
-        isPasswordValid = validatePassword(formPassword, userData["Password"])
-        data["ValidPassword"] = isPasswordValid
-    else:
-        data["ErrorCode"] = 0
-        data["Error"] = "Usuario no existe"
-
-    if (isPasswordValid):
-        expirationDate = datetime.now() + timedelta(days=7)
-        expirationDate = expirationDate.timestamp()
-        sessionData = procedimientos.createSession(userData["ID_usuario"], expirationDate)
-        data["SessionKey"] = sessionData["SessionKey"]
-        data["Nombre"] = sessionData["Nombre"]   
-        data["Foto"] = sessionData["Foto"]    
-
-    return Response(data=data)
+@api_view(('GET', 'POST'))
+def AdminLogin(request):
+    return LoginProcess(request, 1)
 
 @api_view(('GET', 'POST'))
 def CreateUser(request):

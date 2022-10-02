@@ -6,19 +6,21 @@ from .models import *
 def userCredentials(email):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_SESION.P_USER_CREADENTIALS", [email, "", "", "", 0])
+    r = cursor.callproc("PCK_SESION.P_USER_CREADENTIALS", [email, "", "", "", "", 0])
     data["UserExist"]  = r[1] == "True"
-    data["ID_usuario"] = r[2]
-    data["Password"]   = r[3]
+    data["ID_usuario"] = int(r[2])
+    data["ID_permiso"] = int(r[3])
+    data["Password"]   = r[4]
     return data
 
 def sessionCredentials(sessionKey):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_SESION.P_SESSION_CREADENTIALS", [sessionKey, "", "", "", 0])
+    r = cursor.callproc("PCK_SESION.P_SESSION_CREADENTIALS", [sessionKey, "", "", "", "", 0])
     data["ValidSession"]  = r[1] == "True"
-    data["ID_usuario"]    = r[2]
-    data["Password"]      = r[3]
+    data["ID_usuario"]    = int(r[2])
+    data["ID_permiso"]    = int(r[3])
+    data["Password"]      = r[4]
     return data
 
 def createSession(id_Usuario, expiracion):

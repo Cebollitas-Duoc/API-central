@@ -1,5 +1,9 @@
 import hashlib, string, random
 from sympy import true
+from .validation import *
+from rest_framework.response import Response
+import identificacion.procedimientos as procedimientos
+from datetime import datetime, timedelta
 
 def validatePassword(password, encriptedPassword):
     encriptedPassword = sparatePassword(encriptedPassword)
@@ -38,3 +42,35 @@ def hashPassword(password):
     hashedPassword = f"{algorithm}#{weight}#{salt}#{calculateHash(algorithm, password)}"
 
     return hashedPassword
+
+def LoginProcess(request, requiredPermission=0):
+    data = {}
+    validationResult = validateLoginData(request.data)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+        
+    formEmail, formPassword = request.data["Email"], request.data["Password"]
+    userData = procedimientos.userCredentials(formEmail)
+    isPasswordValid = False
+
+    if (userData["UserExist"]):
+        isPasswordValid = validatePassword(formPassword, userData["Password"])
+        data["ValidPassword"] = isPasswordValid
+    else:
+        data["ErrorCode"] = 0
+        data["Error"] = "Usuario no existe"
+
+    if (userData["ID_permiso"] < requiredPermission):
+        data["Error"] = "Permisos invalidos"
+        return Response(data=data)
+
+    if (isPasswordValid):
+        expirationDate = datetime.now() + timedelta(days=7)
+        expirationDate = expirationDate.timestamp()
+        sessionData = procedimientos.createSession(userData["ID_usuario"], expirationDate)
+        data["SessionKey"] = sessionData["SessionKey"]
+        data["Nombre"] = sessionData["Nombre"]   
+        data["Foto"] = sessionData["Foto"]    
+
+    return Response(data=data)
