@@ -58,12 +58,14 @@ def CreateUser(request):
 def ValidateSession(request):
     data = {"Valid": False}
 
+    print(request.data)
     validationResult = validateSessionKey(request.data)
     if (not validationResult["Valid"]):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
 
     sessionKey = request.data["SessionKey"]
+    print(sessionKey)
     result = procedimientos.isSessionValid(sessionKey)
     data["Valid"] = result[0]
     data["userId"] = result[1]

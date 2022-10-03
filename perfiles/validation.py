@@ -20,15 +20,9 @@ def validateEditProfile(request):
     elif not isInDictionary("PrimerNombre", request.data):
         data["Valid"] = False
         data["Error"] = "No hay nombre"
-    elif not isInDictionary("SegundoNombre", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay segundo nombre"
     elif not isInDictionary("PrimerApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay apellido"
-    elif not isInDictionary("SegundoApellido", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay segundo apellido"
     elif not isInDictionary("Direccion", request.data):
         data["Valid"] = False
         data["Error"] = "No hay direccion"
