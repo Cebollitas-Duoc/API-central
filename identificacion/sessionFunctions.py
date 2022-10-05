@@ -70,7 +70,10 @@ def LoginProcess(request, requiredPermission=0):
         expirationDate = expirationDate.timestamp()
         sessionData = procedimientos.createSession(userData["ID_usuario"], expirationDate)
         data["SessionKey"] = sessionData["SessionKey"]
-        data["Nombre"] = sessionData["Nombre"]   
-        data["Foto"] = sessionData["Foto"]    
+        data["Nombre"] = sessionData["Nombre"]
+        if (sessionData["Foto"] != None):
+            data["Foto"] = sessionData["Foto"]
+        else:
+            data["Foto"] = "/img/profiles/default.png"
 
     return Response(data=data)

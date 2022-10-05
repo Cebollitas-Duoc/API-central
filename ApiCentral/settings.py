@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 
     "identificacion.apps.IdentificacionConfig",
     "perfiles.apps.PerfilesConfig",
+    "administracion.apps.AdministracionConfig",
     'rest_framework',
 
     "corsheaders",
