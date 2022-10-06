@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import identificacion.decorators as authD
+from .validation import *
 from . import procedimientos
 
 @api_view(('GET', 'POST'))
@@ -26,9 +27,35 @@ def ViewUsers(request):
             else:
                 usr["Rutafotoperfil"] = "/img/profiles/default.png"
                 
-
             users.append(usr)
             
         return Response(data=users)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def EditUser(request):
+    data = {}
+
+    validationResult = validateEditUser(request.data)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    returnCode = procedimientos.editUser(
+        request.data["IdUsuario"],
+        request.data["IdPermiso"],
+        request.data["IdEstado"],
+        request.data["Email"],
+        request.data["PrimerNombre"],
+        request.data["SegundoNombre"],
+        request.data["PrimerApellido"],
+        request.data["SegundoApellido"],
+        request.data["Direccion"],
+        request.data["Telefono"],
+        "",
+    )
+    if (not returnCode):
+        data["Error"] = "No se pudo editar el perfil"
+    return Response(data=data)
