@@ -3,7 +3,7 @@ from rest_framework.response import Response
 import identificacion.decorators as authD
 from . import procedimientos
 
-@api_view(('GET',))
+@api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def ViewUsers(request):
     data = procedimientos.viewUsers()
