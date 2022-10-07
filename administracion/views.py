@@ -38,12 +38,12 @@ def ViewUsers(request):
 def EditUser(request):
     data = {}
 
-    validationResult = validateEditUser(request.data)
+    validationResult = validateEditUser(request)
     if (not validationResult["Valid"]):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
     
-    returnCode = procedimientos.editUser(
+    perfilEditado = procedimientos.editUser(
         request.data["IdUsuario"],
         request.data["IdPermiso"],
         request.data["IdEstado"],
@@ -56,6 +56,7 @@ def EditUser(request):
         request.data["Telefono"],
         "",
     )
-    if (not returnCode):
+    data["PerfilEditado"] = perfilEditado
+    if (not perfilEditado):
         data["Error"] = "No se pudo editar el perfil"
     return Response(data=data)

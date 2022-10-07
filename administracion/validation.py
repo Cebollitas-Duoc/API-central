@@ -24,7 +24,7 @@ def validateEditUser(request):
     elif not isInDictionary("PrimerApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay apellido"
-    elif not isInDictionary("PrimerApellido", request.data):
+    elif not isInDictionary("SegundoApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay segundo apellido"
     elif not isInDictionary("Direccion", request.data):
