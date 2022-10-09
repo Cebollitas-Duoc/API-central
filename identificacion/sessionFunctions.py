@@ -54,16 +54,20 @@ def LoginProcess(request, requiredPermission=0):
     userData = procedimientos.userCredentials(formEmail)
     isPasswordValid = False
 
-    if (userData["UserExist"]):
-        isPasswordValid = validatePassword(formPassword, userData["Password"])
-        data["ValidPassword"] = isPasswordValid
-    else:
-        data["ErrorCode"] = 0
+    if (not userData["UserExist"]):
         data["Error"] = "Usuario no existe"
-
-    if (userData["ID_permiso"] < requiredPermission):
+        return Response(data=data)
+    elif (userData["ID_estado"] == 2):
+        data["Error"] = "Usuario se encuentra bloqueado"
+        return Response(data=data)
+    elif (userData["ID_permiso"] < requiredPermission):
         data["Error"] = "Permisos invalidos"
         return Response(data=data)
+    else:
+        isPasswordValid = validatePassword(formPassword, userData["Password"])
+        data["ValidPassword"] = isPasswordValid
+
+    
 
     if (isPasswordValid):
         expirationDate = datetime.now() + timedelta(days=7)
@@ -75,5 +79,7 @@ def LoginProcess(request, requiredPermission=0):
             data["Foto"] = sessionData["Foto"]
         else:
             data["Foto"] = "/img/profiles/default.png"
-
+    else:
+        data["Error"] = "Credenciales invalidas"
+        
     return Response(data=data)
