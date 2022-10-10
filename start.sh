@@ -1,1 +1,1 @@
-sudo docker start -i turismoreal-api-central
+docker start -i turismoreal-api-central

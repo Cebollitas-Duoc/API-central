@@ -4,14 +4,15 @@ from .validation import *
 from identificacion.validation import validateSessionKey
 import identificacion.procedimientos as authP
 import identificacion.decorators as authD
-import perfiles.procedimientos as procedimientos
+from . import procedimientos
+from .profileFunctions import removeNone
 
 @api_view(('GET',))
 @authD.isUserLogged()
 def GetSessionProfile(request):
     sessionKey = request.data["SessionKey"]
     data = procedimientos.getSessionProfile(sessionKey)
-    return Response(data=data)
+    return Response(data=removeNone(data))
 
 @api_view(('POST',))
 def EditSessionProfile(request):

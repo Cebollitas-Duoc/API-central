@@ -20,7 +20,5 @@ WORKDIR /app
 
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
-EXPOSE 8080
 EXPOSE 8081
-EXPOSE 1521
 CMD pipenv run python manage.py runserver 0.0.0.0:8081
