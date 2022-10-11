@@ -29,3 +29,32 @@ def validateEditUser(request):
         data["Error"] = "No hay telefono"
 
     return data
+
+def validateCreateDepartamento(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdState", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay estado"
+    elif not isInDictionary("Address", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay direccion"
+    elif not isInDictionary("Longitud", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay longitud"
+    elif not isInDictionary("Latitud", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay latitud"
+    elif not isInDictionary("Rooms", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay habitaciones"
+    elif not isInDictionary("Bathrooms", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay baños"
+    elif not isInDictionary("Size", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay tamaño"
+    elif not isInDictionary("Value", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay valor diario"
+    
+    return data

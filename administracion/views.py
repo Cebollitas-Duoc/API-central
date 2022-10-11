@@ -4,6 +4,7 @@ import identificacion.decorators as authD
 from .validation import *
 from . import procedimientos
 
+#region usuarios
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def ViewUsers(request):
@@ -60,3 +61,52 @@ def EditUser(request):
     if (not perfilEditado):
         data["Error"] = "No se pudo editar el perfil"
     return Response(data=data)
+#endregion usuarios
+
+#region departamentos
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def CreateDpto(request):
+    data = {}
+    validationResult = validateCreateDepartamento(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    returnCode = procedimientos.CreateDpto(
+        request.data["IdState"],
+        request.data["Address"],
+        request.data["Longitud"],
+        request.data["Latitud"],
+        request.data["Rooms"],
+        request.data["Bathrooms"],
+        request.data["Size"],
+        request.data["Value"],
+    )
+
+    return Response(data={"Departamento agregado": returnCode})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def ViewDptos(request):
+    data = procedimientos.viewDptos()
+    dptos = []
+    if (data[1] == 1):
+        for usrArray in data[0]:
+            usr = {}
+            usr["Id_Dpto"]   = usrArray[0]
+            usr["Address"]   = usrArray[1]
+            usr["Longitud"]  = usrArray[2]
+            usr["Latitud"]   = usrArray[3]
+            usr["Rooms"]     = usrArray[4]
+            usr["Bathrooms"] = usrArray[5]
+            usr["Size"]      = usrArray[6]
+            usr["Value"]     = usrArray[7]
+            usr["Id_State"]  = usrArray[8]
+                
+            dptos.append(usr)
+            
+        return Response(data=dptos)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+#endregion departamentos
