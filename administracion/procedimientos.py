@@ -28,4 +28,9 @@ def viewDptos():
     dptos = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_ADMIN.P_LISTAR_DPTOS", [dptos, 0])
     return r
+
+def editDpto(id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_DPTO", [id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, 0])
+    return r[-1] == 1
 #endregion departamentos

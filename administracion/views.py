@@ -109,4 +109,30 @@ def ViewDptos(request):
         return Response(data=dptos)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def EditDpto(request):
+    data = {}
+
+    validationResult = validateEditDpto(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    dptoUpdated = procedimientos.editDpto(
+        request.data["IdDpto"],
+        request.data["IdState"],
+        request.data["Address"],
+        request.data["Longitud"],
+        request.data["Latitud"],
+        request.data["Rooms"],
+        request.data["Bathrooms"],
+        request.data["Size"],
+        request.data["Value"],
+    )
+    data["DepartamentoEditado"] = dptoUpdated
+    if (not dptoUpdated):
+        data["Error"] = "No se pudo editar el departamento"
+    return Response(data=data)
 #endregion departamentos

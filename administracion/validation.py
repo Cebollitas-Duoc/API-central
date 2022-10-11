@@ -58,3 +58,18 @@ def validateCreateDepartamento(request):
         data["Error"] = "No hay valor diario"
     
     return data
+
+def validateEditDpto(request):
+    if not isInDictionary("IdDpto", request.data):
+        data = {
+            "Valid": False,
+            "Error": "No hay id del departamento"
+        }
+        return data
+
+    #valida todos los datos necesarios para el departamento, solo falta la id
+    validationResult = validateCreateDepartamento(request)
+    if (not validationResult["Valid"]):
+        return validationResult
+
+    return {"Valid": True}
