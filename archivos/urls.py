@@ -5,4 +5,5 @@ app_name = "archivos"
 
 urlpatterns = [
     path('saveimage/',  views.saveImage,  name="saveImage"),
+    path('getimage/<str:imgName>/',  views.getImage,  name="getImage"),
 ]
