@@ -12,14 +12,13 @@ import io
 def saveImage(request):
     data = {}
     img = request.data["Image"]
+    fileType, imgExtension = img.content_type.split("/")
 
     imgRawData = img.file.read()
-    imgB64 = base64.urlsafe_b64encode(imgRawData).decode()
+    imgB64 = base64.b64encode(imgRawData).decode()
 
     imghash = hashlib.md5(imgB64.encode()).hexdigest()
-    imgname = str(request.data["Image"])
-    imgExtension = imgname[imgname.index("."):]
-    imgDbName = imghash + imgExtension
+    imgDbName = f"{imghash}.{imgExtension}"
     
     fileSaved = procedimientos.insertPicture(imgDbName, imgB64)
     data["FileSaved"] = fileSaved
