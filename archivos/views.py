@@ -2,9 +2,11 @@ from django.http import FileResponse, HttpResponseNotFound
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . import procedimientos
+from . import functions
 import base64
 import hashlib
 import io
+
 
 # Create your views here.
 
@@ -12,17 +14,8 @@ import io
 def saveImage(request):
     data = {}
     img = request.data["Image"]
-    fileType, imgExtension = img.content_type.split("/")
 
-    imgRawData = img.file.read()
-    imgB64 = base64.b64encode(imgRawData).decode()
-
-    imghash = hashlib.md5(imgB64.encode()).hexdigest()
-    imgDbName = f"{imghash}.{imgExtension}"
-    
-    fileSaved = procedimientos.insertPicture(imgDbName, imgB64)
-    data["FileSaved"] = fileSaved
-    data["ImgName"] = imgDbName
+    data["FileSaved"], data["ImgName"] = functions.saveImage(img)
 
     return Response(data=data)
 

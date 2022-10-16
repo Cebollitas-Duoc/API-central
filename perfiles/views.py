@@ -4,8 +4,9 @@ from .validation import *
 from identificacion.validation import validateSessionKey
 import identificacion.procedimientos as authP
 import identificacion.decorators as authD
+import archivos.functions as files
 from . import procedimientos
-from .profileFunctions import removeNone
+from .functions import removeNone
 
 @api_view(('GET',))
 @authD.isUserLogged()
@@ -23,6 +24,12 @@ def EditSessionProfile(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
 
+    imgPath = ""
+    img = request.data["Imagen"]
+    if (img != "undefined"):
+        imgSaved, imgPath = files.saveImage(img)
+
+
     returnCode = procedimientos.editSessionProfile(
         request.data["SessionKey"],     
         request.data["Email"],  
@@ -32,7 +39,7 @@ def EditSessionProfile(request):
         request.data["SegundoApellido"],
         request.data["Direccion"],    
         request.data["Telefono"],          
-        "",
+        imgPath,
     )
     if (not returnCode):
         data["Error"] = "No se pudo editar el perfil"
