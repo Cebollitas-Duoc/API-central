@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import identificacion.decorators as authD
+import archivos.functions as files
 from .validation import *
 from . import procedimientos
 
@@ -26,7 +27,7 @@ def ViewUsers(request):
             if (usrArray[10] != None):
                 usr["Rutafotoperfil"] = usrArray[10]
             else:
-                usr["Rutafotoperfil"] = "/img/profiles/default.png"
+                usr["Rutafotoperfil"] = ""
                 
             users.append(usr)
             
@@ -43,6 +44,11 @@ def EditUser(request):
     if (not validationResult["Valid"]):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
+
+    imgPath = ""
+    img = request.data["Imagen"]
+    if (img != "undefined"):
+        imgSaved, imgPath = files.saveImage(img)
     
     perfilEditado = procedimientos.editUser(
         request.data["IdUsuario"],
@@ -55,7 +61,7 @@ def EditUser(request):
         request.data["SegundoApellido"],
         request.data["Direccion"],
         request.data["Telefono"],
-        "",
+        imgPath,
     )
     data["PerfilEditado"] = perfilEditado
     if (not perfilEditado):
