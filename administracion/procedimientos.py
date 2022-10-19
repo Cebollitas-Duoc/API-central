@@ -22,13 +22,6 @@ def CreateDpto(ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, val
     r = cursor.callproc("PCK_ADMIN.P_AGREGAR_DPTO", [ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, value, 0])
     return r[-1] == 1
 
-def viewDptos():
-    cursor = connection.cursor()
-    raw_cursor = cursor.connection.cursor()
-    dptos = raw_cursor.var(cx_Oracle.CURSOR) 
-    r = cursor.callproc("PCK_ADMIN.P_LISTAR_DPTOS", [dptos, 0])
-    return r
-
 def editDpto(id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_EDIT_DPTO", [id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, 0])
@@ -46,13 +39,6 @@ def editFotoDpto(id_imgdpto, main, order):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_EDIT_FOTO_DPTO", [id_imgdpto, main, order, 0])
     return r[-1] == 1
-
-def viewFotosDpto(id_apartment):
-    cursor = connection.cursor()
-    raw_cursor = cursor.connection.cursor()
-    pictures = raw_cursor.var(cx_Oracle.CURSOR) 
-    r = cursor.callproc("PCK_ADMIN.P_LISTAR_FOTOS_DPTO", [id_apartment, pictures, 0])
-    return (r[1], r[-1] == 1)
 
 def deleteFotoDpto(id_imgdpto):
     cursor = connection.cursor()

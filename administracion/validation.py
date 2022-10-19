@@ -100,14 +100,6 @@ def validateEditDptoImage(request):
 
     return data
 
-def validateViewDptoImages(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdApartment", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay departamento"
-
-    return data
-
 def validateDeleteDptoImages(request):
     data = {"Valid": True}
     if not isInDictionary("IdDptoImg", request.data):

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "perfiles.apps.PerfilesConfig",
     "administracion.apps.AdministracionConfig",
     "archivos.apps.ArchivosConfig",
+    "departamentos.apps.DepartamentosConfig",
     'rest_framework',
 
     "corsheaders",
