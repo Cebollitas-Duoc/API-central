@@ -8,10 +8,11 @@ def userCredentials(email):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_SESION.P_USER_CREADENTIALS", [email, "", 0, 0, 0, "", 0])
     data["UserExist"]  = r[1] == "True"
-    data["ID_usuario"] = int(r[2])
-    data["ID_permiso"] = int(r[3])
-    data["ID_estado"]  = int(r[4])
-    data["Password"]   = r[5]
+    if (data["UserExist"]):
+        data["ID_usuario"] = int(r[2])
+        data["ID_permiso"] = int(r[3])
+        data["ID_estado"]  = int(r[4])
+        data["Password"]   = r[5]
     return data
 
 def sessionCredentials(sessionKey):
