@@ -73,3 +73,45 @@ def validateEditDpto(request):
         return validationResult
 
     return {"Valid": True}
+
+
+def validateAddDptoImage(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdApartment", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay departamento"
+    elif not isInDictionary("Main", request.data):
+        data["Valid"] = False
+        data["Error"] = "No se especifica si es la foto principal o no"
+    elif not isInDictionary("Imagen", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay imagen"
+
+    return data
+
+def validateEditDptoImage(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdImgDpto", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay imagen"
+    elif not isInDictionary("Main", request.data):
+        data["Valid"] = False
+        data["Error"] = "No se especifica si es la foto principal o no"
+
+    return data
+
+def validateViewDptoImages(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdApartment", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay departamento"
+
+    return data
+
+def validateDeleteDptoImages(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdDptoImg", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay imagen"
+
+    return data

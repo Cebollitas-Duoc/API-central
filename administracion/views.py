@@ -109,6 +109,7 @@ def ViewDptos(request):
             usr["Size"]      = usrArray[6]
             usr["Value"]     = usrArray[7]
             usr["Id_State"]  = usrArray[8]
+            usr["Imagen"]    = usrArray[9]
                 
             dptos.append(usr)
             
@@ -142,3 +143,101 @@ def EditDpto(request):
         data["Error"] = "No se pudo editar el departamento"
     return Response(data=data)
 #endregion departamentos
+
+#region imagen departamento
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def CreateFotoDpto(request):
+    data = {}
+
+    validationResult = validateAddDptoImage(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    img = request.data["Imagen"]
+    imgSaved, imgPath = files.saveImage(img)
+
+    if (imgSaved):
+        imagenAgregada = procedimientos.createFotoDpto(
+            request.data["IdApartment"],
+            request.data["Main"],
+            imgPath
+        )
+        data["ImagenAgregada"] = imagenAgregada
+
+    if (not imgSaved or not imagenAgregada):
+        data["Error"] = "No se pudo agregar la imagen"
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def UpdateFotoDpto(request):
+    data = {}
+
+    validationResult = validateEditDptoImage(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    order = None
+    if ("Order" in request.data):
+        order = request.data["Order"] 
+
+    imagenModificada = procedimientos.editFotoDpto(
+        request.data["IdImgDpto"],
+        request.data["Main"],
+        order
+    )
+    data["ImagenModificada"] = imagenModificada
+
+    if (not imagenModificada):
+        data["Error"] = "No se pudo modificar la imagen"
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def ViewFotosDpto(request):
+    data = {}
+
+    validationResult = validateViewDptoImages(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    data = procedimientos.viewFotosDpto(
+        request.data["IdApartment"]
+    )
+
+    images = []
+    if (data[1]):
+        for imgArray in data[0]:
+            img = {}
+            img["Id_FotoDpto"]  = imgArray[0]
+            img["Path"]         = imgArray[1]
+            img["Main"]         = imgArray[2]
+            img["Order"]        = imgArray[3]
+                
+            images.append(img)
+            
+        return Response(data=images)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def DeleteFotoDpto(request):
+    data = {}
+    validationResult = validateDeleteDptoImages(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    returnCode = procedimientos.deleteFotoDpto(
+        request.data["IdDptoImg"],
+    )
+
+    return Response(data={"Imagen borrada": returnCode})
+
+#endregion imagen departamento

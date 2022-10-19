@@ -34,3 +34,29 @@ def editDpto(id_apartment, id_state, address, longitud, latitud, rooms, bathroom
     r = cursor.callproc("PCK_ADMIN.P_EDIT_DPTO", [id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, 0])
     return r[-1] == 1
 #endregion departamentos
+
+#region imagen departamento
+
+def createFotoDpto(id_apartment, main, path):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_AGREGAR_FOTO_DPTO", [id_apartment, main, path, 0])
+    return r[-1] == 1
+
+def editFotoDpto(id_imgdpto, main, order):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_FOTO_DPTO", [id_imgdpto, main, order, 0])
+    return r[-1] == 1
+
+def viewFotosDpto(id_apartment):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    pictures = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_ADMIN.P_LISTAR_FOTOS_DPTO", [id_apartment, pictures, 0])
+    return (r[1], r[-1] == 1)
+
+def deleteFotoDpto(id_imgdpto):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_BORRAR_FOTO_DPTO", [id_imgdpto, 0])
+    return r[-1] == 1
+
+#endregion imagen departamento
