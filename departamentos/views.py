@@ -58,3 +58,22 @@ def ViewFotosDpto(request):
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 
+@api_view(('GET', 'POST'))
+def ViewDpto(request, idDpto):
+    data = procedimientos.viewDpto(idDpto)
+
+    if (data[1]):
+        dpto = {}
+        dpto["Address"]   = data[0][0]
+        dpto["Longitud"]  = data[0][1]
+        dpto["Latitud"]   = data[0][2]
+        dpto["Rooms"]     = data[0][3]
+        dpto["Bathrooms"] = data[0][4]
+        dpto["Size"]      = data[0][5]
+        dpto["Value"]     = data[0][6]
+        dpto["Id_State"]  = data[0][7]
+        dpto["Imagen"]    = data[0][8]
+            
+        return Response(data=dpto)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
