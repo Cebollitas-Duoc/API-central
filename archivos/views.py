@@ -1,6 +1,7 @@
 from django.http import FileResponse, HttpResponseNotFound
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import identificacion.decorators as authD
 from . import procedimientos
 from . import functions
 import base64
@@ -10,6 +11,7 @@ import io
 
 # Create your views here.
 
+@authD.isUserLogged()
 @api_view(('GET', 'POST'))
 def saveImage(request):
     data = {}
@@ -25,8 +27,8 @@ def getImage(request, imgName):
     if (not img[-1]):
         return HttpResponseNotFound("Imagen no encontrada")
 
-    imgData = str(img[0])
+    contantType = str(img[0])
+    imgData = str(img[1])
     base64_img_bytes = imgData.encode('utf-8')
-    imgExtension = imgName[imgName.index(".")+1:]
     f = io.BytesIO(base64.decodebytes(base64_img_bytes))
-    return FileResponse(f, content_type=f"image/{imgExtension}")
+    return FileResponse(f, content_type=contantType)

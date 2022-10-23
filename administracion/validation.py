@@ -21,12 +21,18 @@ def validateEditUser(request):
     elif not isInDictionary("PrimerApellido", request.data):
         data["Valid"] = False
         data["Error"] = "No hay apellido"
+    elif not isInDictionary("Rut", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay Rut"
     elif not isInDictionary("Direccion", request.data):
         data["Valid"] = False
         data["Error"] = "No hay direccion"
     elif not isInDictionary("Telefono", request.data):
         data["Valid"] = False
         data["Error"] = "No hay telefono"
+    elif not isInDictionary("Imagen", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay imagen"
 
     return data
 

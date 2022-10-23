@@ -4,7 +4,8 @@ import hashlib
 import io
 
 def saveImage(img):
-    fileType, imgExtension = img.content_type.split("/")
+    contantType = img.content_type
+    fileType, imgExtension = contantType.split("/")
 
     imgRawData = img.file.read()
     imgB64 = base64.b64encode(imgRawData).decode()
@@ -12,6 +13,6 @@ def saveImage(img):
     imghash = hashlib.md5(imgB64.encode()).hexdigest()
     imgDbName = f"{imghash}.{imgExtension}"
     
-    fileSaved = procedimientos.insertPicture(imgDbName, imgB64)
+    fileSaved = procedimientos.insertPicture(imgDbName, contantType, imgB64)
 
     return (fileSaved, imgDbName)

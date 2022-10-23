@@ -37,9 +37,9 @@ def createSession(id_Usuario, expiracion):
     data["Foto"]   = r[5]
     return data
 
-def createUser(email, hashedPassword, name, name2, lastName, lastName2, address, phone):
+def createUser(email, hashedPassword, name, name2, lastName, lastName2, rut, address, phone):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, address, phone, "", 0])
+    r = cursor.callproc("PCK_USUARIOS.P_AGREGAR_USUARIO", [email, 0, 1, hashedPassword, name, name2, lastName, lastName2, rut, address, phone, "", 0])
     returncode = r[-1] == 1
     return returncode
     

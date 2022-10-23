@@ -10,9 +10,9 @@ def viewUsers():
     r = cursor.callproc("PCK_ADMIN.P_LISTAR_USUARIOS", [usuarios, 0])
     return r
 
-def editUser(id_usuario, id_permiso, id_estado, email, nombre, segundoNombre, apellido, segundoApellido, direccion, telefono, foto):
+def editUser(id_usuario, id_permiso, id_estado, email, name, name2, lastname, lastname2, rut, address, phone, id_foto):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_EDIT_USER", [id_usuario, id_permiso, id_estado, email, nombre, segundoNombre, apellido, segundoApellido, direccion, telefono, foto, 0])
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_USER", [id_usuario, id_permiso, id_estado, email, name, name2, lastname, lastname2, rut, address, phone, id_foto, 0])
     return r[-1] == 1
 #endregion usuarios
 

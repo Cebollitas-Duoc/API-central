@@ -45,7 +45,7 @@ def EditUser(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
 
-    imgPath = ""
+    imgPath = None
     img = request.data["Imagen"]
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
@@ -59,6 +59,7 @@ def EditUser(request):
         request.data["SegundoNombre"],
         request.data["PrimerApellido"],
         request.data["SegundoApellido"],
+        request.data["Rut"],
         request.data["Direccion"],
         request.data["Telefono"],
         imgPath,
