@@ -22,10 +22,11 @@ def ViewUsers(request):
             usr["Segundonombre"]    = usrArray[5]
             usr["Primerapellido"]   = usrArray[6]
             usr["Segundoapellido"]  = usrArray[7]
-            usr["Direccion"]        = usrArray[8]
-            usr["Telefono"]         = usrArray[9]
-            if (usrArray[10] != None):
-                usr["Rutafotoperfil"] = usrArray[10]
+            usr["Rut"]              = usrArray[8]
+            usr["Direccion"]        = usrArray[9]
+            usr["Telefono"]         = usrArray[10]
+            if (usrArray[11] != None):
+                usr["Rutafotoperfil"] = usrArray[11]
             else:
                 usr["Rutafotoperfil"] = ""
                 
