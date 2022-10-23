@@ -33,7 +33,7 @@ def validateCreateUserData(userData):
         data["Error"] = "Falta el primer apellido"
     elif not isInDictionary("Rut", userData):
         data["Valid"] = False 
-        data["Error"] = "Falta el rut"
+        data["Error"] = "Falta el Rut"
     elif not isInDictionary("Address", userData):
         data["Valid"] = False 
         data["Error"] = "Falta la direccion"

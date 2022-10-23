@@ -46,6 +46,7 @@ def CreateUser(request):
         userData["Name2"], 
         userData["LastName"], 
         userData["LastName2"],
+        userData["Rut"],
         userData["Address"],
         userData["Phone"],
         )

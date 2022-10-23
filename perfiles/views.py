@@ -37,6 +37,7 @@ def EditSessionProfile(request):
         request.data["SegundoNombre"],
         request.data["PrimerApellido"],
         request.data["SegundoApellido"],
+        request.data["Rut"],
         request.data["Direccion"],    
         request.data["Telefono"],          
         imgPath,
