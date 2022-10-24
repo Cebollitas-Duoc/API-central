@@ -12,19 +12,20 @@ def ViewDptos(request):
     dptos = []
     if (data[1] == 1):
         for usrArray in data[0]:
-            usr = {}
-            usr["Id_Dpto"]   = usrArray[0]
-            usr["Address"]   = usrArray[1]
-            usr["Longitud"]  = usrArray[2]
-            usr["Latitud"]   = usrArray[3]
-            usr["Rooms"]     = usrArray[4]
-            usr["Bathrooms"] = usrArray[5]
-            usr["Size"]      = usrArray[6]
-            usr["Value"]     = usrArray[7]
-            usr["Id_State"]  = usrArray[8]
-            usr["Imagen"]    = usrArray[9]
+            dpto = {}
+            dpto["Id_Dpto"]     = usrArray[0]
+            dpto["Address"]     = usrArray[1]
+            dpto["Longitud"]    = usrArray[2]
+            dpto["Latitud"]     = usrArray[3]
+            dpto["Rooms"]       = usrArray[4]
+            dpto["Bathrooms"]   = usrArray[5]
+            dpto["Size"]        = usrArray[6]
+            dpto["Value"]       = usrArray[7]
+            dpto["Id_State"]    = usrArray[8]
+            dpto["Descripcion"] = usrArray[9]
+            dpto["Imagen"]      = usrArray[10]
                 
-            dptos.append(usr)
+            dptos.append(dpto)
             
         return Response(data=dptos)
     else:
@@ -58,15 +59,16 @@ def ViewDpto(request, idDpto):
 
     if (data[1]):
         dpto = {}
-        dpto["Address"]   = data[0][0]
-        dpto["Longitud"]  = data[0][1]
-        dpto["Latitud"]   = data[0][2]
-        dpto["Rooms"]     = data[0][3]
-        dpto["Bathrooms"] = data[0][4]
-        dpto["Size"]      = data[0][5]
-        dpto["Value"]     = data[0][6]
-        dpto["Id_State"]  = data[0][7]
-        dpto["Imagen"]    = data[0][8]
+        dpto["Address"]     = data[0][0]
+        dpto["Longitud"]    = data[0][1]
+        dpto["Latitud"]     = data[0][2]
+        dpto["Rooms"]       = data[0][3]
+        dpto["Bathrooms"]   = data[0][4]
+        dpto["Size"]        = data[0][5]
+        dpto["Value"]       = data[0][6]
+        dpto["Id_State"]    = data[0][7]
+        dpto["Descripcion"] = data[0][8]
+        dpto["Imagen"]      = data[0][9]
             
         return Response(data=dpto)
     else:

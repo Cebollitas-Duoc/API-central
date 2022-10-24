@@ -17,14 +17,14 @@ def editUser(id_usuario, id_permiso, id_estado, email, name, name2, lastname, la
 #endregion usuarios
 
 #region departamentos
-def CreateDpto(ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, value):
+def CreateDpto(ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, value, desc):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_AGREGAR_DPTO", [ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, value, 0])
+    r = cursor.callproc("PCK_ADMIN.P_AGREGAR_DPTO", [ID_State, Address, Longitud, Latitud, Rooms, bathrooms, size, value, desc, 0])
     return r[-1] == 1
 
-def editDpto(id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value):
+def editDpto(id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, desc):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_EDIT_DPTO", [id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, 0])
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_DPTO", [id_apartment, id_state, address, longitud, latitud, rooms, bathrooms, size, value, desc, 0])
     return r[-1] == 1
 #endregion departamentos
 

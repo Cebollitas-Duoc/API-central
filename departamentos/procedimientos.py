@@ -12,7 +12,7 @@ def viewDptos():
 
 def viewDpto(id_apartment):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_DPTO.P_VER_DPTO", [id_apartment, "", 0, 0, 0, 0, 0, 0, 0, "", 0])
+    r = cursor.callproc("PCK_DPTO.P_VER_DPTO", [id_apartment, "", 0, 0, 0, 0, 0, 0, 0, "", "", 0])
     return (r[1:-1], r[-1] == 1)
 
 def viewFotosDpto(id_apartment):

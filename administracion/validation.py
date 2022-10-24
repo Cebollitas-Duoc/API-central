@@ -62,6 +62,9 @@ def validateCreateDepartamento(request):
     elif not isInDictionary("Value", request.data):
         data["Valid"] = False
         data["Error"] = "No hay valor diario"
+    elif not isInDictionary("Description", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay valor Descripcion"
     
     return data
 

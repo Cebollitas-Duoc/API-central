@@ -90,6 +90,7 @@ def CreateDpto(request):
         request.data["Bathrooms"],
         request.data["Size"],
         request.data["Value"],
+        request.data["Description"],
     )
 
     return Response(data={"Departamento agregado": returnCode})
@@ -114,6 +115,7 @@ def EditDpto(request):
         request.data["Bathrooms"],
         request.data["Size"],
         request.data["Value"],
+        request.data["Description"],
     )
     data["DepartamentoEditado"] = dptoUpdated
     if (not dptoUpdated):
