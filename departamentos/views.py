@@ -22,7 +22,7 @@ def ViewDptos(request):
             dpto["Size"]        = usrArray[6]
             dpto["Value"]       = usrArray[7]
             dpto["Id_State"]    = usrArray[8]
-            dpto["Descripcion"] = usrArray[9]
+            dpto["Description"] = usrArray[9]
             dpto["Imagen"]      = usrArray[10]
                 
             dptos.append(dpto)
@@ -67,7 +67,7 @@ def ViewDpto(request, idDpto):
         dpto["Size"]        = data[0][5]
         dpto["Value"]       = data[0][6]
         dpto["Id_State"]    = data[0][7]
-        dpto["Descripcion"] = data[0][8]
+        dpto["Description"] = data[0][8]
         dpto["Imagen"]      = data[0][9]
             
         return Response(data=dpto)
