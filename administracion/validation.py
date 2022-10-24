@@ -113,3 +113,28 @@ def validateDeleteDptoImages(request):
         data["Error"] = "No hay imagen"
 
     return data
+
+def validateAddService(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdDpto", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay departamento"
+    elif not isInDictionary("IdServiceCategory", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay categoria de servicio"
+
+    return data
+
+def validateEditService(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdSrv", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay servicio"
+    elif not isInDictionary("IdEstado", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay estado"
+    elif not isInDictionary("Cantidad", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay cantidad"
+
+    return data

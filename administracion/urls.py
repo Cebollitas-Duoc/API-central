@@ -11,4 +11,6 @@ urlpatterns = [
     path('createfotodpto/', views.CreateFotoDpto, name="CreateFotoDpto"),
     path('updatefotodpto/', views.UpdateFotoDpto, name="UpdateFotoDpto"),
     path('deletefotodpto/', views.DeleteFotoDpto, name="DeleteFotoDpto"),
+    path('addservice/',     views.addService,     name="addService"),
+    path('editservice/',    views.editService,    name="editService"),
 ]

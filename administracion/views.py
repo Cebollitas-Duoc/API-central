@@ -194,10 +194,33 @@ def DeleteFotoDpto(request):
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def addService(request):
-    pass
+    data = {}
+    validationResult = validateAddService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    returnCode = procedimientos.addService(
+        request.data["IdDpto"],
+        request.data["IdServiceCategory"],
+    )
+
+    return Response(data={"Servicio_Agregado": returnCode})
 
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def editService(request):
-    pass
+    data = {}
+    validationResult = validateEditService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    returnCode = procedimientos.editService(
+        request.data["IdSrv"],
+        request.data["IdEstado"],
+        request.data["Cantidad"],
+    )
+
+    return Response(data={"Servicio_Modificado": returnCode})
 #endregion imagen servicios
