@@ -31,17 +31,11 @@ def ViewDptos(request):
         return Response(data={"Error": "Error interno de base de datos"})
 
 @api_view(('GET', 'POST'))
-def ViewFotosDpto(request):
+def ViewFotosDpto(request, idDpto):
     data = {}
 
-    validationResult = validateViewDptoImages(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
-        return Response(data=data)
 
-    data = procedimientos.viewFotosDpto(
-        request.data["IdApartment"]
-    )
+    data = procedimientos.viewFotosDpto(idDpto)
 
     images = []
     if (data[1]):
