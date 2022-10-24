@@ -77,3 +77,25 @@ def ViewDpto(request, idDpto):
         return Response(data=dpto)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def listServices(request, idDpto):
+    data = procedimientos.listServices(idDpto)
+    services = []
+    if (data[1] == 1):
+        for srvArray in data[0]:
+            srv = {}
+            srv["Id_Service"]         = srvArray[0]
+            srv["Id_ServiceCategory"] = srvArray[1]
+            srv["Id_Estado"]          = srvArray[2]
+            srv["Cantidad"]           = srvArray[3]
+                
+            services.append(srv)
+            
+        return Response(data=services)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def listServiceCategories(request):
+    pass

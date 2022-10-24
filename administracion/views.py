@@ -189,3 +189,15 @@ def DeleteFotoDpto(request):
     return Response(data={"Imagen borrada": returnCode})
 
 #endregion imagen departamento
+
+#region imagen servicios
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def addService(request):
+    pass
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def editService(request):
+    pass
+#endregion imagen servicios

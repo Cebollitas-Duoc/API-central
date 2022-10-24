@@ -21,3 +21,17 @@ def viewFotosDpto(id_apartment):
     pictures = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_DPTO.P_LISTAR_FOTOS_DPTO", [id_apartment, pictures, 0])
     return (r[1], r[-1] == 1)
+
+def listServices(id_apartment):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    services = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_SERVICES.P_LISTAR_SERVICES", [id_apartment, services, 0])
+    return (r[1], r[-1] == 1)
+
+def listServiceCategories():
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    serviceCategories = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_SERVICES.P_LISTAR_CAT_SRV", [serviceCategories, 0])
+    return (r[0], r[-1] == 1)
