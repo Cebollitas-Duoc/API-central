@@ -98,4 +98,15 @@ def listServices(request, idDpto):
 
 @api_view(('GET', 'POST'))
 def listServiceCategories(request):
-    pass
+    data = procedimientos.listServiceCategories()
+    serviceCategories = []
+    if (data[1] == 1):
+        for catArray in data[0]:
+            categorie = {}
+            categorie["Id_Categoria"] = catArray[0]
+            categorie["Descripcion"]  = catArray[1]
+            serviceCategories.append(categorie)
+            
+        return Response(data=serviceCategories)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})

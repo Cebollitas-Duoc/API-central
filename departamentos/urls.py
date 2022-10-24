@@ -8,4 +8,5 @@ urlpatterns = [
     path('viewfotosdpto/',             views.ViewFotosDpto, name="ViewFotosDpto"),
     path('viewdpto/<int:idDpto>/',     views.ViewDpto,      name="ViewDpto"),
     path('listservices/<int:idDpto>/', views.listServices,  name="listServices"),
+    path('listservicecategories/',     views.listServiceCategories,  name="listServiceCategories"),
 ]
