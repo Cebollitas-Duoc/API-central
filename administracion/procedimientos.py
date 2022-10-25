@@ -51,7 +51,7 @@ def deleteFotoDpto(id_imgdpto):
 #region imagen servicios
 def addService(id_categoria, id_dpto):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_ADD_SERVICE ", [id_categoria, id_dpto, 0])
+    r = cursor.callproc("PCK_ADMIN.P_ADD_SERVICE ", [id_dpto, id_categoria, 0])
     return r[-1] == 1
 
 def editService(id_srv, id_estado, cantidad):
