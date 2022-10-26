@@ -4,6 +4,7 @@ import identificacion.decorators as authD
 import archivos.functions as files
 from .validation import *
 from . import procedimientos
+from departamentos import procedimientos as dptoProcedimientos
 
 #region usuarios
 @api_view(('GET', 'POST'))
@@ -201,6 +202,13 @@ def addService(request):
     if (not validationResult["Valid"]):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
+
+    currentServices = dptoProcedimientos.listServices(request.data["IdDpto"])
+
+    if (currentServices[1]):
+        for srvArray in currentServices[0]:
+            if (srvArray[1] == int(request.data["IdServiceCategory"])):
+                return Response(data={"Error": "Este departamento ya tiene este servicio"})
     
     returnCode = procedimientos.addService(
         request.data["IdDpto"],
