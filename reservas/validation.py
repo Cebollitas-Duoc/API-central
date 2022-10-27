@@ -13,3 +13,11 @@ def validateAddReserva(request):
         data["Error"] = "No hay valor"
 
     return data
+
+def validateCancelReserva(request):
+    data = {"Valid": True}
+    if not isInDictionary("Id_Reserva", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay reserva"
+
+    return data
