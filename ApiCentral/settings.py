@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "administracion.apps.AdministracionConfig",
     "archivos.apps.ArchivosConfig",
     "departamentos.apps.DepartamentosConfig",
+    "reservas.apps.ReservasConfig",
     'rest_framework',
 
     "corsheaders",
