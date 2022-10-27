@@ -4,5 +4,5 @@ from . import views
 app_name = "reservas"
 
 urlpatterns = [
-    path('saveimage/',  views.saveImage,  name="saveImage"),
+    path('createreserve/',  views.CreateReserve,  name="CreateReserve"),
 ]
