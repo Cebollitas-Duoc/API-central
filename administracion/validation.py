@@ -141,3 +141,40 @@ def validateEditService(request):
         data["Error"] = "No hay cantidad"
 
     return data
+
+def validateAddExtraService(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdDpto", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay departamento"
+    elif not isInDictionary("IdCategory", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay categoria de servicio extra"
+    elif not isInDictionary("IdState", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay estado"
+    elif not isInDictionary("IdTrabajador", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay tranajador"
+    elif not isInDictionary("Valor", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay valor"
+
+    return data
+
+def validateEditExtraService(request):
+    data = {"Valid": True}
+    if not isInDictionary("IdExtraSrv", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay servicio extra"
+    elif not isInDictionary("IdState", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay estado"
+    elif not isInDictionary("IdTrabajador", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay trabajador"
+    elif not isInDictionary("Valor", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay valor"
+
+    return data

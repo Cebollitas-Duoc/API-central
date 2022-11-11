@@ -196,7 +196,7 @@ def DeleteFotoDpto(request):
 #region imagen servicios
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
-def addService(request):
+def AddService(request):
     data = {}
     validationResult = validateAddService(request)
     if (not validationResult["Valid"]):
@@ -219,7 +219,7 @@ def addService(request):
 
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
-def editService(request):
+def EditService(request):
     data = {}
     validationResult = validateEditService(request)
     if (not validationResult["Valid"]):
@@ -234,3 +234,50 @@ def editService(request):
 
     return Response(data={"Servicio_Modificado": returnCode})
 #endregion imagen servicios
+
+#region imagen servicios extra
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def AddExtraService(request):
+    data = {}
+    validationResult = validateAddExtraService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    # #TODO: validar que servicio extra no exista
+    # currentServices = dptoProcedimientos.listServices(request.data["IdDpto"])
+
+    # if (currentServices[1]):
+    #     for srvArray in currentServices[0]:
+    #         if (srvArray[1] == int(request.data["IdServiceCategory"])):
+    #             return Response(data={"Error": "Este departamento ya tiene este servicio"})
+    
+    returnCode = procedimientos.addExtraService(
+        request.data["IdDpto"],
+        request.data["IdCategory"],
+        request.data["IdState"],
+        request.data["IdTrabajador"],
+        request.data["Valor"],
+    )
+
+    return Response(data={"ServicioExtra_Agregado": returnCode})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def EditExtraService(request):
+    data = {}
+    validationResult = validateEditExtraService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    returnCode = procedimientos.editExtraService(
+        request.data["IdExtraSrv"],
+        request.data["IdState"],
+        request.data["IdTrabajador"],
+        request.data["Valor"],
+    )
+
+    return Response(data={"Servicio_Modificado": returnCode})
+#endregion imagen servicios extra

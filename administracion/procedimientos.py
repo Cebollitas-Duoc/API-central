@@ -48,7 +48,7 @@ def deleteFotoDpto(id_imgdpto):
 #endregion imagen departamento
 
 
-#region imagen servicios
+#region servicios
 def addService(id_categoria, id_dpto):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_ADD_SERVICE ", [id_dpto, id_categoria, 0])
@@ -58,4 +58,20 @@ def editService(id_srv, id_estado, cantidad):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_EDIT_SERVICE ", [id_srv, id_estado, cantidad, 0])
     return r[-1] == 1
-#endregion imagen servicios
+#endregion servicios
+
+#region servicios extra
+def addExtraService(id_dpto, id_categoria, id_estado, id_trabajador, valor):
+    if id_trabajador == "undefined":
+        id_trabajador = None
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_ADD_EXTRASERVICE ", [id_dpto, id_categoria, id_estado, id_trabajador, valor, 0])
+    return r[-1] == 1
+
+def editExtraService(id_extsrv, id_estado, id_trabajador, valor):
+    if id_trabajador == "undefined":
+        id_trabajador = None
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_EXTRASERVICE ", [id_extsrv, id_estado, id_trabajador, valor, 0])
+    return r[-1] == 1
+#endregion servicios extra
