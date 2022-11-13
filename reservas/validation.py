@@ -21,3 +21,14 @@ def validateCancelReserva(request):
         data["Error"] = "No hay reserva"
 
     return data
+
+def validateAddExtraService(request):
+    data = {"Valid": True}
+    if not isInDictionary("Id_Reserve", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay reserva"
+    elif not isInDictionary("Id_ExtSer", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay servicio extra"
+
+    return data

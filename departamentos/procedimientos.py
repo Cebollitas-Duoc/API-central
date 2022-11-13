@@ -22,6 +22,7 @@ def viewFotosDpto(id_apartment):
     r = cursor.callproc("PCK_DPTO.P_LISTAR_FOTOS_DPTO", [id_apartment, pictures, 0])
     return (r[1], r[-1] == 1)
 
+#range services
 def listServices(id_apartment):
     cursor = connection.cursor()
     raw_cursor = cursor.connection.cursor()
@@ -35,3 +36,22 @@ def listServiceCategories():
     serviceCategories = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_SERVICES.P_LISTAR_CAT_SRV", [serviceCategories, 0])
     return (r[0], r[-1] == 1)
+#endrange services
+
+#range extra services
+
+def listExtraServices(id_apartment):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    services = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_EXTRASERVICES.P_LIST_EXTRASERVICES", [id_apartment, services, 0])
+    return (r[1], r[-1] == 1)
+
+def listExtraServiceCategories():
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    serviceCategories = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_EXTRASERVICES.P_LIST_CAT_EXTSRV", [serviceCategories, 0])
+    return (r[0], r[-1] == 1)
+
+#endrange extra services

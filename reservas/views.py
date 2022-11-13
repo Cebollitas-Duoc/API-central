@@ -5,6 +5,7 @@ from identificacion.decorators import *
 from rest_framework.decorators import api_view
 from .validation import *
 from . import procedimientos
+from . import functions
 
 # Create your views here.
 
@@ -73,3 +74,56 @@ def CancelReserve(request):
         request.data["Id_Reserva"]
     )
     return Response(data={"reserva_cancelada": returnCode})
+
+
+@api_view(('GET', 'POST'))
+@isUserLogged()
+def AddExtraService(request):
+    data = {}
+    validationResult = validateAddExtraService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+
+    userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
+    reserve = procedimientos.getReserva(request.data["Id_Reserve"])
+    if not reserve[1]:
+        return Response(data={"Error": "Error interno de base de datos"})
+    
+    if userCredentials["ID_usuario"] != reserve[0]["id_usr"]:
+        return Response(data={"Error": "Esta reserva no te pretenece"})
+
+    returnCode = procedimientos.addExtraService(
+        request.data["Id_Reserve"],
+        request.data["Id_ExtSer"],
+        False,
+    )
+    return Response(data={"servicioExtra_agregado": returnCode})
+
+@api_view(('GET', 'POST'))
+@isUserLogged()
+def listReserveExtraServices(request, idReserva):
+    userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
+    reserve = procedimientos.getReserva(idReserva)
+    if not reserve[1]:
+        return Response(data={"Error": "Error interno de base de datos"})
+    
+    if userCredentials["ID_usuario"] != reserve[0]["id_usr"]:
+        return Response(data={"Error": "Esta reserva no te pretenece"})
+
+    data = procedimientos.listHiredExtraServices(idReserva)
+    extraServices = []
+    if (data[1] == 1):
+        for rsvArray in data[0]:
+            extSrv = {}
+            extSrv["Id_HiredExtSrv"] = rsvArray[0]
+            extSrv["Id_Reserve"]     = rsvArray[1]
+            extSrv["Id_HiredExtSrv"] = rsvArray[2]
+            extSrv["Value"]          = rsvArray[3]
+            extSrv["Id_Pago"]        = rsvArray[4]
+            extSrv["Included"]       = rsvArray[5]
+            extraServices.append(extSrv)
+            
+        return Response(data=extraServices)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})

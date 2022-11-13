@@ -74,6 +74,7 @@ def ViewDpto(request, idDpto):
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 
+#range services
 @api_view(('GET', 'POST'))
 def listServices(request, idDpto):
     data = procedimientos.listServices(idDpto)
@@ -106,3 +107,40 @@ def listServiceCategories(request):
         return Response(data=serviceCategories)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+#endrange services
+
+#range extra services
+@api_view(('GET', 'POST'))
+def listExtraServices(request, idDpto):
+    data = procedimientos.listExtraServices(idDpto)
+    services = []
+    if (data[1] == 1):
+        for srvArray in data[0]:
+            srv = {}
+            srv["Id_ExtraService"] = srvArray[0]
+            srv["Id_Category"]     = srvArray[1]
+            srv["Id_Trabajador"]   = srvArray[2]
+            srv["Id_Estado"]       = srvArray[3]
+            srv["Valor"]           = srvArray[4]
+                
+            services.append(srv)
+            
+        return Response(data=services)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def listExtraServiceCategories(request):
+    data = procedimientos.listExtraServiceCategories()
+    serviceCategories = []
+    if (data[1] == 1):
+        for catArray in data[0]:
+            categorie = {}
+            categorie["Id_Category"] = catArray[0]
+            categorie["Description"] = catArray[1]
+            serviceCategories.append(categorie)
+            
+        return Response(data=serviceCategories)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+#endrange extraservices
