@@ -58,6 +58,11 @@ def editService(id_srv, id_estado, cantidad):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_EDIT_SERVICE ", [id_srv, id_estado, cantidad, 0])
     return r[-1] == 1
+
+def addServiceCategory(desc):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_ADD_SRV_CAT ", [desc, 0])
+    return r[-1] == 1
 #endregion servicios
 
 #region servicios extra
@@ -73,5 +78,10 @@ def editExtraService(id_extsrv, id_estado, id_trabajador, valor):
         id_trabajador = None
     cursor = connection.cursor()
     r = cursor.callproc("PCK_ADMIN.P_EDIT_EXTRASERVICE ", [id_extsrv, id_estado, id_trabajador, valor, 0])
+    return r[-1] == 1
+
+def addExtraServiceCategory(desc):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_ADMIN.P_ADD_EXTSRV_CAT ", [desc, 0])
     return r[-1] == 1
 #endregion servicios extra

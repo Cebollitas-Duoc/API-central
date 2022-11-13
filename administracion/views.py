@@ -281,3 +281,23 @@ def EditExtraService(request):
 
     return Response(data={"Servicio_Modificado": returnCode})
 #endregion imagen servicios extra
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def AddServiceCategory(request):
+    data = {}
+    validationResult = validateEditExtraService(request)
+    if (not validationResult["Valid"]):
+        data["Error"] = validationResult["Error"]
+        return Response(data=data)
+    
+    if (request.data["IsExtra"] == "0"):
+        returnCode = procedimientos.addServiceCategory(request.data["Description"])
+    elif (request.data["IsExtra"] == "1"):
+        returnCode = procedimientos.addExtraServiceCategory(request.data["Description"])
+    else:
+        data["Error"] = "Hay que especificar si es o no extra con un 1 o un 0"
+        return Response(data=data)
+
+    return Response(data={"Category added": returnCode})
+

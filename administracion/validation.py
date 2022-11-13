@@ -178,3 +178,14 @@ def validateEditExtraService(request):
         data["Error"] = "No hay valor"
 
     return data
+
+def validateEditExtraService(request):
+    data = {"Valid": True}
+    if not isInDictionary("Description", request.data):
+        data["Valid"] = False
+        data["Error"] = "No hay descripcion"
+    elif not isInDictionary("IsExtra", request.data):
+        data["Valid"] = False
+        data["Error"] = "Hay que especificar si es extra o no"
+
+    return data
