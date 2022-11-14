@@ -299,5 +299,5 @@ def AddServiceCategory(request):
         data["Error"] = "Hay que especificar si es o no extra con un 1 o un 0"
         return Response(data=data)
 
-    return Response(data={"Category added": returnCode})
+    return Response(data={"category_added": returnCode})
 
