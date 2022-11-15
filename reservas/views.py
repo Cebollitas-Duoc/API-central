@@ -24,8 +24,9 @@ def CreateReserve(request):
         userCredentials["ID_usuario"],     
         request.data["Id_Departamento"],  
         request.data["Id_Estado"],
+        request.data["FechaDesde"],
+        request.data["FechaHasta"],
         request.data["Valor"],
-
     )
     return Response(data={"reserva_creada": returnCode})
 
