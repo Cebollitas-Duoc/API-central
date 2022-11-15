@@ -1,10 +1,10 @@
 from django.db import connection
 import cx_Oracle
 
-def crearReserva(id_usr, id_dpto, id_estdo, valor):
+def crearReserva(id_usr, id_dpto, id_estdo, fechadesde, fechahasta, valor):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_CREAR_RESERVA", [id_usr, id_dpto, id_estdo, valor, 0])
+    r = cursor.callproc("PCK_RESERVA.P_CREAR_RESERVA", [id_usr, id_dpto, id_estdo, fechadesde, fechahasta, valor, 0])
     return r[-1] == 1
     
 def getUserReserves(id_usr):
