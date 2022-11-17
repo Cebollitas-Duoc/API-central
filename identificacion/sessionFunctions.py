@@ -45,9 +45,9 @@ def hashPassword(password):
 
 def LoginProcess(request, requiredPermission=0):
     data = {}
-    validationResult = validateLoginData(request.data)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    validationResult = validateLoginData(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
         
     formEmail, formPassword = request.data["Email"], request.data["Password"]

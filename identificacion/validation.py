@@ -1,18 +1,26 @@
+from ApiCentral.validateData import validateDictionary
+
 def isInDictionary(data, dic):
     if ((data not in dic) or (dic[data] == "")):
         return False
     return True
 
-def validateLoginData(userData):
-    data = {"Valid": True}
-    if not isInDictionary("Email", userData):
-        data["Valid"] = False
-        data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta la contraseña"
+def validateLoginData(request):
+    dataFormat = {
+        "Email" : {
+            "name": "Correo",
+            "type": "email",
+            "min": 10
+        },
+        "Password" : {
+            "name": "Contraseña",
+            "type": "txt",
+            "min": 5
+        }
+    }
 
-    return data
+    return  validateDictionary(request.data, dataFormat)
+
 #address, phone):
 def validateCreateUserData(userData):
     data = {"Valid": True}
