@@ -18,37 +18,28 @@ def AdminLogin(request):
 
 @api_view(('GET', 'POST'))
 def CreateUser(request):
-    userData = {}
     returnInfo = {"UserCreated": False}
 
-    validationResult = validateCreateUserData(request.data)
-    if (not validationResult["Valid"]):
-        returnInfo["Error"] = validationResult["Error"]
+    validationResult = validateCreateUserData(request)
+    if (not validationResult[0]):
+        returnInfo["Error"] = validationResult[1]
         return Response(data=returnInfo)
-    
-    #request.data es constante y necesitamos poder agregar unos valores en caso de que no esten
-    userData = request.data
 
-    if not isInDictionary("Name2", userData):
-        userData["Name2"] = "" 
-    if not isInDictionary("LastName2", userData):
-        userData["LastName2"] = ""
-
-    userCredentials = procedimientos.userCredentials(userData["Email"])
+    userCredentials = procedimientos.userCredentials(request.data["Email"])
     if (userCredentials["UserExist"]):
         returnInfo["Error"] = "Correo ya utilizado"
         return Response(data=returnInfo)
 
     returnCode = procedimientos.createUser(
-        userData["Email"], 
-        hashPassword(userData["Password"]), 
-        userData["Name"], 
-        userData["Name2"], 
-        userData["LastName"], 
-        userData["LastName2"],
-        userData["Rut"],
-        userData["Address"],
-        userData["Phone"],
+        request.data["Email"], 
+        hashPassword(request.data["Password"]), 
+        request.data["Name"], 
+        request.data.get("Name2", ""), 
+        request.data["LastName"],
+        request.data.get("LastName2", ""), 
+        request.data["Rut"],
+        request.data["Address"],
+        request.data["Phone"],
         )
     
     returnInfo["UserCreated"] = returnCode

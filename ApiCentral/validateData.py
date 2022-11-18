@@ -1,15 +1,32 @@
 import re
 
-def validateDictionary(data, format):
-    for k, v in format.items():
-        r = validateData(data.get(k), v)
-        name = v.get("name", "")
-        if name != "":
-            name += ": "
-        if (not r[0]):
-            return (r[0], name + r[1])
+def validateDictionary(data, formats):
+    for key, format in formats.items():
+        validationResult = validateData(data.get(key), format)
+        if (not validationResult[0]):
+            return (validationResult[0], validationResult[1])
+
+        sameAsResult = isSameAs(key, data, formats)
+        if (not sameAsResult[0]):
+            return (sameAsResult[0], sameAsResult[1])
     return (True, "")
 
+def isSameAs(key, data, formats):
+    format = formats.get(key)
+    sameAs = format.get("sameAs", None)
+    if (sameAs == None):
+        return (True, "")
+    format2 = formats.get(sameAs, None)
+    if (format2 == None):
+        return (False, "Error interno de validacion")
+
+    name = getFormatName(format, useDots=False)
+    name2 = getFormatName(format2, useDots=False)
+
+    isSame = (data[key] == data[sameAs])
+    if isSame:
+        return (True, "")
+    return (False, f"El campo {name} debe ser igual al campo {name2}") 
 
 def validateData(data, format):
     validators = [
@@ -48,65 +65,70 @@ def hasPattern(data, format):
     return (True, "")
 
 def lenEquals(data, format):
+    name = getFormatName(format)
     lenght = format.get("len", None)
     if (lenght == None):
         return (True, "")
     
     if (len(data) != lenght):
         if lenght == 1:
-            return (False, f"Debe tener 1 caracter")
-        return (False, f"Debe tener {lenght} caracteres")
+            return (False, f"{name}Debe tener 1 caracter")
+        return (False, f"{name}Debe tener {lenght} caracteres")
     return (True, "")
 
 def isUnderMax(data, format):
+    name = getFormatName(format)
     max = format.get("max", None)
     if (max == None):
         return (True, "")
     
     if (len(data) > max):
-        return (False, f"Tiene mas de {max} caracteres")
+        return (False, f"{name}Tiene mas de {max} caracteres")
     return (True, "")
 
 def isOverMin(data, format):
+    name = getFormatName(format)
     min = format.get("min", None)
     if (min == None):
         return (True, "")
     
     if (len(data) < min):
         if min == 1:
-            return (False, f"Debe tener por lo menos 1 caracter")
-        return (False, f"Debe tener por lo menos {min} caracteres")
+            return (False, f"{name}Debe tener por lo menos 1 caracter")
+        return (False, f"{name}Debe tener por lo menos {min} caracteres")
     return (True, "")
 
 def canBeNull(data, format):
+    name = getFormatName(format, useDots=False)
     if (data == None):
         if (format.get("isNull", False)):
             return (True, "")
         else:
-            return (False, "No esta")
+            return (False, f"Debe agregar {name}")
     
     return (True, "")
 
 def isOfType(data, format):
+    name = getFormatName(format)
     t = format.get("type", "txt")
     valid = False
     msg = ""
     if t == "int":
         valid = data.isnumeric()
         if (not valid):
-            msg = "Tiene que ser un numero entero"
+            msg = f"{name}Tiene que ser un numero entero"
     elif t == "float":
         data = data.replace(",", ".")
         valid = isFloat(data)
         if (not valid):
-            msg = "Tiene que ser un numero flotante"
+            msg = f"{name}Tiene que ser un numero flotante"
     elif t == "txt":
         valid = True
     elif t == "email":
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         valid = re.fullmatch(regex, data)
         if (not valid):
-            msg = "Tiene que ser un email valido"
+            msg = f"{name}Tiene que ser un email valido"
 
     return (valid, msg)
     
@@ -119,3 +141,10 @@ def isFloat(element: any) -> bool:
         return True
     except ValueError:
         return False
+
+def getFormatName(format, useDots=True):
+    name = format.get("name", "")
+    if name != "" and useDots:
+        name += ": "
+    
+    return name

@@ -22,37 +22,64 @@ def validateLoginData(request):
     return  validateDictionary(request.data, dataFormat)
 
 #address, phone):
-def validateCreateUserData(userData):
-    data = {"Valid": True}
-    if not isInDictionary("Email", userData):
-        data["Valid"] = False
-        data["Error"] = "Falta el email"
-    elif not isInDictionary("Password", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta la contraseña"
-    elif not isInDictionary("Password2", userData):
-        data["Valid"] = False
-        data["Error"] = "Falta La validacion de la contraseña"
-    elif not isInDictionary("Name", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta el nombre"
-    elif not isInDictionary("LastName", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta el primer apellido"
-    elif not isInDictionary("Rut", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta el Rut"
-    elif not isInDictionary("Address", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta la direccion"
-    elif not isInDictionary("Phone", userData):
-        data["Valid"] = False 
-        data["Error"] = "Falta el telefono"
-    elif userData["Password"] != userData["Password2"]:
-        data["Valid"] = False 
-        data["Error"] = "Las contraseñas no son iguales"
-    
-    return data
+def validateCreateUserData(request):
+    dataFormat = {
+        "Email" : {
+            "name": "Correo",
+            "type": "email",
+            "min": 10
+        },
+        "Password" : {
+            "name": "Contraseña",
+            "type": "txt",
+            "min": 5
+        },
+        "Password2" : {
+            "name": "Validacion de la contraseña",
+            "type": "txt",
+            "min": 5,
+            "sameAs": "Password"
+        },
+        "Name" : {
+            "name": "Nombre",
+            "type": "txt",
+            "min": 5
+        },
+        "Name2" : {
+            "name": "Segundo nombre",
+            "type": "txt",
+            "min": 5,
+            "isNull": True
+        },
+        "LastName" : {
+            "name": "Apellido",
+            "type": "txt",
+            "min": 5
+        },
+        "LastName2" : {
+            "name": "Segundo apellido",
+            "type": "txt",
+            "min": 5,
+            "isNull": True
+        },
+        "Rut" : {
+            "name": "Rut",
+            "type": "txt",
+            "min": 5
+        },
+        "Address" : {
+            "name": "Direccion",
+            "type": "txt",
+            "min": 5
+        },
+        "Phone" : {
+            "name": "Numero de telefono",
+            "type": "int",
+            "min": 8
+        },
+    }
+
+    return  validateDictionary(request.data, dataFormat)
 
 def validateSessionKey(dictionary):
     data = {"Valid": True}
