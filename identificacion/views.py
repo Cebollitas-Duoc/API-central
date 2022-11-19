@@ -30,6 +30,10 @@ def CreateUser(request):
         returnInfo["Error"] = "Correo ya utilizado"
         return Response(data=returnInfo)
 
+    rut = request.data["Rut"]
+    rut = rut.replace(".","").replace("-","")
+    rut = rut[:-1]
+
     returnCode = procedimientos.createUser(
         request.data["Email"], 
         hashPassword(request.data["Password"]), 
@@ -37,7 +41,7 @@ def CreateUser(request):
         request.data.get("Name2", ""), 
         request.data["LastName"],
         request.data.get("LastName2", ""), 
-        request.data["Rut"],
+        rut,
         request.data["Address"],
         request.data["Phone"],
         )

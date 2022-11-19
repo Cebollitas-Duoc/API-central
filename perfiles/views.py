@@ -7,12 +7,16 @@ import identificacion.decorators as authD
 import archivos.functions as files
 from . import procedimientos
 from .functions import removeNone
+from rut_chile import rut_chile
 
 @api_view(('GET',))
 @authD.isUserLogged()
 def GetSessionProfile(request):
     sessionKey = request.data["SessionKey"]
     data = procedimientos.getSessionProfile(sessionKey)
+    data["Rut"] = str(data["Rut"])
+    data["Rut"] += rut_chile.get_verification_digit(data["Rut"])
+    data["Rut"] = rut_chile.format_rut_with_dots(data["Rut"])
     return Response(data=removeNone(data))
 
 @api_view(('POST',))

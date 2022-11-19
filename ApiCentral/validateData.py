@@ -1,4 +1,5 @@
 import re
+from rut_chile import rut_chile
 
 def validateDictionary(data, formats):
     for key, format in formats.items():
@@ -41,7 +42,7 @@ def validateData(data, format):
     r = canBeNull(data, format)
     if (not r[0]):
         return r
-    elif (data == None):
+    elif (data == None or len(data) == 0):
         return (True, "")
     
     for validator in validators:
@@ -100,7 +101,7 @@ def isOverMin(data, format):
 
 def canBeNull(data, format):
     name = getFormatName(format, useDots=False)
-    if (data == None):
+    if (data == None or len(data) == 0):
         if (format.get("isNull", False)):
             return (True, "")
         else:
@@ -129,6 +130,13 @@ def isOfType(data, format):
         valid = re.fullmatch(regex, data)
         if (not valid):
             msg = f"{name}Tiene que ser un email valido"
+    elif t == "rut":
+        try:
+            valid = rut_chile.is_valid_rut(data)
+        except ValueError:
+            valid = False
+        if (not valid):
+            msg = f"{name}invalido"
 
     return (valid, msg)
     

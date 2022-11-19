@@ -64,7 +64,7 @@ def validateCreateUserData(request):
         },
         "Rut" : {
             "name": "Rut",
-            "type": "txt",
+            "type": "rut",
             "min": 5
         },
         "Address" : {

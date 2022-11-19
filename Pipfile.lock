@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e46cb3c57d2e81e0f3452877265afd70eaf9cf44cb64f816a82fe2b95e862a6f"
+            "sha256": "e124f8b9bbb2601da25ffea455d78b28bff2cb7dc35a77a73d54b2cf675be9bb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -110,10 +110,10 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:2c0784747071402c6e99f0bafdb7da0fa22645f06554c7ae06bf6358897e9c91",
-                "sha256:48ce799d83b6f8aab2020e369b627446696619e79645419610b9facd909b3174"
+                "sha256:222439474e9c98fced559f1709d89e6c9cbf8d79c794ff3eb9f8800064291427",
+                "sha256:e89512406b793ca39f5971bc999cc538ce125c0e51c27941bef4568b460095e2"
             ],
-            "version": "==2022.4"
+            "version": "==2022.6"
         },
         "requests": {
             "hashes": [
@@ -122,6 +122,14 @@
             ],
             "index": "pypi",
             "version": "==2.25.1"
+        },
+        "rut-chile": {
+            "hashes": [
+                "sha256:2e4210dc18c3fe85121d6840bdcf87519d1234241f58770e84b34e33a9b2cd3b",
+                "sha256:c39ced8e4e6c6c356008e5d88e7920b1c0b185267d7a657e3b53d2163a926ac9"
+            ],
+            "index": "pypi",
+            "version": "==2.0.1"
         },
         "six": {
             "hashes": [
