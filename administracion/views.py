@@ -268,8 +268,8 @@ def AddExtraService(request):
 def EditExtraService(request):
     data = {}
     validationResult = validateEditExtraService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
     
     returnCode = procedimientos.editExtraService(

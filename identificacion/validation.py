@@ -1,5 +1,6 @@
 from ApiCentral.validateData import validateDictionary
 
+#TODO: delete function
 def isInDictionary(data, dic):
     if ((data not in dic) or (dic[data] == "")):
         return False

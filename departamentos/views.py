@@ -121,7 +121,8 @@ def listExtraServices(request, idDpto):
             srv["Id_Category"]     = srvArray[1]
             srv["Id_Estado"]       = srvArray[2]
             srv["Id_Trabajador"]   = srvArray[3]
-            srv["Valor"]           = srvArray[4]
+            srv["Trabajador"]      = srvArray[4]
+            srv["Valor"]           = srvArray[5]
                 
             services.append(srv)
             

@@ -1,4 +1,5 @@
 from identificacion.validation import isInDictionary
+from ApiCentral.validateData import validateDictionary
 
 #TODO: agregar otros valores necesarios para la edicion 
 def validateEditUser(request):
@@ -180,12 +181,24 @@ def validateEditExtraService(request):
     return data
 
 def validateEditExtraService(request):
-    data = {"Valid": True}
-    if not isInDictionary("Description", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay descripcion"
-    elif not isInDictionary("IsExtra", request.data):
-        data["Valid"] = False
-        data["Error"] = "Hay que especificar si es extra o no"
+    dataFormat = {
+        "IdExtraSrv" : {
+            "name": "Servicio extra",
+            "type": "int"
+        },
+        "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "IdTrabajador" : {
+            "name": "Trabajador",
+            "type": "int",
+            "isNull": True
+        },
+        "Valor" : {
+            "name": "Valor",
+            "type": "int"
+        },
+    }
 
-    return data
+    return  validateDictionary(request.data, dataFormat)
