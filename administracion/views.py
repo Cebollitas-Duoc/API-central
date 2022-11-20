@@ -245,13 +245,12 @@ def AddExtraService(request):
         data["Error"] = validationResult["Error"]
         return Response(data=data)
 
-    # #TODO: validar que servicio extra no exista
-    # currentServices = dptoProcedimientos.listServices(request.data["IdDpto"])
+    currentServices = dptoProcedimientos.listExtraServices(request.data["IdDpto"])
 
-    # if (currentServices[1]):
-    #     for srvArray in currentServices[0]:
-    #         if (srvArray[1] == int(request.data["IdServiceCategory"])):
-    #             return Response(data={"Error": "Este departamento ya tiene este servicio"})
+    if (currentServices[1]):
+        for srvArray in currentServices[0]:
+            if (srvArray[1] == int(request.data["IdCategory"])):
+                return Response(data={"Error": "Este departamento ya tiene este servicio extra"})
     
     returnCode = procedimientos.addExtraService(
         request.data["IdDpto"],
