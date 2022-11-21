@@ -20,30 +20,34 @@ def GetSessionProfile(request):
     return Response(data=removeNone(data))
 
 @api_view(('POST',))
+@authD.isUserLogged()
 def EditSessionProfile(request):
     data = {}
 
     validationResult = validateEditProfile(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     imgPath = ""
-    img = request.data["Imagen"]
+    img = request.data["Image"]
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
 
+    rut = request.data["Rut"]
+    rut = rut.replace(".","").replace("-","")
+    rut = rut[:-1]
 
     returnCode = procedimientos.editSessionProfile(
         request.data["SessionKey"],     
         request.data["Email"],  
-        request.data["PrimerNombre"],
-        request.data["SegundoNombre"],
-        request.data["PrimerApellido"],
-        request.data["SegundoApellido"],
-        request.data["Rut"],
-        request.data["Direccion"],    
-        request.data["Telefono"],          
+        request.data["Name"],
+        request.data["Name2"],
+        request.data["LastName"],
+        request.data["LastName2"],
+        rut,
+        request.data["Address"],    
+        request.data["Phone"],          
         imgPath,
     )
     if (not returnCode):

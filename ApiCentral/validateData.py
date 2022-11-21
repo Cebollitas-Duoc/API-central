@@ -42,7 +42,7 @@ def validateData(data, format):
     r = canBeNull(data, format)
     if (not r[0]):
         return r
-    elif (data == None or len(data) == 0 or data == "undefined"):
+    elif isNull(data):
         return (True, "")
     
     for validator in validators:
@@ -101,7 +101,7 @@ def isOverMin(data, format):
 
 def canBeNull(data, format):
     name = getFormatName(format, useDots=False)
-    if (data == None or len(data) == 0 or data == "undefined"):
+    if isNull(data):
         if (format.get("isNull", False)):
             return (True, "")
         else:
@@ -156,3 +156,6 @@ def getFormatName(format, useDots=True):
         name += ": "
     
     return name
+
+def isNull(data):
+    return data == None or len(data) == 0 or data == "undefined" or data == "null"

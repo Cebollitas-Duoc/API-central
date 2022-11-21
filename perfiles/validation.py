@@ -1,4 +1,5 @@
 from identificacion.validation import isInDictionary
+from ApiCentral.validateData import validateDictionary
 
 def validateGetUserProfile(userData):
     data = {"Valid": True}
@@ -10,27 +11,49 @@ def validateGetUserProfile(userData):
 
 #TODO: agregar otros valores necesarios para la edicion 
 def validateEditProfile(request):
-    data = {"Valid": True}
-    if not isInDictionary("SessionKey", request.data):
-        data["Valid"] = False
-        data["Error"] = "Usuario no se encuntra logeado"
-    elif not isInDictionary("Email", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay Email"
-    elif not isInDictionary("PrimerNombre", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay nombre"
-    elif not isInDictionary("PrimerApellido", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay apellido"
-    elif not isInDictionary("Rut", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay Rut"
-    elif not isInDictionary("Direccion", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay direccion"
-    elif not isInDictionary("Telefono", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay telefono"
+    dataFormat = {
+        "Email" : {
+            "name": "Correo",
+            "type": "email",
+            "min": 10
+        },
+        "Name" : {
+            "name": "Nombre",
+            "type": "txt",
+            "min": 5
+        },
+        "Name2" : {
+            "name": "Segundo nombre",
+            "type": "txt",
+            "min": 5,
+            "isNull": True
+        },
+        "LastName" : {
+            "name": "Apellido",
+            "type": "txt",
+            "min": 5
+        },
+        "LastName2" : {
+            "name": "Segundo apellido",
+            "type": "txt",
+            "min": 5,
+            "isNull": True
+        },
+        "Rut" : {
+            "name": "Rut",
+            "type": "rut",
+            "min": 5
+        },
+        "Address" : {
+            "name": "Direccion",
+            "type": "txt",
+            "min": 5
+        },
+        "Phone" : {
+            "name": "Numero de telefono",
+            "type": "int",
+            "min": 8
+        },
+    }
 
-    return data
+    return  validateDictionary(request.data, dataFormat)
