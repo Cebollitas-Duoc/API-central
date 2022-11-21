@@ -4,7 +4,7 @@ import time
 def getSessionProfile(session):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_USUARIOS.P_LEE_PERFIL_DE_SESION", [session, "", "", "", "", "", 0, "", "", "", "", 0])
+    r = cursor.callproc("PCK_USUARIOS.P_LEE_PERFIL_DE_SESION", [session, "", "", "", "", "", 0, "", "", "", "", "", 0])
     if r[-1] == 1:
         data["Email"]     = r[1]
         data["Name"]      = r[2]
@@ -15,8 +15,9 @@ def getSessionProfile(session):
         data["Address"]   = r[7]
         data["Phone"]     = r[8]
         data["Picture"]   = r[9]
+        data["Permiso"]   = r[10]
 
-    data["ValidSession"] = r[10]
+    data["ValidSession"] = r[11]
     return data
 
 def editSessionProfile(session, email, name, name2, lastName, lastName2, rut, address, phone, id_foto):
