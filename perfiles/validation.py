@@ -1,13 +1,6 @@
 from identificacion.validation import isInDictionary
 from ApiCentral.validateData import validateDictionary
 
-def validateGetUserProfile(userData):
-    data = {"Valid": True}
-    if not isInDictionary("User", userData):
-        data["Valid"] = False
-        data["Error"] = "Falta id usuario en el url"
-    
-    return data
 
 #TODO: agregar otros valores necesarios para la edicion 
 def validateEditProfile(request):

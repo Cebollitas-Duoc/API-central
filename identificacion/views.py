@@ -71,9 +71,9 @@ def ValidateSession(request):
 @api_view(('GET', 'POST'))
 @isUserLogged()
 def ChangePassword(request):
-    validationResult = ValidateChangePassword(request.data)
-    if (not validationResult["Valid"]):
-        return Response(data={"Error": validationResult["Error"]})
+    validationResult = ValidateChangePassword(request)
+    if (not validationResult[0]):
+        return Response(data={"Error": validationResult[1]})
     
     sessionKey    = request.data["SessionKey"]
     old_password  = request.data["OldPassword"]

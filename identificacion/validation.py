@@ -90,19 +90,29 @@ def validateSessionKey(dictionary):
     
     return data
 
-def ValidateChangePassword(dictionary):
-    data = {"Valid": True}
-    if not isInDictionary("OldPassword", dictionary):
-        data["Valid"] = False
-        data["Error"] = "Falta la vieja contraseña"
-    elif not isInDictionary("NewPassword", dictionary):
-        data["Valid"] = False
-        data["Error"] = "Falta la nueva contraseña"
-    elif not isInDictionary("NewPassword2", dictionary):
-        data["Valid"] = False
-        data["Error"] = "Falta la repeticion de la nueva contraseña"
-    elif dictionary["NewPassword"] != dictionary["NewPassword2"]:
-        data["Valid"] = False
-        data["Error"] = "La repeticion de la contraseña no es igual a la ingresada"
-    
-    return data
+def ValidateChangePassword(request):
+    dataFormat = {
+        "OldPassword" : {
+            "name": "Contraseña actual",
+            "type": "txt",
+            "min": 5,
+            "max":80            
+        },
+        "NewPassword" : {
+            "name": "Nueva contraseña",
+            "type": "txt",
+            "min": 5,
+            "max":80            
+        },
+        "NewPassword2" : {
+            "name": "Validacion de la nueva contraseña",
+            "type": "txt",
+            "min": 5,
+            "max":80,
+            "sameAs": "NewPassword"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+   
