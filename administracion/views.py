@@ -199,8 +199,8 @@ def DeleteFotoDpto(request):
 def AddService(request):
     data = {}
     validationResult = validateAddService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     currentServices = dptoProcedimientos.listServices(request.data["IdDpto"])
@@ -285,9 +285,9 @@ def EditExtraService(request):
 @authD.isUserLogged(permission=1)
 def AddServiceCategory(request):
     data = {}
-    validationResult = validateEditExtraService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    validationResult = validateAddServiceCategory(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
     
     if (request.data["IsExtra"] == "0"):
