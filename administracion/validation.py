@@ -21,6 +21,8 @@ def validateEditExtraService(request):
         },
     }
 
+    return  validateDictionary(request.data, dataFormat)
+
 def validateAddExtraService(request):
     dataFormat = {
         "IdDpto" : {
