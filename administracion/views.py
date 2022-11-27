@@ -43,8 +43,8 @@ def EditUser(request):
     data = {}
 
     validationResult = validateEditUser(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     imgPath = None
@@ -78,8 +78,8 @@ def EditUser(request):
 def CreateDpto(request):
     data = {}
     validationResult = validateCreateDepartamento(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     returnCode = procedimientos.CreateDpto(
@@ -102,8 +102,8 @@ def EditDpto(request):
     data = {}
 
     validationResult = validateEditDpto(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
     
     dptoUpdated = procedimientos.editDpto(
@@ -132,8 +132,8 @@ def CreateFotoDpto(request):
     data = {}
 
     validationResult = validateAddDptoImage(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     img = request.data["Imagen"]
@@ -157,8 +157,8 @@ def UpdateFotoDpto(request):
     data = {}
 
     validationResult = validateEditDptoImage(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     order = None
@@ -181,8 +181,8 @@ def UpdateFotoDpto(request):
 def DeleteFotoDpto(request):
     data = {}
     validationResult = validateDeleteDptoImages(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     returnCode = procedimientos.deleteFotoDpto(
@@ -222,8 +222,8 @@ def AddService(request):
 def EditService(request):
     data = {}
     validationResult = validateEditService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
     
     returnCode = procedimientos.editService(
@@ -241,8 +241,8 @@ def EditService(request):
 def AddExtraService(request):
     data = {}
     validationResult = validateAddExtraService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     currentServices = dptoProcedimientos.listExtraServices(request.data["IdDpto"])

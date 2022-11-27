@@ -14,8 +14,8 @@ from . import functions
 def CreateReserve(request):
     data = {}
     validationResult = validateAddReserva(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
@@ -59,8 +59,8 @@ def getUserReserves(request):
 def CancelReserve(request):
     data = {}
     validationResult = validateCancelReserva(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
@@ -82,8 +82,8 @@ def CancelReserve(request):
 def AddExtraService(request):
     data = {}
     validationResult = validateAddExtraService(request)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])

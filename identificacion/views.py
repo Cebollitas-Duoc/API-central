@@ -56,8 +56,8 @@ def ValidateSession(request):
 
     print(request.data)
     validationResult = validateSessionKey(request.data)
-    if (not validationResult["Valid"]):
-        data["Error"] = validationResult["Error"]
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
         return Response(data=data)
 
     sessionKey = request.data["SessionKey"]

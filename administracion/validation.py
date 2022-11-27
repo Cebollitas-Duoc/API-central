@@ -1,187 +1,4 @@
-from identificacion.validation import isInDictionary
 from ApiCentral.validateData import validateDictionary
-
-#TODO: agregar otros valores necesarios para la edicion 
-def validateEditUser(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdUsuario", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay usuario"
-    elif not isInDictionary("IdPermiso", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay permiso"
-    elif not isInDictionary("IdEstado", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("Email", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay Email"
-    elif not isInDictionary("PrimerNombre", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay nombre"
-    elif not isInDictionary("PrimerApellido", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay apellido"
-    elif not isInDictionary("Rut", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay Rut"
-    elif not isInDictionary("Direccion", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay direccion"
-    elif not isInDictionary("Telefono", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay telefono"
-    elif not isInDictionary("Imagen", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay imagen"
-
-    return data
-
-def validateCreateDepartamento(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdState", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("Address", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay direccion"
-    elif not isInDictionary("Longitud", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay longitud"
-    elif not isInDictionary("Latitud", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay latitud"
-    elif not isInDictionary("Rooms", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay habitaciones"
-    elif not isInDictionary("Bathrooms", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay baños"
-    elif not isInDictionary("Size", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay tamaño"
-    elif not isInDictionary("Value", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay valor diario"
-    elif not isInDictionary("Description", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay valor Descripcion"
-    
-    return data
-
-def validateEditDpto(request):
-    if not isInDictionary("IdDpto", request.data):
-        data = {
-            "Valid": False,
-            "Error": "No hay id del departamento"
-        }
-        return data
-
-    #valida todos los datos necesarios para el departamento, solo falta la id
-    validationResult = validateCreateDepartamento(request)
-    if (not validationResult["Valid"]):
-        return validationResult
-
-    return {"Valid": True}
-
-
-def validateAddDptoImage(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdApartment", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay departamento"
-    elif not isInDictionary("Main", request.data):
-        data["Valid"] = False
-        data["Error"] = "No se especifica si es la foto principal o no"
-    elif not isInDictionary("Imagen", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay imagen"
-
-    return data
-
-def validateEditDptoImage(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdImgDpto", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay imagen"
-    elif not isInDictionary("Main", request.data):
-        data["Valid"] = False
-        data["Error"] = "No se especifica si es la foto principal o no"
-
-    return data
-
-def validateDeleteDptoImages(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdDptoImg", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay imagen"
-
-    return data
-
-def validateAddService(request):
-    dataFormat = {
-        "IdDpto" : {
-            "name": "Departamento",
-            "type": "int"
-        },
-        "IdServiceCategory" : {
-            "name": "Categoria",
-            "type": "int"
-        }
-    }
-
-    return  validateDictionary(request.data, dataFormat)
-
-def validateEditService(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdSrv", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay servicio"
-    elif not isInDictionary("IdEstado", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("Cantidad", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay cantidad"
-
-    return data
-
-def validateAddExtraService(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdDpto", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay departamento"
-    elif not isInDictionary("IdCategory", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay categoria de servicio extra"
-    elif not isInDictionary("IdState", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("IdTrabajador", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay tranajador"
-    elif not isInDictionary("Valor", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay valor"
-
-    return data
-
-def validateEditExtraService(request):
-    data = {"Valid": True}
-    if not isInDictionary("IdExtraSrv", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay servicio extra"
-    elif not isInDictionary("IdState", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("IdTrabajador", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay trabajador"
-    elif not isInDictionary("Valor", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay valor"
-
-    return data
 
 def validateEditExtraService(request):
     dataFormat = {
@@ -204,18 +21,228 @@ def validateEditExtraService(request):
         },
     }
 
+def validateAddExtraService(request):
+    dataFormat = {
+        "IdDpto" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "IdCategory" : {
+            "name": "Categoria",
+            "type": "int"
+        },
+        "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "IdTrabajador" : {
+            "name": "Trabajador",
+            "type": "int",
+            "isNull": True
+        },
+        "Valor" : {
+            "name": "Valor",
+            "type": "int"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+    
+def validateEditService(request):
+    dataFormat = {
+        "IdSrv" : {
+            "name": "Servicio",
+            "type": "int"
+        },
+        "IdEstado" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Cantidad" : {
+            "name": "Cantidad",
+            "type": "int"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+    
+def validateAddService(request):
+    dataFormat = {
+        "IdDpto" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "IdServiceCategory" : {
+            "name": "Categoria de servicio",
+            "type": "int"
+        },
+    }
     return  validateDictionary(request.data, dataFormat)
 
-def validateAddServiceCategory(request):
+def validateDeleteDptoImages(request):
     dataFormat = {
-        "IsExtra" : {
-            "name": "Tipo de servicio",
+        "IdDptoImg" : {
+            "name": "Imagen Departamento",
+            "type": "int"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+
+def validateEditDptoImage(request):
+    dataFormat = {
+        "IdDptoImg" : {
+            "name": "Imagen Departamento",
+            "type": "int"
+        },
+        "Main" : {
+            "name": "Imagen principal",
+            "type": "int"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)    
+
+def validateAddDptoImage(request):
+    dataFormat = {
+        "IdApartment" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "Main" : {
+            "name": "Imagen principal",
+            "type": "int"
+        },
+        "Imagen" : {
+            "name": "Imagen",
+            "type": "txt"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+
+def validateEditDpto(request):
+    dataFormat = {
+        "IdDpto" : {
+            "name": "Imagen Departamento",
+            "type": "int"
+        },
+         "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Address" : {
+            "name": "Direccion",
+            "type": "txt"
+        },
+        "Longitud" : {
+            "name": "Longitud",
+            "type": "int"
+        },
+        "Latitud" : {
+            "name": "Latitud",
+            "type": "int"
+        },
+        "Rooms" : {
+            "name": "Habitaciones",
+            "type": "int"
+        },
+        "Bathrooms" : {
+            "name": "Baños",
+            "type": "int"
+        },
+        "Size" : {
+            "name": "Tamaño",
+            "type": "int"
+        },
+        "Value" : {
+            "name": "Valor",
             "type": "int"
         },
         "Description" : {
-            "name": "Descipción",
+            "name": "Descripcion",
             "type": "txt"
-        }
+        },
     }
+    return  validateDictionary(request.data, dataFormat)
 
+def validateCreateDepartamento(request):
+    dataFormat = {
+        "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Address" : {
+            "name": "Direccion",
+            "type": "txt"
+        },
+        "Longitud" : {
+            "name": "Longitud",
+            "type": "int"
+        },
+        "Latitud" : {
+            "name": "Latitud",
+            "type": "int"
+        },
+        "Rooms" : {
+            "name": "Habitaciones",
+            "type": "int"
+        },
+        "Bathrooms" : {
+            "name": "Baños",
+            "type": "int"
+        },
+        "Size" : {
+            "name": "Tamaño",
+            "type": "int"
+        },
+        "Value" : {
+            "name": "Valor",
+            "type": "int"
+        },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+
+def validateCreateDepartamento(request):
+    dataFormat = {
+        "IdUsuario" : {
+            "name": "Usuario",
+            "type": "int"
+        },
+        "IdPermiso" : {
+            "name": "Permiso",
+            "type": "Int"
+        },
+        "IdEstado" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Email" : {
+            "name": "Email",
+            "type": "txt"
+        },
+        "PrimerNombre" : {
+            "name": "Primer nombre",
+            "type": "txt"
+        },
+        "PrimerApellido" : {
+            "name": "Primer apellido",
+            "type": "txt"
+        },
+        "Rut" : {
+            "name": "Rut",
+            "type": "int"
+        },
+        "Direccion" : {
+            "name": "Direccion",
+            "type": "txt"
+        },
+        "Telefono" : {
+            "name": "Telefono",
+            "type": "int"
+        },
+        "Imagen" : {
+            "name": "Imagen",
+            "type": "txt"
+        },
+    }
     return  validateDictionary(request.data, dataFormat)

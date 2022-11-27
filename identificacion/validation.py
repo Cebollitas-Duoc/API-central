@@ -1,11 +1,5 @@
 from ApiCentral.validateData import validateDictionary
 
-#TODO: delete function
-def isInDictionary(data, dic):
-    if ((data not in dic) or (dic[data] == "")):
-        return False
-    return True
-
 def validateLoginData(request):
     dataFormat = {
         "Email" : {
@@ -44,29 +38,24 @@ def validateCreateUserData(request):
         "Name" : {
             "name": "Nombre",
             "type": "txt",
-            "min": 5
         },
         "Name2" : {
             "name": "Segundo nombre",
             "type": "txt",
-            "min": 5,
             "isNull": True
         },
         "LastName" : {
             "name": "Apellido",
             "type": "txt",
-            "min": 5
         },
         "LastName2" : {
             "name": "Segundo apellido",
             "type": "txt",
-            "min": 5,
             "isNull": True
         },
         "Rut" : {
             "name": "Rut",
             "type": "rut",
-            "min": 5
         },
         "Address" : {
             "name": "Direccion",
@@ -81,14 +70,6 @@ def validateCreateUserData(request):
     }
 
     return  validateDictionary(request.data, dataFormat)
-
-def validateSessionKey(dictionary):
-    data = {"Valid": True}
-    if not isInDictionary("SessionKey", dictionary):
-        data["Valid"] = False
-        data["Error"] = "Usuario no se encuntra logeado"
-    
-    return data
 
 def ValidateChangePassword(request):
     dataFormat = {
@@ -111,6 +92,14 @@ def ValidateChangePassword(request):
             "max":80,
             "sameAs": "NewPassword"
         }
+    }
+
+def validateSessionKey(request):
+    dataFormat = {
+        "SessionKey" : {
+            "name": "Llave de sesion",
+            "type": "txt",          
+        },
     }
 
     return  validateDictionary(request.data, dataFormat)

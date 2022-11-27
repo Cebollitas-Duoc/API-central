@@ -1,34 +1,38 @@
-from identificacion.validation import isInDictionary
+from ApiCentral.validateData import validateDictionary
 
 def validateAddReserva(request):
-    data = {"Valid": True}
-    if not isInDictionary("Id_Departamento", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay departamento"
-    elif not isInDictionary("Id_Estado", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay estado"
-    elif not isInDictionary("Valor", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay valor"
-
-    return data
+    dataFormat = {
+        "Id_Departamento" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "Id_Estado" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Valor" : {
+            "name": "Valor",
+            "type": "int"
+        },
+    }
 
 def validateCancelReserva(request):
-    data = {"Valid": True}
-    if not isInDictionary("Id_Reserva", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay reserva"
-
-    return data
+    dataFormat = {
+        "Id_Reserva" : {
+            "name": "Reserva",
+            "type": "int"
+        },
+    }
 
 def validateAddExtraService(request):
-    data = {"Valid": True}
-    if not isInDictionary("Id_Reserve", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay reserva"
-    elif not isInDictionary("Id_ExtSer", request.data):
-        data["Valid"] = False
-        data["Error"] = "No hay servicio extra"
-
-    return data
+    dataFormat = {
+        "Id_Reserva" : {
+            "name": "Reserva",
+            "type": "int"
+        },
+        "Id_ExtSer" : {
+            "name": "Servicio extra",
+            "type": "int"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
