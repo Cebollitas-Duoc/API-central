@@ -5,6 +5,7 @@ import archivos.functions as files
 from .validation import *
 from . import procedimientos
 from departamentos import procedimientos as dptoProcedimientos
+from rut_chile import rut_chile
 
 #region usuarios
 @api_view(('GET', 'POST'))
@@ -26,6 +27,10 @@ def ViewUsers(request):
             usr["Rut"]              = usrArray[8]
             usr["Direccion"]        = usrArray[9]
             usr["Telefono"]         = usrArray[10]
+            
+            usr["Rut"] = str(usr["Rut"])
+            usr["Rut"] += rut_chile.get_verification_digit(usr["Rut"])
+            usr["Rut"] = rut_chile.format_rut_with_dots(usr["Rut"])
             if (usrArray[11] != None):
                 usr["Rutafotoperfil"] = usrArray[11]
             else:
@@ -52,18 +57,22 @@ def EditUser(request):
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
     
+    rut = request.data["Rut"]
+    rut = rut.replace(".","").replace("-","")
+    rut = rut[:-1]
+
     perfilEditado = procedimientos.editUser(
         request.data["IdUsuario"],
         request.data["IdPermiso"],
         request.data["IdEstado"],
         request.data["Email"],
-        request.data["PrimerNombre"],
-        request.data["SegundoNombre"],
-        request.data["PrimerApellido"],
-        request.data["SegundoApellido"],
-        request.data["Rut"],
-        request.data["Direccion"],
-        request.data["Telefono"],
+        request.data["Name"],
+        request.data["Name"],
+        request.data["LastName"],
+        request.data["LastName"],
+        rut,
+        request.data["Address"],
+        request.data["Phone"],
         imgPath,
     )
     data["PerfilEditado"] = perfilEditado
