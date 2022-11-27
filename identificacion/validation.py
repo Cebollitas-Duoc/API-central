@@ -93,6 +93,8 @@ def ValidateChangePassword(request):
             "sameAs": "NewPassword"
         }
     }
+    
+    return  validateDictionary(request.data, dataFormat)
 
 def validateSessionKey(request):
     dataFormat = {

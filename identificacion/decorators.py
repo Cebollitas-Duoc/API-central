@@ -7,9 +7,9 @@ def isUserLogged(permission=None):
         def wrapper(*args, **kw):
             data = {}
             request = (args[0])
-            validationResult = validateSessionKey(request.data)
-            if (not validationResult["Valid"]):
-                data["Error"] = validationResult["Error"]
+            validationResult = validateSessionKey(request)
+            if (not validationResult[0]):
+                data["Error"] = validationResult[1]
                 return Response(data=data)
 
             sessionInfo = procedimientos.isSessionValid(request.data["SessionKey"]) 
