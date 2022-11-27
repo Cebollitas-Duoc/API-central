@@ -27,7 +27,7 @@ def ViewUsers(request):
             usr["Rut"]              = usrArray[8]
             usr["Direccion"]        = usrArray[9]
             usr["Telefono"]         = usrArray[10]
-            
+
             usr["Rut"] = str(usr["Rut"])
             usr["Rut"] += rut_chile.get_verification_digit(usr["Rut"])
             usr["Rut"] = rut_chile.format_rut_with_dots(usr["Rut"])
@@ -67,9 +67,9 @@ def EditUser(request):
         request.data["IdEstado"],
         request.data["Email"],
         request.data["Name"],
-        request.data["Name"],
+        request.data["Name2"],
         request.data["LastName"],
-        request.data["LastName"],
+        request.data["LastName2"],
         rut,
         request.data["Address"],
         request.data["Phone"],
