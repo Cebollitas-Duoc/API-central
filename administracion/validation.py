@@ -204,46 +204,42 @@ def validateCreateDepartamento(request):
 
 def validateCreateDepartamento(request):
     dataFormat = {
-        "IdUsuario" : {
-            "name": "Usuario",
-            "type": "int"
-        },
-        "IdPermiso" : {
-            "name": "Permiso",
-            "type": "Int"
-        },
-        "IdEstado" : {
+        "IdState" : {
             "name": "Estado",
             "type": "int"
         },
-        "Email" : {
-            "name": "Email",
-            "type": "txt"
-        },
-        "PrimerNombre" : {
-            "name": "Primer nombre",
-            "type": "txt"
-        },
-        "PrimerApellido" : {
-            "name": "Primer apellido",
-            "type": "txt"
-        },
-        "Rut" : {
-            "name": "Rut",
-            "type": "int"
-        },
-        "Direccion" : {
+        "Address" : {
             "name": "Direccion",
             "type": "txt"
         },
-        "Telefono" : {
-            "name": "Telefono",
+        "Longitud" : {
+            "name": "Longitud",
             "type": "int"
         },
-        "Imagen" : {
-            "name": "Imagen",
-            "type": "txt"
+        "Latitud" : {
+            "name": "Latitud",
+            "type": "int"
         },
+        "Rooms" : {
+            "name": "Habitaciones",
+            "type": "int"
+        },
+        "Bathrooms" : {
+            "name": "Baños",
+            "type": "int"
+        },
+        "Size" : {
+            "name": "Tamaño",
+            "type": "float"
+        },
+        "Value" : {
+            "name": "Valor",
+            "type": "int"
+        },
+        "Description" : {
+            "name": "Descripción",
+            "type": "txt"
+        }
     }
     return  validateDictionary(request.data, dataFormat)
 
