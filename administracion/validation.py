@@ -246,3 +246,49 @@ def validateCreateDepartamento(request):
         },
     }
     return  validateDictionary(request.data, dataFormat)
+
+def validateAddItem(request):
+    dataFormat = {
+        "IdDpto" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "Name" : {
+            "name": "Nombre",
+            "type": "txt"
+        },
+        "Ammount" : {
+            "name": "Cantidad",
+            "type": "int"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+def validateEditItem(request):
+    dataFormat = {
+        "IdItem" : {
+            "name": "Objeto",
+            "type": "int"
+        },
+        "Name" : {
+            "name": "Nombre",
+            "type": "txt"
+        },
+        "Ammount" : {
+            "name": "Cantidad",
+            "type": "int"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+def validateDeleteItem(request):
+    dataFormat = {
+        "IdItem" : {
+            "name": "Objeto",
+            "type": "int"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)

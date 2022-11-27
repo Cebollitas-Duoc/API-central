@@ -193,7 +193,9 @@ def DeleteFotoDpto(request):
 
 #endregion imagen departamento
 
-#region imagen servicios
+#region servicios
+
+#region servicios
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def AddService(request):
@@ -233,9 +235,9 @@ def EditService(request):
     )
 
     return Response(data={"Servicio_Modificado": returnCode})
-#endregion imagen servicios
+#endregion servicios
 
-#region imagen servicios extra
+#region servicios extra
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def AddExtraService(request):
@@ -279,7 +281,7 @@ def EditExtraService(request):
     )
 
     return Response(data={"Servicio_Modificado": returnCode})
-#endregion imagen servicios extra
+#endregion servicios extra
 
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
@@ -300,3 +302,86 @@ def AddServiceCategory(request):
 
     return Response(data={"category_added": returnCode})
 
+
+#endregion servicios
+
+#region inventario
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def AddItem(request):
+    data = {}
+
+    validationResult = validateAddItem(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.addItem(
+        request.data["IdDpto"],
+        request.data["Name"],
+        request.data["Ammount"],
+    )
+    data["ObjetoAgregado"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo agregar el objeto"
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def EditItem(request):
+    data = {}
+
+    validationResult = validateEditItem(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.editItem(
+        request.data["IdItem"],
+        request.data["Name"],
+        request.data["Ammount"],
+    )
+    data["ObjetoEditado"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo editar el objeto"
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def ListItems(request, idItem):
+    data = procedimientos.listItems(idItem)
+    items = []
+    if (data[1] == 1):
+        for usrArray in data[0]:
+            item = {}
+            item["Id_Item"] = usrArray[0]
+            item["Name"]    = usrArray[1]
+            item["Ammount"] = usrArray[2]
+            item["Id_Dpto"] = usrArray[3]
+                
+            items.append(item)
+            
+        return Response(data=items)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def DeleteItem(request):
+    data = {}
+
+    validationResult = validateDeleteItem(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.deleteItem(
+        request.data["IdItem"]
+    )
+    data["ObjetoBorrado"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo borrar el objeto"
+    return Response(data=data)
+
+#endregion inventario

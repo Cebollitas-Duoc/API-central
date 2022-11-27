@@ -85,3 +85,25 @@ def addExtraServiceCategory(desc):
     r = cursor.callproc("PCK_ADMIN.P_ADD_EXTSRV_CAT ", [desc, 0])
     return r[-1] == 1
 #endregion servicios extra
+
+def addItem(id_dpto, name, ammount):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_INVENTARIO.P_AGREGAR_ITEM ", [id_dpto, name, ammount, 0])
+    return r[-1] == 1
+
+def editItem(id_item, name, ammount):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_INVENTARIO.P_EDIT_ITEM ", [id_item, name, ammount, 0])
+    return r[-1] == 1
+
+def listItems(id_dpto):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    items = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_INVENTARIO.P_LIST_ITEM ", [id_dpto, items, 0])
+    return (r[1], r[-1] == 1)
+    
+def deleteItem(id_item):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_INVENTARIO.P_DELETE_ITEM ", [id_item, 0])
+    return r[-1] == 1
