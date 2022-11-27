@@ -88,8 +88,8 @@ def validateDeleteDptoImages(request):
 
 def validateEditDptoImage(request):
     dataFormat = {
-        "IdDptoImg" : {
-            "name": "Imagen Departamento",
+        "IdImgDpto" : {
+            "name": "Imagen de departamento",
             "type": "int"
         },
         "Main" : {
