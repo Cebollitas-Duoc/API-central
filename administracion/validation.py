@@ -132,114 +132,73 @@ def validateEditDpto(request):
         },
         "Longitud" : {
             "name": "Longitud",
-            "type": "int"
-        },
-        "Latitud" : {
-            "name": "Latitud",
-            "type": "int"
-        },
-        "Rooms" : {
-            "name": "Habitaciones",
-            "type": "int"
-        },
-        "Bathrooms" : {
-            "name": "Baños",
-            "type": "int"
-        },
-        "Size" : {
-            "name": "Tamaño",
-            "type": "int"
-        },
-        "Value" : {
-            "name": "Valor",
-            "type": "int"
-        },
-        "Description" : {
-            "name": "Descripcion",
-            "type": "txt"
-        },
-    }
-    return  validateDictionary(request.data, dataFormat)
-
-def validateCreateDepartamento(request):
-    dataFormat = {
-        "IdState" : {
-            "name": "Estado",
-            "type": "int"
-        },
-        "Address" : {
-            "name": "Direccion",
-            "type": "txt"
-        },
-        "Longitud" : {
-            "name": "Longitud",
-            "type": "int"
-        },
-        "Latitud" : {
-            "name": "Latitud",
-            "type": "int"
-        },
-        "Rooms" : {
-            "name": "Habitaciones",
-            "type": "int"
-        },
-        "Bathrooms" : {
-            "name": "Baños",
-            "type": "int"
-        },
-        "Size" : {
-            "name": "Tamaño",
-            "type": "int"
-        },
-        "Value" : {
-            "name": "Valor",
-            "type": "int"
-        },
-        "Description" : {
-            "name": "Descripcion",
-            "type": "txt"
-        },
-    }
-    return  validateDictionary(request.data, dataFormat)
-
-def validateCreateDepartamento(request):
-    dataFormat = {
-        "IdState" : {
-            "name": "Estado",
-            "type": "int"
-        },
-        "Address" : {
-            "name": "Direccion",
-            "type": "txt"
-        },
-        "Longitud" : {
-            "name": "Longitud",
-            "type": "int"
-        },
-        "Latitud" : {
-            "name": "Latitud",
-            "type": "int"
-        },
-        "Rooms" : {
-            "name": "Habitaciones",
-            "type": "int"
-        },
-        "Bathrooms" : {
-            "name": "Baños",
-            "type": "int"
-        },
-        "Size" : {
-            "name": "Tamaño",
             "type": "float"
         },
+        "Latitud" : {
+            "name": "Latitud",
+            "type": "float"
+        },
+        "Rooms" : {
+            "name": "Habitaciones",
+            "type": "int"
+        },
+        "Bathrooms" : {
+            "name": "Baños",
+            "type": "int"
+        },
+        "Size" : {
+            "name": "Tamaño",
+            "type": "int"
+        },
         "Value" : {
             "name": "Valor",
             "type": "int"
         },
         "Description" : {
-            "name": "Descripción",
+            "name": "Descripcion",
             "type": "txt"
-        }
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)
+
+def validateCreateDepartamento(request):
+    dataFormat = {
+        "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Address" : {
+            "name": "Direccion",
+            "type": "txt"
+        },
+        "Longitud" : {
+            "name": "Longitud",
+            "type": "float"
+        },
+        "Latitud" : {
+            "name": "Latitud",
+            "type": "float"
+        },
+        "Rooms" : {
+            "name": "Habitaciones",
+            "type": "int"
+        },
+        "Bathrooms" : {
+            "name": "Baños",
+            "type": "int"
+        },
+        "Size" : {
+            "name": "Tamaño",
+            "type": "int"
+        },
+        "Value" : {
+            "name": "Valor",
+            "type": "int"
+        },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt"
+        },
     }
     return  validateDictionary(request.data, dataFormat)
 
