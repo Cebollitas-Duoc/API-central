@@ -86,6 +86,8 @@ def addExtraServiceCategory(desc):
     return r[-1] == 1
 #endregion servicios extra
 
+#region inventory
+
 def addItem(id_dpto, name, ammount):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_INVENTARIO.P_AGREGAR_ITEM ", [id_dpto, name, ammount, 0])
@@ -107,3 +109,31 @@ def deleteItem(id_item):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_INVENTARIO.P_DELETE_ITEM ", [id_item, 0])
     return r[-1] == 1
+
+#endregion inventory
+
+#region inventory
+
+def addMaintenance(id_cat, id_dpto, desc, value, startDate, endDate):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_MANTENCION.P_AGREGAR_MANTENCION ", [id_cat, id_dpto, desc, value, startDate, endDate, 0])
+    return r[-1] == 1
+
+def editMaintenance(id_man, desc, value, startDate, endDate):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_MANTENCION.P_EDITAR_MANTENCION ", [id_man, desc, value, startDate, endDate, 0])
+    return r[-1] == 1
+
+def listMaintenance(id_dpto):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    maintenances = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_MANTENCION.P_LISTAR_MANTENCIONES ", [id_dpto, maintenances, 0])
+    return (r[1], r[-1] == 1)
+    
+def deleteMaintenance(id_man):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_MANTENCION.P_BORRAR_MANTENCION ", [id_man, 0])
+    return r[-1] == 1
+
+#endregion inventory

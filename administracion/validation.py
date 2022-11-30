@@ -292,3 +292,77 @@ def validateEditUser(request):
     }
 
     return  validateDictionary(request.data, dataFormat)
+
+#region mantencion
+
+def validateAddMaintenance(request):
+    dataFormat = {
+        "IdCategory" : {
+            "name": "Categoria",
+            "type": "int"
+        },
+        "IdDpto" : {
+            "name": "Departamento",
+            "type": "int"
+        },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt",
+            "max": 200
+        },
+        "Value" : {
+            "name": "Valor",
+            "type": "int"
+        },
+        "StartDate" : {
+            "name": "Fecha de inicio",
+            "type": "int"
+        },
+        "EndDate" : {
+            "name": "Fecha de fin",
+            "type": "int"
+        },
+        
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+def validateEditMaintenance(request):
+    dataFormat = {
+        "IdMaintenance" : {
+            "name": "Mantencion",
+            "type": "int"
+        },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt",
+            "max": 200
+        },
+        "Value" : {
+            "name": "Valor",
+            "type": "int"
+        },
+        "StartDate" : {
+            "name": "Fecha de inicio",
+            "type": "int"
+        },
+        "EndDate" : {
+            "name": "Fecha de fin",
+            "type": "int"
+        },
+        
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+def validateDeleteMaintenance(request):
+    dataFormat = {
+        "IdMaintenance" : {
+            "name": "Mantencion",
+            "type": "int"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
+#endregion mantencion

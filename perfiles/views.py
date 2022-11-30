@@ -1,7 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .validation import *
-from identificacion.validation import validateSessionKey
 import identificacion.procedimientos as authP
 import identificacion.decorators as authD
 import archivos.functions as files
@@ -33,6 +32,11 @@ def EditSessionProfile(request):
     img = request.data["Image"]
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
+
+    userCredentials = authP.userCredentials(request.data["Email"])
+    if (userCredentials["UserExist"]):
+        data["Error"] = "Correo ya utilizado"
+        return Response(data=data)
 
     rut = request.data["Rut"]
     rut = rut.replace(".","").replace("-","")

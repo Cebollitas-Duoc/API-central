@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import identificacion.decorators as authD
+import identificacion.procedimientos as authP
 import archivos.functions as files
 from .validation import *
 from . import procedimientos
@@ -57,6 +58,11 @@ def EditUser(request):
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
     
+    userCredentials = authP.userCredentials(request.data["Email"])
+    if (userCredentials["UserExist"]):
+        data["Error"] = "Correo ya utilizado"
+        return Response(data=data)
+
     rut = request.data["Rut"]
     rut = rut.replace(".","").replace("-","")
     rut = rut[:-1]
@@ -394,3 +400,92 @@ def DeleteItem(request):
     return Response(data=data)
 
 #endregion inventario
+
+#region mantenciones
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def AddMaintenance(request):
+    data = {}
+
+    validationResult = validateAddMaintenance(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.addMaintenance(
+        request.data["IdCategory"],
+        request.data["IdDpto"],
+        request.data["Description"],
+        request.data["Value"],
+        request.data["StartDate"],
+        request.data["EndDate"],
+    )
+    data["MaintenanceAgregado"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo agregar la mantencion."
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def EditMaintenance(request):
+    data = {}
+
+    validationResult = validateEditMaintenance(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.editMaintenance(
+        request.data["IdMaintenance"],
+        request.data["Description"],
+        request.data["Value"],
+        request.data["StartDate"],
+        request.data["EndDate"],
+    )
+    data["MantencionEditada"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo editar la mantencion."
+    return Response(data=data)
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def ListMaintenance(request, idDpto):
+    data = procedimientos.listMaintenance(idDpto)
+    items = []
+    if (data[1] == 1):
+        for usrArray in data[0]:
+            item = {}
+            item["Id_Maintenance"] = usrArray[0]
+            item["Id_Cat"]         = usrArray[1]
+            item["Id_Dpto"]        = usrArray[2]
+            item["Description"]    = usrArray[3]
+            item["Value"]          = usrArray[4]
+            item["StartDate"]      = usrArray[5]
+            item["EndDate"]        = usrArray[6]
+                
+            items.append(item)
+            
+        return Response(data=items)
+    else:
+        return Response(data={"Error": "Error interno de base de datos."})
+
+@api_view(('GET', 'POST'))
+@authD.isUserLogged(permission=1)
+def DeleteMaintenance(request):
+    data = {}
+
+    validationResult = validateDeleteMaintenance(request)
+    if (not validationResult[0]):
+        data["Error"] = validationResult[1]
+        return Response(data=data)
+
+    addItem = procedimientos.deleteMaintenance(
+        request.data["IdMaintenance"]
+    )
+    data["MantencionBorrada"] = addItem
+    if (not addItem):
+        data["Error"] = "No se pudo borrar la mantencion."
+    return Response(data=data)
+
+#endregion mantenciones
