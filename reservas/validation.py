@@ -16,6 +16,8 @@ def validateAddReserva(request):
         },
     }
 
+    return  validateDictionary(request.data, dataFormat)
+
 def validateCancelReserva(request):
     dataFormat = {
         "Id_Reserva" : {
@@ -23,6 +25,8 @@ def validateCancelReserva(request):
             "type": "int"
         },
     }
+
+    return  validateDictionary(request.data, dataFormat)
 
 def validateAddExtraService(request):
     dataFormat = {
