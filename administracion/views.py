@@ -3,6 +3,7 @@ from rest_framework.response import Response
 import identificacion.decorators as authD
 import identificacion.procedimientos as authP
 import archivos.functions as files
+import time
 from .validation import *
 from . import procedimientos
 from departamentos import procedimientos as dptoProcedimientos
@@ -461,9 +462,11 @@ def ListMaintenance(request, idDpto):
             item["Id_Dpto"]        = usrArray[2]
             item["Description"]    = usrArray[3]
             item["Value"]          = usrArray[4]
-            item["StartDate"]      = usrArray[5]
-            item["EndDate"]        = usrArray[6]
-                
+            item["RawStartDate"]   = usrArray[5]
+            item["RawEndDate"]     = usrArray[6]
+            
+            item["StartDate"]   = time.strftime('%d-%m-%Y', time.gmtime(item["RawStartDate"]/1000))
+            item["EndDate"]     = time.strftime('%d-%m-%Y', time.gmtime(item["RawEndDate"]/1000))
             items.append(item)
             
         return Response(data=items)
