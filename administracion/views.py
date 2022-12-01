@@ -459,11 +459,12 @@ def ListMaintenance(request, idDpto):
             item = {}
             item["Id_Maintenance"] = usrArray[0]
             item["Id_Cat"]         = usrArray[1]
-            item["Id_Dpto"]        = usrArray[2]
-            item["Description"]    = usrArray[3]
-            item["Value"]          = usrArray[4]
-            item["RawStartDate"]   = usrArray[5]
-            item["RawEndDate"]     = usrArray[6]
+            item["Category"]       = usrArray[2]
+            item["Id_Dpto"]        = usrArray[3]
+            item["Description"]    = usrArray[4]
+            item["Value"]          = usrArray[5]
+            item["RawStartDate"]   = usrArray[6]
+            item["RawEndDate"]     = usrArray[7]
             
             item["StartDate"]   = time.strftime('%d-%m-%Y', time.gmtime(item["RawStartDate"]/1000))
             item["EndDate"]     = time.strftime('%d-%m-%Y', time.gmtime(item["RawEndDate"]/1000))
