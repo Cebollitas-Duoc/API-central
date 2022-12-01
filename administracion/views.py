@@ -59,8 +59,8 @@ def EditUser(request):
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
     
-    userCredentials = authP.userCredentials(request.data["Email"])
-    if (userCredentials["UserExist"]):
+    emailCredentials = authP.userCredentials(request.data["Email"])
+    if (emailCredentials["UserExist"] and (emailCredentials["ID_usuario"] != int(request.data["IdUsuario"]))):
         data["Error"] = "Correo ya utilizado"
         return Response(data=data)
 

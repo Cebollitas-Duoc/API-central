@@ -33,8 +33,9 @@ def EditSessionProfile(request):
     if (img != "undefined"):
         imgSaved, imgPath = files.saveImage(img)
 
-    userCredentials = authP.userCredentials(request.data["Email"])
-    if (userCredentials["UserExist"]):
+    userId = int(procedimientos.getSessionProfile(request.data["SessionKey"])["IdUser"])
+    emailCredentials = authP.userCredentials(request.data["Email"])
+    if (emailCredentials["UserExist"] and (emailCredentials["ID_usuario"] != userId)):
         data["Error"] = "Correo ya utilizado"
         return Response(data=data)
 
