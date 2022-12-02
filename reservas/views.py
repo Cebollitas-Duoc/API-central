@@ -32,7 +32,7 @@ def CreateReserve(request):
         0,
         dateRange[0],
         dateRange[1],
-        int(time.time()),
+        int(time.time()) * 1000,
         functions.calculateReservePrice(request)
     )
 
