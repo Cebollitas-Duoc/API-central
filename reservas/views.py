@@ -58,15 +58,19 @@ def getUserReserves(request):
     if (data[1] == 1):
         for rsvArray in data[0]:
             rsv = {}
-            rsv["Id_Reserva"]      = rsvArray[0]
-            rsv["Id_Usuario"]      = rsvArray[1]
-            rsv["Id_Departamento"] = rsvArray[2]
-            rsv["Id_Estado"]       = rsvArray[3]
-            rsv["Id_Pago"]         = rsvArray[4]
-            rsv["Fecha_Desde"]     = rsvArray[5]
-            rsv["Fecha_Hasta"]     = rsvArray[6]
-            rsv["Fecha_Valor"]     = rsvArray[7]
-            rsv["Fecha_Creacion"]  = rsvArray[8]
+            rsv["Id_Reserve"]    = rsvArray[0]
+            rsv["Id_User"]       = rsvArray[1]
+            rsv["Id_Dpto"]       = rsvArray[2]
+            rsv["Id_Estate"]     = rsvArray[3]
+            rsv["Id_Payment"]    = rsvArray[4]
+            rsv["RawStartDate"]  = rsvArray[5]
+            rsv["RawEndDate"]    = rsvArray[6]
+            rsv["Value"]         = rsvArray[7]
+            rsv["RawCreateDate"] = rsvArray[8]
+
+            rsv["StartDate"]  = time.strftime('%d-%m-%Y', time.gmtime(rsv["RawStartDate"]/1000))
+            rsv["EndDate"]    = time.strftime('%d-%m-%Y', time.gmtime(rsv["RawEndDate"]/1000))
+            rsv["CreateDate"] = time.strftime('%d-%m-%Y', time.gmtime(rsv["RawCreateDate"]/1000))
             reserves.append(rsv)
             
         return Response(data=reserves)

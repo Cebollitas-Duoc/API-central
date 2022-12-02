@@ -9,7 +9,7 @@ def calculateReservePrice(request):
     total = 0
     idDpto = request.data["Id_Departamento"]
 
-    days = ((int(request.data["EndDate"]) - int(request.data["StartDate"])) / 86400000) + 1
+    days = round((int(request.data["EndDate"]) - int(request.data["StartDate"])) / 86400000)
 
     dptoData = dptoP.viewDpto(idDpto)
     if (dptoData[1]):
@@ -40,6 +40,10 @@ def rangeCollision(range1, range2):
     elif valueInRange(range1[1], range2[0], range2[1]): # colicion de cabeza
         return True
     elif valueInRange(range2[0], range1[0], range1[1]): # colicion interna
+        return True
+    elif (range1[0] == range2[0]):
+        return True
+    elif (range1[1] == range2[1]):
         return True
 
     return False
