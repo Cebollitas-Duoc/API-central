@@ -6,13 +6,18 @@ def validateAddReserva(request):
             "name": "Departamento",
             "type": "int"
         },
-        "Id_Estado" : {
-            "name": "Estado",
+        "StartDate": {
+            "name": "Fecha inicio",
             "type": "int"
         },
-        "Valor" : {
-            "name": "Valor",
+        "EndDate": {
+            "name": "Fecha fin",
             "type": "int"
+        },
+        "extraServices": {
+            "name": "Servicios extra",
+            "type": "txt",
+            "optional": True
         },
     }
 

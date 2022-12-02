@@ -42,7 +42,7 @@ def validateData(data, format):
     r = canBeNull(data, format)
     if (not r[0]):
         return r
-    elif isNull(data):
+    elif optional(data):
         return (True, "")
     
     for validator in validators:
@@ -101,8 +101,8 @@ def isOverMin(data, format):
 
 def canBeNull(data, format):
     name = getFormatName(format, useDots=False)
-    if isNull(data):
-        if (format.get("isNull", False)):
+    if optional(data):
+        if (format.get("optional", False)):
             return (True, "")
         else:
             return (False, f"Debe agregar {name}")
@@ -157,5 +157,5 @@ def getFormatName(format, useDots=True):
     
     return name
 
-def isNull(data):
+def optional(data):
     return data == None or len(data) == 0 or data == "undefined" or data == "null"

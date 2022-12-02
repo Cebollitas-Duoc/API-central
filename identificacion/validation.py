@@ -42,7 +42,7 @@ def validateCreateUserData(request):
         "Name2" : {
             "name": "Segundo nombre",
             "type": "txt",
-            "isNull": True
+            "optional": True
         },
         "LastName" : {
             "name": "Apellido",
@@ -51,7 +51,7 @@ def validateCreateUserData(request):
         "LastName2" : {
             "name": "Segundo apellido",
             "type": "txt",
-            "isNull": True
+            "optional": True
         },
         "Rut" : {
             "name": "Rut",

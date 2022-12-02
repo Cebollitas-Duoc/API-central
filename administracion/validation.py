@@ -13,7 +13,7 @@ def validateEditExtraService(request):
         "IdTrabajador" : {
             "name": "Trabajador",
             "type": "int",
-            "isNull": True
+            "optional": True
         },
         "Valor" : {
             "name": "Valor",
@@ -40,7 +40,7 @@ def validateAddExtraService(request):
         "IdTrabajador" : {
             "name": "Trabajador",
             "type": "int",
-            "isNull": True
+            "optional": True
         },
         "Valor" : {
             "name": "Valor",
@@ -264,7 +264,7 @@ def validateEditUser(request):
         "Name2" : {
             "name": "Segundo nombre",
             "type": "txt",
-            "isNull": True
+            "optional": True
         },
         "LastName" : {
             "name": "Apellido",
@@ -273,7 +273,7 @@ def validateEditUser(request):
         "LastName2" : {
             "name": "Segundo apellido",
             "type": "txt",
-            "isNull": True
+            "optional": True
         },
         "Rut" : {
             "name": "Rut",

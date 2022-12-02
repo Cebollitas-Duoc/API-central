@@ -113,20 +113,8 @@ def listServiceCategories(request):
 @api_view(('GET', 'POST'))
 def listExtraServices(request, idDpto):
     data = procedimientos.listExtraServices(idDpto)
-    services = []
-    if (data[1] == 1):
-        for srvArray in data[0]:
-            srv = {}
-            srv["Id_ExtraService"] = srvArray[0]
-            srv["Id_Category"]     = srvArray[1]
-            srv["Id_Estado"]       = srvArray[2]
-            srv["Id_Trabajador"]   = srvArray[3]
-            srv["Trabajador"]      = srvArray[4]
-            srv["Valor"]           = srvArray[5]
-                
-            services.append(srv)
-            
-        return Response(data=services)
+    if (data[1] == 1):    
+        return Response(data=data[0])
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 

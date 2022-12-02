@@ -45,7 +45,21 @@ def listExtraServices(id_apartment):
     raw_cursor = cursor.connection.cursor()
     services = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_EXTRASERVICES.P_LIST_EXTRASERVICES", [id_apartment, services, 0])
-    return (r[1], r[-1] == 1)
+
+    services = []
+    if (r[-1] == 1):
+        for srvArray in r[1]:
+            srv = {}
+            srv["Id_ExtraService"] = srvArray[0]
+            srv["Id_Category"]     = srvArray[1]
+            srv["Id_Estado"]       = srvArray[2]
+            srv["Id_Trabajador"]   = srvArray[3]
+            srv["Trabajador"]      = srvArray[4]
+            srv["Valor"]           = srvArray[5]
+                
+            services.append(srv)
+
+    return (services, r[-1] == 1)
 
 def listExtraServiceCategories():
     cursor = connection.cursor()

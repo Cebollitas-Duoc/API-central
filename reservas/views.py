@@ -23,12 +23,23 @@ def CreateReserve(request):
     returnCode = procedimientos.crearReserva(
         userCredentials["ID_usuario"],     
         request.data["Id_Departamento"],  
-        request.data["Id_Estado"],
-        int(request.data["FechaDesde"]),
-        int(request.data["FechaHasta"]),
-        request.data["Valor"],
+        0,
+        int(request.data["StartDate"]),
+        int(request.data["EndDate"]),
+        functions.calculateReservePrice(request)
     )
-    return Response(data={"reserva_creada": returnCode})
+
+    if (returnCode[1]):
+        if ("extraServices" in request.data):
+            for extSrv in request.data["extraServices"].split(","):
+                procedimientos.addExtraService(
+                    returnCode[0],
+                    extSrv,
+                    True,
+                )
+    
+    return Response(data={"reserva_creada": returnCode[1], "IdReserva": returnCode[0]})
+
 
 @api_view(('GET', 'POST'))
 @isUserLogged()
