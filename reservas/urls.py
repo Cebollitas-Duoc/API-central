@@ -9,4 +9,5 @@ urlpatterns = [
     path('cancelreserve/',   views.CancelReserve,   name="CancelReserve"),
     path('addextraservice/', views.AddExtraService, name="AddExtraService"),
     path('listReserveExtraServices/<int:idReserva>/', views.listReserveExtraServices, name="listReserveExtraServices"),
+    path('getreservedranges/<int:idDpto>/', views.getReservedRanges, name="getReservedRanges"),
 ]

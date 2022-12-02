@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from .validation import *
 from . import procedimientos
 from . import functions
+import time
 
 # Create your views here.
 
@@ -18,14 +19,20 @@ def CreateReserve(request):
         data["Error"] = validationResult[1]
         return Response(data=data)
 
+    dateRange = (int(request.data["StartDate"]), int(request.data["EndDate"]))
+    rangeCollides = functions.rangeColidesWithReserves( dateRange, request.data["Id_Departamento"])
+    if (rangeCollides):
+        return Response(data={"reserva_creada": False, "Error": "Rango de dias ya reservado"})
+
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
 
     returnCode = procedimientos.crearReserva(
         userCredentials["ID_usuario"],     
         request.data["Id_Departamento"],  
         0,
-        int(request.data["StartDate"]),
-        int(request.data["EndDate"]),
+        dateRange[0],
+        dateRange[1],
+        int(time.time()),
         functions.calculateReservePrice(request)
     )
 
@@ -51,14 +58,15 @@ def getUserReserves(request):
     if (data[1] == 1):
         for rsvArray in data[0]:
             rsv = {}
-            rsv["Id_Reserva"]       = rsvArray[0]
-            rsv["Id_Usuario"]       = rsvArray[1]
-            rsv["Id_Departamento"]  = rsvArray[2]
-            rsv["Id_Estado"]        = rsvArray[3]
-            rsv["Id_Pago"]          = rsvArray[4]
-            rsv["Fecha_Desde"]      = rsvArray[5]
-            rsv["Fecha_Hasta"]      = rsvArray[6]
-            rsv["Fecha_Valor"]      = rsvArray[7]
+            rsv["Id_Reserva"]      = rsvArray[0]
+            rsv["Id_Usuario"]      = rsvArray[1]
+            rsv["Id_Departamento"] = rsvArray[2]
+            rsv["Id_Estado"]       = rsvArray[3]
+            rsv["Id_Pago"]         = rsvArray[4]
+            rsv["Fecha_Desde"]     = rsvArray[5]
+            rsv["Fecha_Hasta"]     = rsvArray[6]
+            rsv["Fecha_Valor"]     = rsvArray[7]
+            rsv["Fecha_Creacion"]  = rsvArray[8]
             reserves.append(rsv)
             
         return Response(data=reserves)
@@ -86,6 +94,15 @@ def CancelReserve(request):
         request.data["Id_Reserva"]
     )
     return Response(data={"reserva_cancelada": returnCode})
+
+
+@api_view(('GET', 'POST'))
+def getReservedRanges(request, idDpto):
+    data = procedimientos.getReservedRanges(idDpto)
+    if (data[1] == 1):
+        return Response(data=data[0])
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
 
 
 @api_view(('GET', 'POST'))

@@ -26,3 +26,23 @@ def calculateReservePrice(request):
                     total += DptoExtraSrv["Valor"] 
     
     return total
+
+def rangeColidesWithReserves(newRange, idDpto):
+    reservedRanges = procedimientos.getReservedRanges(idDpto)
+    for reservedrange in reservedRanges[0]:
+        if rangeCollision(newRange, reservedrange):
+            return True
+    return False
+
+def rangeCollision(range1, range2):
+    if valueInRange(range1[0], range2[0], range2[1]): # colicion de cola
+        return True
+    elif valueInRange(range1[1], range2[0], range2[1]): # colicion de cabeza
+        return True
+    elif valueInRange(range2[0], range1[0], range1[1]): # colicion interna
+        return True
+
+    return False
+
+def valueInRange(value, start, end):
+    return start < value < end

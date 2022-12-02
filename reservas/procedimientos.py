@@ -1,10 +1,10 @@
 from django.db import connection
 import cx_Oracle
 
-def crearReserva(id_usr, id_dpto, id_estdo, fechadesde, fechahasta, valor):
+def crearReserva(id_usr, id_dpto, id_estdo, fechadesde, fechahasta, fechacreacion, valor):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_CREAR_RESERVA", [id_usr, id_dpto, id_estdo, fechadesde, fechahasta, valor, 0, 0])
+    r = cursor.callproc("PCK_RESERVA.P_CREAR_RESERVA", [id_usr, id_dpto, id_estdo, fechadesde, fechahasta, fechacreacion, valor, 0, 0])
     return (r[-2] , r[-1] == 1)
     
 def getUserReserves(id_usr):
@@ -17,20 +17,36 @@ def getUserReserves(id_usr):
 def getReserva(id_reserva):
     data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0, 0, 0, 0, 0, 0, 0, 0])
-    data["id_usr"]      = r[1]
-    data["id_dpto"]     = r[2]
-    data["id_state"]    = r[3]
-    data["id_payment"]  = r[4]
-    data["fecha_desde"] = r[5]
-    data["fecha_hasta"] = r[6]
-    data["valor"]       = r[7]
+    r = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    data["id_usr"]         = r[1]
+    data["id_dpto"]        = r[2]
+    data["id_state"]       = r[3]
+    data["id_payment"]     = r[4]
+    data["fecha_desde"]    = r[5]
+    data["fecha_hasta"]    = r[6]
+    data["Fecha_Creacion"] = r[7]
+    data["valor"]          = r[8]
     return data, r[-1] == 1
 
 def cancelReserva(id_reserva):
     cursor = connection.cursor()
     r = cursor.callproc("PCK_RESERVA.P_CANCEL_RESERVA", [id_reserva, 0])
     return r[-1] == 1
+
+def getReservedRanges(id_reserva):
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    ranges = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_RESERVA.P_GET_DPTO_RANGES", [id_reserva, ranges, 0])
+
+
+    ranges = []
+    if (r[-1]):
+        for rangeArray in r[1]:
+            range = (rangeArray[0], rangeArray[1])
+            ranges.append(range)
+
+    return (ranges, r[-1] == 1)
 
 #region extra service
 
