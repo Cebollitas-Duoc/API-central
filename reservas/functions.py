@@ -1,5 +1,6 @@
 from . import procedimientos
 from departamentos import procedimientos as dptoP
+from datetime import datetime
 
 def addExtraService(id_reserve, id_extSrv, included=True):
     serviceAdded = procedimientos.getUserReserves(id_reserve, id_extSrv, included)
@@ -9,11 +10,12 @@ def calculateReservePrice(request):
     total = 0
     idDpto = request.data["Id_Departamento"]
 
-    days = round((int(request.data["EndDate"]) - int(request.data["StartDate"])) / 86400000)
-
+    startDate = datetime.fromtimestamp(int(request.data["StartDate"]) / 1000)
+    endDate   = datetime.fromtimestamp(int(request.data["EndDate"]) / 1000)
+    delta = endDate - startDate
     dptoData = dptoP.viewDpto(idDpto)
     if (dptoData[1]):
-        total += (dptoData[0][6] * days)
+        total += (dptoData[0][6] * delta.days)
 
     allDptoExtraSrv = dptoP.listExtraServices(idDpto)[0]
 
