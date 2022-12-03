@@ -1,6 +1,7 @@
 from . import procedimientos
 from departamentos import procedimientos as dptoP
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 def addExtraService(id_reserve, id_extSrv, included=True):
     serviceAdded = procedimientos.getUserReserves(id_reserve, id_extSrv, included)
@@ -52,3 +53,15 @@ def rangeCollision(range1, range2):
 
 def valueInRange(value, start, end):
     return start < value < end
+
+def getDateRanges(start, end):
+    startDate = datetime.fromtimestamp(start / 1000)
+    endDate   = datetime.fromtimestamp(end / 1000)
+    delta = endDate - startDate
+
+    dates = []
+    for i in range(delta.days):
+        day = startDate + timedelta(days=i)
+        dates.append(day.strftime("%Y-%m-%d"))
+    
+    return dates

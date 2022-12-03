@@ -99,16 +99,6 @@ def CancelReserve(request):
     )
     return Response(data={"reserva_cancelada": returnCode})
 
-
-@api_view(('GET', 'POST'))
-def getReservedRanges(request, idDpto):
-    data = procedimientos.getReservedRanges(idDpto)
-    if (data[1] == 1):
-        return Response(data=data[0])
-    else:
-        return Response(data={"Error": "Error interno de base de datos"})
-
-
 @api_view(('GET', 'POST'))
 @isUserLogged()
 def AddExtraService(request):
@@ -158,5 +148,24 @@ def listReserveExtraServices(request, idReserva):
             extraServices.append(extSrv)
             
         return Response(data=extraServices)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def getReservedRanges(request, idDpto):
+    data = procedimientos.getReservedRanges(idDpto)
+    if (data[1] == 1):
+        return Response(data=data[0])
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def getReservedDates(request, idDpto):
+    data = procedimientos.getReservedRanges(idDpto)
+    if (data[1] == 1):
+        dates = []
+        for range in data[0]:
+            dates += functions.getDateRanges(range[0], range[1])
+        return Response(data=dates)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
