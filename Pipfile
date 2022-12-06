@@ -12,6 +12,7 @@ cx-oracle = "==8.3.0"
 requests = "==2.25.1"
 sympy = "==1.9"
 rut-chile = "*"
+transbank-sdk = "*"
 
 [dev-packages]
 
