@@ -11,6 +11,17 @@ import time
 # Create your views here.
 
 @api_view(('GET', 'POST'))
+def TransbankMakePay(request):
+    res = functions.TransbankMakePay(request.data["total"])
+    return Response(data={"link": res})
+
+@api_view(('GET', 'POST'))
+def TransbankVerifyPay(request):
+    token = request.GET.get('token_ws')
+    res = functions.TransbankCommit(token)
+    return Response(data={"response": res})
+
+@api_view(('GET', 'POST'))
 @isUserLogged()
 def CreateReserve(request):
     data = {}
@@ -26,6 +37,7 @@ def CreateReserve(request):
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
 
+    price = functions.calculateReservePrice(request)
     returnCode = procedimientos.crearReserva(
         userCredentials["ID_usuario"],     
         request.data["Id_Departamento"],  
@@ -33,7 +45,7 @@ def CreateReserve(request):
         dateRange[0],
         dateRange[1],
         int(time.time()) * 1000,
-        functions.calculateReservePrice(request)
+        price
     )
 
     if (returnCode[1]):
@@ -52,6 +64,7 @@ def CreateReserve(request):
 @isUserLogged()
 def getUserReserves(request):
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
+
 
     data = procedimientos.getUserReserves(userCredentials["ID_usuario"])
     reserves = []

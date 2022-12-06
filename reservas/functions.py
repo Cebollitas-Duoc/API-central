@@ -1,6 +1,9 @@
 from . import procedimientos
 from departamentos import procedimientos as dptoP
 from datetime import datetime, timedelta
+import random
+from transbank.webpay.webpay_plus.transaction import Transaction
+
 
 
 def addExtraService(id_reserve, id_extSrv, included=True):
@@ -65,3 +68,23 @@ def getDateRanges(start, end):
         dates.append(day.strftime("%Y-%m-%d"))
     
     return dates
+
+def TransbankMakePay(total):
+    buy_order = str(random.randrange(1000000, 99999999))
+    session_id = str(random.randrange(1000000, 99999999))
+    amount = total
+    return_url = 'http://localhost:8081/reservas/transbankverify/'
+    create_request = {
+        "buy_order": buy_order,
+        "session_id": session_id,
+        "amount": amount,
+        "return_url": return_url
+    }
+    response = (Transaction()).create(buy_order, session_id, amount, return_url)
+    link = response['url'] + '?token_ws=' + response['token']
+    print(link)
+    return link
+
+def TransbankCommit(token):
+    response = (Transaction()).commit(token=token)
+    return response
