@@ -153,11 +153,13 @@ def listReserveExtraServices(request, idReserva):
         for rsvArray in data[0]:
             extSrv = {}
             extSrv["Id_HiredExtSrv"] = rsvArray[0]
-            extSrv["Id_Reserve"]     = rsvArray[1]
-            extSrv["Id_HiredExtSrv"] = rsvArray[2]
-            extSrv["Value"]          = rsvArray[3]
+            extSrv["Id_ExtSrv"]      = rsvArray[1]
+            extSrv["Value"]          = rsvArray[2]
+            extSrv["Included"]       = rsvArray[3]
             extSrv["Id_Pago"]        = rsvArray[4]
-            extSrv["Included"]       = rsvArray[5]
+            extSrv["EstadoPago"]     = rsvArray[5]
+            extSrv["Id_Category"]    = rsvArray[6]
+            extSrv["Category"]       = rsvArray[7]
             extraServices.append(extSrv)
             
         return Response(data=extraServices)
