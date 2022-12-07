@@ -267,7 +267,7 @@ def AddExtraService(request):
 
     if (currentServices[1]):
         for srvArray in currentServices[0]:
-            if (srvArray[1] == int(request.data["IdCategory"])):
+            if (srvArray["Id_Category"] == int(request.data["IdCategory"])):
                 return Response(data={"Error": "Este departamento ya tiene este servicio extra"})
     
     returnCode = procedimientos.addExtraService(

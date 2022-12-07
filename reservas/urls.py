@@ -14,4 +14,5 @@ urlpatterns = [
     path('transbankpay/', views.TransbankMakePay, name="TransbankMakePay"),
     path('transbankverify/', views.TransbankVerifyPay, name="TransbankVerifyPay"),
     path('getuserreservebyid/<int:id_reserva>/', views.getReservabyId, name="getReservabyId"),
+    path('listreserves/', views.listReserves, name="listReserves"),
 ]
