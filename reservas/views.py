@@ -182,3 +182,36 @@ def getReservedDates(request, idDpto):
         return Response(data=dates)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
+
+
+@api_view(('GET', 'POST'))
+@isUserLogged(permission=1)
+def listReserves(request):
+    data = procedimientos.listReserves()
+    reserves = []
+    if (data[1] == 1):
+        for reserveArray in data[0]:
+            reserve = {}
+            reserve["Id_Reserve"]    = reserveArray[0]
+            reserve["Id_User"]       = reserveArray[1]
+            reserve["Id_Dpto"]       = reserveArray[2]
+            reserve["Address"]       = reserveArray[3]
+            reserve["Id_Estado"]     = reserveArray[4]
+            reserve["Estado"]        = reserveArray[5]
+            reserve["Id_Pago"]       = reserveArray[6]
+            reserve["EstadoPago"]    = reserveArray[7]
+            reserve["RawStartDate"]  = reserveArray[8]
+            reserve["RawEndDate"]    = reserveArray[9]
+            reserve["Value"]         = reserveArray[10]
+            reserve["RawCreateDate"] = reserveArray[11]
+            reserve["UserName"]      = reserveArray[12]
+
+            reserve["StartDate"]  = time.strftime('%d-%m-%Y', time.gmtime(reserve["RawStartDate"]/1000))
+            reserve["EndDate"]    = time.strftime('%d-%m-%Y', time.gmtime(reserve["RawEndDate"]/1000))
+            reserve["CreateDate"] = time.strftime('%d-%m-%Y', time.gmtime(reserve["RawCreateDate"]/1000))
+            reserves.append(reserve)
+            
+        return Response(data=reserves)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})

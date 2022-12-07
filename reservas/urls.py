@@ -13,4 +13,5 @@ urlpatterns = [
     path('getreserveddates/<int:idDpto>/', views.getReservedDates, name="getReservedDates"),
     path('transbankpay/', views.TransbankMakePay, name="TransbankMakePay"),
     path('transbankverify/', views.TransbankVerifyPay, name="TransbankVerifyPay"),
+    path('listreserves/', views.listReserves, name="listReserves"),
 ]

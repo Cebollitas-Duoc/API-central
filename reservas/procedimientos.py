@@ -39,7 +39,6 @@ def getReservedRanges(id_reserva):
     ranges = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_RESERVA.P_GET_DPTO_RANGES", [id_reserva, ranges, 0])
 
-
     ranges = []
     if (r[-1]):
         for rangeArray in r[1]:
@@ -64,3 +63,10 @@ def listHiredExtraServices(id_reserva):
     return (r[1], r[-1] == 1)
 
 #endregion extra service
+
+def listReserves():
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    reserves = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_RESERVA.P_LIST_RESERVAS", [reserves, 0])
+    return (r[0], r[-1] == 1)
