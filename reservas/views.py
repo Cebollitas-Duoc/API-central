@@ -144,7 +144,7 @@ def listReserveExtraServices(request, idReserva):
     if not reserve[1]:
         return Response(data={"Error": "Error interno de base de datos"})
     
-    if userCredentials["ID_usuario"] != reserve[0]["id_usr"]:
+    if not ((userCredentials["ID_usuario"] == reserve[0][1]) or (userCredentials["ID_permiso"] > 0)):
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     data = procedimientos.listHiredExtraServices(idReserva)
