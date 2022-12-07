@@ -15,18 +15,9 @@ def getUserReserves(id_usr):
     return (r[1], r[-1] == 1)
 
 def getReserva(id_reserva):
-    data = {}
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    data["id_usr"]         = r[1]
-    data["id_dpto"]        = r[2]
-    data["id_state"]       = r[3]
-    data["id_payment"]     = r[4]
-    data["fecha_desde"]    = r[5]
-    data["fecha_hasta"]    = r[6]
-    data["Fecha_Creacion"] = r[7]
-    data["valor"]          = r[8]
-    return data, r[-1] == 1
+    r = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0, 0, 0, "", 0, "", 0, "", 0, 0, 0, 0, "", 0])
+    return (r[1:-1], r[-1] == 1)
 
 def cancelReserva(id_reserva):
     cursor = connection.cursor()

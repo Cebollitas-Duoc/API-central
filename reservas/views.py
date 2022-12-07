@@ -182,3 +182,27 @@ def getReservedDates(request, idDpto):
         return Response(data=dates)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
+@api_view(('GET', 'POST'))
+def getReservabyId(request, id_reserva):
+    data = procedimientos.getReserva(id_reserva)
+    if (data[1]):
+        cursor                           = data[0]
+        reserva = {}
+        reserva["ID_RESERVA"]      = cursor[0]
+        reserva["ID_USUARIO"]      = cursor[1]
+        reserva["ID_DEPARTAMENTO"] = cursor[2]
+        reserva["DIRECCION"]       = cursor[3]
+        reserva["ID_ESTADORESERVA"]= cursor[4]
+        reserva["ESTADO_RESERVA"]  = cursor[5]
+        reserva["ID_PAGO"]         = cursor[6]
+        reserva["ESTADO_PAGO"]     = cursor[7]
+        reserva["FECHADESDE"]      = cursor[8]
+        reserva["FECHAHASTA"]      = cursor[9]
+        reserva["VALORTOTAL"]      = cursor[10]
+        reserva["FECHACREACION"]   = cursor[11]
+        reserva["NOMBRE"]          = cursor[12]
+            
+        return Response(data=reserva)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
