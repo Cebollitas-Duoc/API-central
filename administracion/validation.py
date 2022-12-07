@@ -293,6 +293,20 @@ def validateEditUser(request):
 
     return  validateDictionary(request.data, dataFormat)
 
+def validateAddServiceCategory(request):
+    dataFormat = {
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt"
+        },
+        "IsExtra" : {
+            "name": "Tipo",
+            "type": "int"
+        }
+    }
+
+    return  validateDictionary(request.data, dataFormat)
+
 #region mantencion
 
 def validateAddMaintenance(request):
