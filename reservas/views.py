@@ -156,18 +156,18 @@ def listReserveExtraServices(request, idReserva):
             extSrv["Id_ExtSrv"]      = rsvArray[1]
             extSrv["Value"]          = rsvArray[2]
             extSrv["Included"]       = rsvArray[3]
-            extSrv["Id_Pago"]        = rsvArray[4]
-            extSrv["EstadoPago"]     = rsvArray[5]
+            extSrv["Id_Payment"]     = rsvArray[4]
+            extSrv["PaymentState"]   = rsvArray[5]
             extSrv["Id_Category"]    = rsvArray[6]
             extSrv["Category"]       = rsvArray[7]
             if extSrv["Included"]:
-                extSrv["Estado"] = "Incluido"
-            elif (extSrv["EstadoPago"] == 1):
-                extSrv["Estado"] = "Pagado"
-            elif (extSrv["EstadoPago"] == 2):
-                extSrv["Estado"] = "Cancelado"
+                extSrv["Estate"] = "Incluido"
+            elif (extSrv["PaymentState"] == 1):
+                extSrv["Estate"] = "Pagado"
+            elif (extSrv["PaymentState"] == 2):
+                extSrv["Estate"] = "Cancelado"
             else:
-                extSrv["Estado"] = "Por pagar"
+                extSrv["Estate"] = "Por pagar"
             extraServices.append(extSrv)
             
         return Response(data=extraServices)
