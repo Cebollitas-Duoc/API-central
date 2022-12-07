@@ -101,7 +101,7 @@ def validateSessionKey(request):
         "SessionKey" : {
             "name": "Llave de sesion",
             "type": "txt",          
-        },
+        }
     }
 
     return  validateDictionary(request.data, dataFormat)

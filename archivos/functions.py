@@ -16,3 +16,17 @@ def saveImage(img):
     fileSaved = procedimientos.insertPicture(imgDbName, contantType, imgB64)
 
     return (fileSaved, imgDbName)
+
+def saveFile(file, id_category, id_reserva):
+    contantType = file.content_type
+    fileType, fileExtension = contantType.split("/")
+
+    fileRawData = file.file.read()
+    fileB64 = base64.b64encode(fileRawData).decode()
+
+    filehash = hashlib.md5(fileB64.encode()).hexdigest()
+    fileDbName = f"{filehash}.{fileExtension}"
+    
+    fileSaved = procedimientos.insertDocument(fileDbName, id_category, id_reserva, contantType, fileB64)
+
+    return (fileSaved, fileDbName)

@@ -2,14 +2,14 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .validation import *
 import identificacion.procedimientos as authP
-import identificacion.decorators as authD
+from identificacion.decorators import *
 import archivos.functions as files
 from . import procedimientos
 from .functions import removeNone
 from rut_chile import rut_chile
 
 @api_view(('GET',))
-@authD.isUserLogged()
+@isUserLogged()
 def GetSessionProfile(request):
     sessionKey = request.data["SessionKey"]
     data = procedimientos.getSessionProfile(sessionKey)
@@ -19,7 +19,7 @@ def GetSessionProfile(request):
     return Response(data=removeNone(data))
 
 @api_view(('POST',))
-@authD.isUserLogged()
+@isUserLogged()
 def EditSessionProfile(request):
     data = {}
 
