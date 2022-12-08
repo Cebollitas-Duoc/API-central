@@ -207,12 +207,15 @@ def getReservabyId(request, id_reserva):
         reserva["ESTADO_RESERVA"]  = cursor[5]
         reserva["ID_PAGO"]         = cursor[6]
         reserva["ESTADO_PAGO"]     = cursor[7]
-        reserva["FECHADESDE"]      = cursor[8]
-        reserva["FECHAHASTA"]      = cursor[9]
+        reserva["RawFECHADESDE"]   = cursor[8]
+        reserva["RawFECHAHASTA"]   = cursor[9]
         reserva["VALORTOTAL"]      = cursor[10]
-        reserva["FECHACREACION"]   = cursor[11]
+        reserva["RawFECHACREACION"]= cursor[11]
         reserva["NOMBRE"]          = cursor[12]
-            
+
+        reserva["FECHADESDE"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHADESDE"]/1000))
+        reserva["FECHAHASTA"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHAHASTA"]/1000))
+        reserva["FECHACREACION"] = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHACREACION"]/1000)) 
         return Response(data=reserva)
 
 
@@ -246,3 +249,4 @@ def listReserves(request):
         return Response(data=reserves)
     else:
         return Response(data={"Error": "Error interno de base de datos"})
+
