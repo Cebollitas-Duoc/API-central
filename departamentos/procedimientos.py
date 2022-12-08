@@ -69,3 +69,10 @@ def listExtraServiceCategories():
     return (r[0], r[-1] == 1)
 
 #endrange extra services
+
+def listWorkers():
+    cursor = connection.cursor()
+    raw_cursor = cursor.connection.cursor()
+    workers = raw_cursor.var(cx_Oracle.CURSOR) 
+    r = cursor.callproc("PCK_TRABAJADORES.P_LISTAR_TRABAJADORES", [workers, 0])
+    return (r[0], r[-1] == 1)

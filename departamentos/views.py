@@ -133,3 +133,22 @@ def listExtraServiceCategories(request):
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 #endrange extraservices
+
+@api_view(('GET', 'POST'))
+def listWorkers(request):
+    data = procedimientos.listWorkers()
+    workers = []
+    if (data[1] == 1):
+        for srvArray in data[0]:
+            srv = {}
+            srv["Id_Worker"] = srvArray[0]
+            srv["Names"]     = srvArray[1]
+            srv["LastNames"] = srvArray[2]
+            srv["Patent"]    = srvArray[3]
+            srv["FullName"]  = f"{srvArray[1]} {srvArray[2]}"
+
+            workers.append(srv)
+            
+        return Response(data=workers)
+    else:
+        return Response(data={"Error": "Error interno de base de datos"})
