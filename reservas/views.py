@@ -12,12 +12,12 @@ import time
 
 @api_view(('GET', 'POST'))
 def TransbankMakePay(request):
-    res = functions.TransbankMakePay(request.data["total"])
+    res = functions.TransbankMakePay(request)
     return Response(data={"link": res})
 
 @api_view(('GET', 'POST'))
 def TransbankVerifyPay(request):
-    token = request.GET.get('token_ws')
+    token = request.data['token']
     res = functions.TransbankCommit(token)
     return Response(data={"response": res})
 
@@ -104,7 +104,7 @@ def CancelReserve(request):
     if not reserve[1]:
         return Response(data={"Error": "Error interno de base de datos"})
     
-    if userCredentials["ID_usuario"] != reserve[0]["id_usr"]:
+    if userCredentials["ID_usuario"] != reserve[0][1]:
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     returnCode = procedimientos.cancelReserva(
@@ -126,7 +126,7 @@ def AddExtraService(request):
     if not reserve[1]:
         return Response(data={"Error": "Error interno de base de datos"})
     
-    if userCredentials["ID_usuario"] != reserve[0]["id_usr"]:
+    if userCredentials["ID_usuario"] != reserve[0][1]:
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     returnCode = procedimientos.addExtraService(

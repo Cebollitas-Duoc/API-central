@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "departamentos.apps.DepartamentosConfig",
     "reservas.apps.ReservasConfig",
     "graficos.apps.GraficosConfig",
+    "pagos.apps.PagosConfig",
     'rest_framework',
 
     "corsheaders",

@@ -1,5 +1,6 @@
 from . import procedimientos
 from departamentos import procedimientos as dptoP
+from reservas import procedimientos as resP
 from datetime import datetime, timedelta
 import random
 from transbank.webpay.webpay_plus.transaction import Transaction
@@ -69,11 +70,17 @@ def getDateRanges(start, end):
     
     return dates
 
-def TransbankMakePay(total):
-    buy_order = str(random.randrange(1000000, 99999999))
+def TransbankMakePay(request):
+    buy_order = request.data["Id_Reserva"]
     session_id = str(random.randrange(1000000, 99999999))
+    data = resP.getReserva(request.data["Id_Reserva"])
+    cursor = data[0]
+    total = cursor[10]
     amount = total
-    return_url = 'http://localhost:8081/reservas/transbankverify/'
+    request_domain = request._current_scheme_host
+    return_url = "http://mrmeme.cl/pagos/verificarpago"
+    if ("localhost" in request_domain):
+        return_url =  "http://localhost:8080/pagos/verificarpago"
     create_request = {
         "buy_order": buy_order,
         "session_id": session_id,
