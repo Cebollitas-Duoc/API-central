@@ -15,7 +15,7 @@ def pagarReserva(request):
         reserva = {}
         reserva["VALORTOTAL"]      = cursor[10]
         date = int(time.time()) * 1000
-        dataPago = procedimientos.pagarReserva(request.data["Id_Pago"], request.data["Id_Estado_Pago"], reserva["VALORTOTAL"], date, request.data["Id_Reserva"])
-        return Response(data=dataPago)
+        dataPago = procedimientos.pagarReserva(request.data["Id_Estado_Pago"], reserva["VALORTOTAL"], date, request.data["Id_Reserva"])
+        return Response(data={"Success":"El pago ha sido guardado"})
     else:
         return Response(data={"Error": "Error interno de base de datos"})
