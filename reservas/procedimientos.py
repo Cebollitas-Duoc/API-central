@@ -40,10 +40,10 @@ def getReservedRanges(id_reserva):
 
 #region extra service
 
-def addExtraService(id_reserva, id_extSrv, included):
+def hireExtraService(id_reserva, id_extSrv, included, comment):
     included = 1 if included else 0
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_ADD_EXTRA_SRV", [id_reserva, id_extSrv, included, 0])
+    r = cursor.callproc("PCK_RESERVA.P_ADD_EXTRA_SRV", [id_reserva, id_extSrv, included, comment, 0])
     return r[-1] == 1
 
 def listHiredExtraServices(id_reserva):

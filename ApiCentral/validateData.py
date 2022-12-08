@@ -83,7 +83,7 @@ def isUnderMax(data, format):
     if (max == None):
         return (True, "")
     
-    if (len(data) > max):
+    if (len(data) > int(max)):
         return (False, f"{name}Tiene mas de {max} caracteres")
     return (True, "")
 

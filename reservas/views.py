@@ -51,10 +51,11 @@ def CreateReserve(request):
     if (returnCode[1]):
         if ("extraServices" in request.data):
             for extSrv in request.data["extraServices"].split(","):
-                procedimientos.addExtraService(
+                procedimientos.hireExtraService(
                     returnCode[0],
                     extSrv,
                     True,
+                    ""
                 )
     
     return Response(data={"reserva_creada": returnCode[1], "IdReserva": returnCode[0]})
@@ -129,10 +130,11 @@ def AddExtraService(request):
     if userCredentials["ID_usuario"] != reserve[0][1]:
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
-    returnCode = procedimientos.addExtraService(
+    returnCode = procedimientos.hireExtraService(
         request.data["Id_Reserve"],
         request.data["Id_ExtSer"],
         False,
+        request.data["Comment"]
     )
     return Response(data={"servicioExtra_agregado": returnCode})
 

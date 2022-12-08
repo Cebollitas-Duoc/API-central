@@ -35,13 +35,18 @@ def validateCancelReserva(request):
 
 def validateAddExtraService(request):
     dataFormat = {
-        "Id_Reserva" : {
+        "Id_Reserve" : {
             "name": "Reserva",
             "type": "int"
         },
         "Id_ExtSer" : {
             "name": "Servicio extra",
             "type": "int"
+        },
+        "Comment" : {
+            "name": "comentario",
+            "type": "txt",
+            "max": "1000"
         },
     }
     return  validateDictionary(request.data, dataFormat)
