@@ -56,6 +56,7 @@ def listExtraServices(id_apartment):
             srv["Id_Trabajador"]   = srvArray[3]
             srv["Trabajador"]      = srvArray[4]
             srv["Valor"]           = srvArray[5]
+            srv["Description"]     = srvArray[6]
                 
             services.append(srv)
 

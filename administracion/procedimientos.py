@@ -66,18 +66,18 @@ def addServiceCategory(desc):
 #endregion servicios
 
 #region servicios extra
-def addExtraService(id_dpto, id_categoria, id_estado, id_trabajador, valor):
+def addExtraService(id_dpto, id_categoria, id_estado, id_trabajador, valor, description):
     if id_trabajador == "undefined":
         id_trabajador = None
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_ADD_EXTRASERVICE ", [id_dpto, id_categoria, id_estado, id_trabajador, valor, 0])
+    r = cursor.callproc("PCK_ADMIN.P_ADD_EXTRASERVICE ", [id_dpto, id_categoria, id_estado, id_trabajador, valor, description, 0])
     return r[-1] == 1
 
-def editExtraService(id_extsrv, id_estado, id_trabajador, valor):
+def editExtraService(id_extsrv, id_estado, id_trabajador, valor, description):
     if id_trabajador == "undefined":
         id_trabajador = None
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_ADMIN.P_EDIT_EXTRASERVICE ", [id_extsrv, id_estado, id_trabajador, valor, 0])
+    r = cursor.callproc("PCK_ADMIN.P_EDIT_EXTRASERVICE ", [id_extsrv, id_estado, id_trabajador, valor, description, 0])
     return r[-1] == 1
 
 def addExtraServiceCategory(desc):

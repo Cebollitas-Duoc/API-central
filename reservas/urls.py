@@ -15,4 +15,5 @@ urlpatterns = [
     path('transbankverify/', views.TransbankVerifyPay, name="TransbankVerifyPay"),
     path('getuserreservebyid/<int:id_reserva>/', views.getReservabyId, name="getReservabyId"),
     path('listreserves/', views.listReserves, name="listReserves"),
+    path('edithiredextraservicecomment/', views.editHiredExtraServiceComment, name="editHiredExtraServiceComment"),
 ]

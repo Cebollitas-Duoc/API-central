@@ -210,8 +210,6 @@ def DeleteFotoDpto(request):
 #endregion imagen departamento
 
 #region servicios
-
-#region servicios
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def AddService(request):
@@ -264,11 +262,6 @@ def AddExtraService(request):
         return Response(data=data)
 
     currentServices = dptoProcedimientos.listExtraServices(request.data["IdDpto"])
-
-    if (currentServices[1]):
-        for srvArray in currentServices[0]:
-            if (srvArray["Id_Category"] == int(request.data["IdCategory"])):
-                return Response(data={"Error": "Este departamento ya tiene este servicio extra"})
     
     returnCode = procedimientos.addExtraService(
         request.data["IdDpto"],
@@ -276,6 +269,7 @@ def AddExtraService(request):
         request.data["IdState"],
         request.data["IdTrabajador"],
         request.data["Valor"],
+        request.data["Description"],
     )
 
     return Response(data={"ServicioExtra_Agregado": returnCode})
@@ -294,6 +288,7 @@ def EditExtraService(request):
         request.data["IdState"],
         request.data["IdTrabajador"],
         request.data["Valor"],
+        request.data["Description"],
     )
 
     return Response(data={"Servicio_Modificado": returnCode})

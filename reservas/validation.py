@@ -50,3 +50,17 @@ def validateAddExtraService(request):
         },
     }
     return  validateDictionary(request.data, dataFormat)
+
+def validateEditHiredExtraServiceComment(request):
+    dataFormat = {
+        "Id_ExtSer" : {
+            "name": "Servicio contratado",
+            "type": "int"
+        },
+        "Comment" : {
+            "name": "comentario",
+            "type": "txt",
+            "max": "1000"
+        },
+    }
+    return  validateDictionary(request.data, dataFormat)

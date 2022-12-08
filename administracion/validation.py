@@ -19,6 +19,11 @@ def validateEditExtraService(request):
             "name": "Valor",
             "type": "int"
         },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt",
+            "max": 100
+        },
     }
 
     return  validateDictionary(request.data, dataFormat)
@@ -45,6 +50,11 @@ def validateAddExtraService(request):
         "Valor" : {
             "name": "Valor",
             "type": "int"
+        },
+        "Description" : {
+            "name": "Descripcion",
+            "type": "txt",
+            "max": 100
         },
     }
     return  validateDictionary(request.data, dataFormat)

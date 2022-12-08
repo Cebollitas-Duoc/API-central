@@ -61,3 +61,8 @@ def listReserves():
     reserves = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_RESERVA.P_LIST_RESERVAS", [reserves, 0])
     return (r[0], r[-1] == 1)
+
+def editHiredExtraServiceComment(id_extsrv, comment):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_RESERVA.P_EDIT_H_EXTSRV_COM", [id_extsrv, comment, 0])
+    return r[-1] == 1

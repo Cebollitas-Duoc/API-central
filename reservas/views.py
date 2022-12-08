@@ -162,6 +162,7 @@ def listReserveExtraServices(request, idReserva):
             extSrv["PaymentState"]   = rsvArray[5]
             extSrv["Id_Category"]    = rsvArray[6]
             extSrv["Category"]       = rsvArray[7]
+            extSrv["Comment"]        = rsvArray[8]
             if extSrv["Included"]:
                 extSrv["Estate"] = "Incluido"
             elif (extSrv["PaymentState"] == 1):
@@ -252,3 +253,14 @@ def listReserves(request):
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 
+@api_view(('GET', 'POST'))
+def editHiredExtraServiceComment(request):
+    validationResult = validateEditHiredExtraServiceComment(request)
+    if (not validationResult[0]):
+        return Response(data={"Error": validationResult[1]})
+
+    wasEdited = procedimientos.editHiredExtraServiceComment(
+        request.data["Id_ExtSer"], 
+        request.data["Comment"]
+        )
+    return Response(data={"CommentEdited": wasEdited})
