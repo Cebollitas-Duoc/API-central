@@ -163,6 +163,7 @@ def listReserveExtraServices(request, idReserva):
             extSrv["Id_Category"]    = rsvArray[6]
             extSrv["Category"]       = rsvArray[7]
             extSrv["Comment"]        = rsvArray[8]
+            extSrv["Description"]    = rsvArray[9]
             if extSrv["Included"]:
                 extSrv["Estate"] = "Incluido"
             elif (extSrv["PaymentState"] == 1):
