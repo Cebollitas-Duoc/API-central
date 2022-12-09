@@ -91,6 +91,12 @@ def ListDocs(request, idRsv):
 #endregion documentos
 
 @api_view(('GET', 'POST'))
+@isUserLogged(permission=1)
+def CreateCheckOut(request, idRsv):
+    return Response(data={functions.createCheckOut(idRsv)})
+
+@api_view(('GET', 'POST'))
 def test(request):
     idRsv = 3
     return Response(data={functions.createCheckIn(idRsv)})
+

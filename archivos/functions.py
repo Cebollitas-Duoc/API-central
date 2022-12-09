@@ -40,16 +40,17 @@ def saveEncodedFile(id_category, id_reserva, contantType, fileB64, fileExtension
     return (fileSaved, fileDbName)
 
 def createCheckIn(idRsv):
-    html = generateCheckInDocument(idRsv)
+    html = generateDocument_CheckIn(idRsv)
     encodedPdf = htmlToPdf(html)
     return saveEncodedFile(1, idRsv, "application/pdf", encodedPdf, "pdf")
 
-def htmlToPdf(html):
-    pdf = pdfkit.from_string(html, False)
-    encoded = str(base64.b64encode(pdf))[2:-1]
-    return encoded
+def createCheckOut(idRsv):
+    html = generateDocument_CheckOut(idRsv)
+    encodedPdf = htmlToPdf(html)
+    return saveEncodedFile(2, idRsv, "application/pdf", encodedPdf, "pdf")
 
-def generateCheckInDocument(idRsv):
+
+def generateDocument_CheckIn(idRsv):
     baseDir = str(settings.BASE_DIR)
     templatesPath = "archivos/documentTemplates"
     htmlPath = path.join(baseDir, templatesPath, "CheckIn.html")
@@ -74,6 +75,37 @@ def generateCheckInDocument(idRsv):
     html = html.replace("*ExtraServices", getTableOfHiredServices(reserveData["ID_RESERVA"]))
 
     return html
+
+def generateDocument_CheckOut(idRsv):
+    baseDir = str(settings.BASE_DIR)
+    templatesPath = "archivos/documentTemplates"
+    htmlPath = path.join(baseDir, templatesPath, "CheckOut.html")
+    reserveData = rsvPro.getReserva(idRsv)
+    html = open(htmlPath, "r").read()
+
+    html = html.replace("*Address",   str(reserveData["DIRECCION"]))
+    html = html.replace("*Rooms",     str(reserveData["ROOMS"]))
+    html = html.replace("*BathRooms", str(reserveData["BATHROOMS"]))
+    html = html.replace("*Services",  getDptoServices(reserveData["ID_DEPARTAMENTO"]))
+
+    html = html.replace("*Name",  str(reserveData["NOMBRE"]))
+    html = html.replace("*Rut",   str(reserveData["RUT"]))
+    html = html.replace("*Email", str(reserveData["EMAIL"]))
+    html = html.replace("*Phone", str(reserveData["PHONE"]))
+
+    html = html.replace("*IdReserve",     str(reserveData["ID_RESERVA"]))
+    html = html.replace("*CreateDate",    str(reserveData["FECHACREACION"]))
+    html = html.replace("*StartDate",     str(reserveData["FECHADESDE"]))
+    html = html.replace("*EndDate",       str(reserveData["FECHAHASTA"]))
+    html = html.replace("*Value",         "$" + "{:,}".format(reserveData["VALORTOTAL"]))
+    html = html.replace("*ExtraServices", getTableOfHiredServices(reserveData["ID_RESERVA"]))
+
+    return html
+
+def htmlToPdf(html):
+    pdf = pdfkit.from_string(html, False)
+    encoded = str(base64.b64encode(pdf))[2:-1]
+    return encoded
 
 def getDptoServices(idDpto):
     data = dptoPro.listServices(idDpto)
@@ -100,10 +132,11 @@ def getTableOfHiredServices(idRsv):
                 <td>{service["Description"]}</td>
                 <td>{service["Category"]}</td>
                 <td>{"$" + "{:,}".format(service["Value"])}</td>
-                <td>{service["Estate"]}</td>
+                <td class="hiredServiceStatus">{service["Estate"]}</td>
             </tr>
         """
         rows += row
+
     table = f"""
         <h2>Servicios extra</h2>
         <table style="width:100%">
@@ -111,7 +144,7 @@ def getTableOfHiredServices(idRsv):
                 <th>Servicio</th>
                 <th>Categoria</th>
                 <th>Valor</th>
-                <th>Estado</th>
+                <th class="hiredServiceStatus">Estado pago</th>
             </tr>
             {rows}
         </table>
