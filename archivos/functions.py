@@ -6,6 +6,7 @@ import pdfkit
 from django.conf import settings
 from os import path
 import reservas.procedimientos as rsvPro
+import departamentos.procedimientos as dptoPro
 
 def saveImage(img):
     contantType = img.content_type
@@ -58,7 +59,7 @@ def generateCheckInDocument(idRsv):
     html = html.replace("*Address",   str(reserveData["DIRECCION"]))
     html = html.replace("*Rooms",     str(reserveData["ROOMS"]))
     html = html.replace("*BathRooms", str(reserveData["BATHROOMS"]))
-    html = html.replace("*Services",  "POR INTEGRAR")
+    html = html.replace("*Services",  getDptoServices(reserveData["ID_DEPARTAMENTO"]))
 
     html = html.replace("*Name",  str(reserveData["NOMBRE"]))
     html = html.replace("*Rut",   str(reserveData["RUT"]))
@@ -69,6 +70,17 @@ def generateCheckInDocument(idRsv):
     html = html.replace("*CreateDate", str(reserveData["FECHACREACION"]))
     html = html.replace("*StartDate",  str(reserveData["FECHADESDE"]))
     html = html.replace("*EndDate",    str(reserveData["FECHAHASTA"]))
-    html = html.replace("*Value",      str(reserveData["VALORTOTAL"]))
+    html = html.replace("*Value",      "$" + "{:,}".format(reserveData["VALORTOTAL"]))
 
     return html
+
+def getDptoServices(idDpto):
+    data = dptoPro.listServices(idDpto)
+    services = []
+    if (data[1] == 1):
+        for srvArray in data[0]:     
+            services.append(srvArray[2])
+            
+        return ", ".join(services)
+    else:
+        return ""

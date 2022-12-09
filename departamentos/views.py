@@ -84,8 +84,9 @@ def listServices(request, idDpto):
             srv = {}
             srv["Id_Service"]         = srvArray[0]
             srv["Id_ServiceCategory"] = srvArray[1]
-            srv["Id_Estado"]          = srvArray[2]
-            srv["Cantidad"]           = srvArray[3]
+            srv["ServiceCategory"]    = srvArray[2]
+            srv["Id_Estado"]          = srvArray[3]
+            srv["Cantidad"]           = srvArray[4]
                 
             services.append(srv)
             
