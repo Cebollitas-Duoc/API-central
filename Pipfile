@@ -13,6 +13,7 @@ requests = "==2.25.1"
 sympy = "==1.9"
 rut-chile = "*"
 transbank-sdk = "*"
+pdfkit = "*"
 
 [dev-packages]
 

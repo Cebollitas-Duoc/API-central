@@ -10,4 +10,6 @@ urlpatterns = [
     path('savedoc/',  views.SaveDoc,  name="SaveDoc"),
     path('getdoc/<str:fileName>/',  views.getDoc,  name="getDoc"),
     path('listdocs/<int:idRsv>/',  views.ListDocs,  name="ListDocs"),
+    
+    path('test/',  views.test,  name="test"),
 ]

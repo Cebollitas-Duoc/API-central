@@ -89,3 +89,8 @@ def ListDocs(request, idRsv):
     else:
         return Response(data={"Error": "Error interno de base de datos"})
 #endregion documentos
+
+@api_view(('GET', 'POST'))
+def test(request):
+    idRsv = 1
+    return Response(data={functions.createCheckIn(idRsv)})

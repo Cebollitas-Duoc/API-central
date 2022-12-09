@@ -102,10 +102,8 @@ def CancelReserve(request):
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
     reserve = procedimientos.getReserva(request.data["Id_Reserva"])
-    if not reserve[1]:
-        return Response(data={"Error": "Error interno de base de datos"})
     
-    if userCredentials["ID_usuario"] != reserve[0][1]:
+    if userCredentials["ID_usuario"] != reserve["ID_USUARIO"]:
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     returnCode = procedimientos.cancelReserva(
@@ -124,10 +122,8 @@ def AddExtraService(request):
 
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
     reserve = procedimientos.getReserva(request.data["Id_Reserve"])
-    if not reserve[1]:
-        return Response(data={"Error": "Error interno de base de datos"})
     
-    if userCredentials["ID_usuario"] != reserve[0][1]:
+    if userCredentials["ID_usuario"] != reserve["ID_USUARIO"]:
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     returnCode = procedimientos.hireExtraService(
@@ -143,10 +139,8 @@ def AddExtraService(request):
 def listReserveExtraServices(request, idReserva):
     userCredentials = authProcedures.sessionCredentials(request.data["SessionKey"])
     reserve = procedimientos.getReserva(idReserva)
-    if not reserve[1]:
-        return Response(data={"Error": "Error interno de base de datos"})
     
-    if not ((userCredentials["ID_usuario"] == reserve[0][1]) or (userCredentials["ID_permiso"] > 0)):
+    if not ((userCredentials["ID_usuario"] == reserve["ID_USUARIO"]) or (userCredentials["ID_permiso"] > 0)):
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
     data = procedimientos.listHiredExtraServices(idReserva)
@@ -199,28 +193,8 @@ def getReservedDates(request, idDpto):
 
 @api_view(('GET', 'POST'))
 def getReservabyId(request, id_reserva):
-    data = procedimientos.getReserva(id_reserva)
-    if (data[1]):
-        cursor                           = data[0]
-        reserva = {}
-        reserva["ID_RESERVA"]      = cursor[0]
-        reserva["ID_USUARIO"]      = cursor[1]
-        reserva["ID_DEPARTAMENTO"] = cursor[2]
-        reserva["DIRECCION"]       = cursor[3]
-        reserva["ID_ESTADORESERVA"]= cursor[4]
-        reserva["ESTADO_RESERVA"]  = cursor[5]
-        reserva["ID_PAGO"]         = cursor[6]
-        reserva["ESTADO_PAGO"]     = cursor[7]
-        reserva["RawFECHADESDE"]   = cursor[8]
-        reserva["RawFECHAHASTA"]   = cursor[9]
-        reserva["VALORTOTAL"]      = cursor[10]
-        reserva["RawFECHACREACION"]= cursor[11]
-        reserva["NOMBRE"]          = cursor[12]
-
-        reserva["FECHADESDE"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHADESDE"]/1000))
-        reserva["FECHAHASTA"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHAHASTA"]/1000))
-        reserva["FECHACREACION"] = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHACREACION"]/1000)) 
-        return Response(data=reserva)
+    reserva = procedimientos.getReserva(id_reserva)
+    return Response(data=reserva)
 
 
 @api_view(('GET', 'POST'))

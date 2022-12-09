@@ -73,9 +73,8 @@ def getDateRanges(start, end):
 def TransbankMakePay(request):
     buy_order = request.data["Id_Reserva"]
     session_id = str(random.randrange(1000000, 99999999))
-    data = resP.getReserva(request.data["Id_Reserva"])
-    cursor = data[0]
-    total = cursor[10]
+    cursor = resP.getReserva(request.data["Id_Reserva"])
+    total = cursor["VALORTOTAL"]
     amount = total
     request_domain = request._current_scheme_host
     return_url = "http://mrmeme.cl/pagos/verificarpago"

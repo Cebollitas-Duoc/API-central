@@ -1,5 +1,7 @@
 from django.db import connection
 import cx_Oracle
+import time
+from rut_chile import rut_chile
 
 def crearReserva(id_usr, id_dpto, id_estdo, fechadesde, fechahasta, fechacreacion, valor):
     data = {}
@@ -16,8 +18,37 @@ def getUserReserves(id_usr):
 
 def getReserva(id_reserva):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0, 0, 0, "", 0, "", 0, "", 0, 0, 0, 0, "", 0])
-    return (r[1:-1], r[-1] == 1)
+    response = cursor.callproc("PCK_RESERVA.P_GET_RESERVA", [id_reserva, 0,0,0,"",0,"",0,"",0,0,0,0,"","",0,0,0,0,0])
+    response = response[1:-1]
+    reserva = {}
+    reserva["ID_RESERVA"]       = response[0]
+    reserva["ID_USUARIO"]       = response[1]
+    reserva["ID_DEPARTAMENTO"]  = response[2]
+    reserva["DIRECCION"]        = response[3]
+    reserva["ID_ESTADORESERVA"] = response[4]
+    reserva["ESTADO_RESERVA"]   = response[5]
+    reserva["ID_PAGO"]          = response[6]
+    reserva["ESTADO_PAGO"]      = response[7]
+    reserva["RawFECHADESDE"]    = response[8]
+    reserva["RawFECHAHASTA"]    = response[9]
+    reserva["VALORTOTAL"]       = response[10]
+    reserva["RawFECHACREACION"] = response[11]
+    reserva["NOMBRE"]           = response[12]
+    reserva["EMAIL"]            = response[13]
+    reserva["PHONE"]            = response[14]
+    reserva["RUT"]              = response[15]
+    reserva["ROOMS"]            = response[16]
+    reserva["BATHROOMS"]        = response[17]
+    #formatear fechas
+    reserva["FECHADESDE"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHADESDE"]/1000))
+    reserva["FECHAHASTA"]    = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHAHASTA"]/1000))
+    reserva["FECHACREACION"] = time.strftime('%d-%m-%Y', time.gmtime(reserva["RawFECHACREACION"]/1000))
+    #formatear rut
+    reserva["RUT"] = str(reserva["RUT"])
+    reserva["RUT"] += rut_chile.get_verification_digit(reserva["RUT"])
+    reserva["RUT"] = rut_chile.format_rut_with_dots(reserva["RUT"])
+
+    return reserva
 
 def cancelReserva(id_reserva):
     cursor = connection.cursor()

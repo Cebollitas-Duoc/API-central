@@ -12,6 +12,9 @@ RUN        apt-get update && apt-get install -y libaio1 wget unzip \
             && echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf \
             && ldconfig
 
+# Install wkhtmltopdf
+RUN apt-get install -y wkhtmltopdf
+
 RUN pip install --upgrade pip && \
     pip install pipenv==2022.10.4
 
