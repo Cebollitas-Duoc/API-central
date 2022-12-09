@@ -82,7 +82,34 @@ def listHiredExtraServices(id_reserva):
     raw_cursor = cursor.connection.cursor()
     hiredExtraServices = raw_cursor.var(cx_Oracle.CURSOR) 
     r = cursor.callproc("PCK_RESERVA.P_LIST_RESERVA_EXTSRV", [id_reserva, hiredExtraServices, 0])
-    return (r[1], r[-1] == 1)
+    success = r[-1] == 1
+    extraServices = []
+    if (success):
+        for rsvArray in r[1]:
+            extSrv = {}
+            extSrv["Id_HiredExtSrv"] = rsvArray[0]
+            extSrv["Id_ExtSrv"]      = rsvArray[1]
+            extSrv["Value"]          = rsvArray[2]
+            extSrv["Included"]       = rsvArray[3]
+            extSrv["Id_Payment"]     = rsvArray[4]
+            extSrv["PaymentState"]   = rsvArray[5]
+            extSrv["Id_Category"]    = rsvArray[6]
+            extSrv["Category"]       = rsvArray[7]
+            extSrv["Comment"]        = rsvArray[8]
+            extSrv["Description"]    = rsvArray[9]
+            if extSrv["Included"]:
+                extSrv["Estate"] = "Incluido"
+            elif (extSrv["PaymentState"] == 1):
+                extSrv["Estate"] = "Pagado"
+            elif (extSrv["PaymentState"] == 2):
+                extSrv["Estate"] = "Cancelado"
+            else:
+                extSrv["Estate"] = "Por pagar"
+            extraServices.append(extSrv)
+            
+        return extraServices
+    else:
+        return {"Error": "Error interno de base de datos"}
 
 #endregion extra service
 

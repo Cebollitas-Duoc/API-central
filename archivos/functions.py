@@ -51,7 +51,7 @@ def htmlToPdf(html):
 
 def generateCheckInDocument(idRsv):
     baseDir = str(settings.BASE_DIR)
-    templatesPath = "archivos/templates"
+    templatesPath = "archivos/documentTemplates"
     htmlPath = path.join(baseDir, templatesPath, "CheckIn.html")
     reserveData = rsvPro.getReserva(idRsv)
     html = open(htmlPath, "r").read()
@@ -66,11 +66,12 @@ def generateCheckInDocument(idRsv):
     html = html.replace("*Email", str(reserveData["EMAIL"]))
     html = html.replace("*Phone", str(reserveData["PHONE"]))
 
-    html = html.replace("*IdReserve",  str(reserveData["ID_RESERVA"]))
-    html = html.replace("*CreateDate", str(reserveData["FECHACREACION"]))
-    html = html.replace("*StartDate",  str(reserveData["FECHADESDE"]))
-    html = html.replace("*EndDate",    str(reserveData["FECHAHASTA"]))
-    html = html.replace("*Value",      "$" + "{:,}".format(reserveData["VALORTOTAL"]))
+    html = html.replace("*IdReserve",     str(reserveData["ID_RESERVA"]))
+    html = html.replace("*CreateDate",    str(reserveData["FECHACREACION"]))
+    html = html.replace("*StartDate",     str(reserveData["FECHADESDE"]))
+    html = html.replace("*EndDate",       str(reserveData["FECHAHASTA"]))
+    html = html.replace("*Value",         "$" + "{:,}".format(reserveData["VALORTOTAL"]))
+    html = html.replace("*ExtraServices", getTableOfHiredServices(reserveData["ID_RESERVA"]))
 
     return html
 
@@ -84,3 +85,35 @@ def getDptoServices(idDpto):
         return ", ".join(services)
     else:
         return ""
+
+def getTableOfHiredServices(idRsv):
+    services = rsvPro.listHiredExtraServices(idRsv)
+    if "Error" in services:
+        return ""
+    if len(services) == 0:
+        return ""
+
+    rows = ""
+    for service in services:
+        row = f"""
+            <tr>
+                <td>{service["Description"]}</td>
+                <td>{service["Category"]}</td>
+                <td>{"$" + "{:,}".format(service["Value"])}</td>
+                <td>{service["Estate"]}</td>
+            </tr>
+        """
+        rows += row
+    table = f"""
+        <h2>Servicios extra</h2>
+        <table style="width:100%">
+            <tr>
+                <th>Servicio</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Estado</th>
+            </tr>
+            {rows}
+        </table>
+    """
+    return table

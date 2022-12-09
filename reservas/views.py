@@ -143,34 +143,8 @@ def listReserveExtraServices(request, idReserva):
     if not ((userCredentials["ID_usuario"] == reserve["ID_USUARIO"]) or (userCredentials["ID_permiso"] > 0)):
         return Response(data={"Error": "Esta reserva no te pretenece"})
 
-    data = procedimientos.listHiredExtraServices(idReserva)
-    extraServices = []
-    if (data[1] == 1):
-        for rsvArray in data[0]:
-            extSrv = {}
-            extSrv["Id_HiredExtSrv"] = rsvArray[0]
-            extSrv["Id_ExtSrv"]      = rsvArray[1]
-            extSrv["Value"]          = rsvArray[2]
-            extSrv["Included"]       = rsvArray[3]
-            extSrv["Id_Payment"]     = rsvArray[4]
-            extSrv["PaymentState"]   = rsvArray[5]
-            extSrv["Id_Category"]    = rsvArray[6]
-            extSrv["Category"]       = rsvArray[7]
-            extSrv["Comment"]        = rsvArray[8]
-            extSrv["Description"]    = rsvArray[9]
-            if extSrv["Included"]:
-                extSrv["Estate"] = "Incluido"
-            elif (extSrv["PaymentState"] == 1):
-                extSrv["Estate"] = "Pagado"
-            elif (extSrv["PaymentState"] == 2):
-                extSrv["Estate"] = "Cancelado"
-            else:
-                extSrv["Estate"] = "Por pagar"
-            extraServices.append(extSrv)
-            
-        return Response(data=extraServices)
-    else:
-        return Response(data={"Error": "Error interno de base de datos"})
+    hiredServices = procedimientos.listHiredExtraServices(idReserva)
+    return Response(data=hiredServices)
 
 @api_view(('GET', 'POST'))
 def getReservedRanges(request, idDpto):

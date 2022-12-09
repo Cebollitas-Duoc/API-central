@@ -92,5 +92,5 @@ def ListDocs(request, idRsv):
 
 @api_view(('GET', 'POST'))
 def test(request):
-    idRsv = 1
+    idRsv = 3
     return Response(data={functions.createCheckIn(idRsv)})
