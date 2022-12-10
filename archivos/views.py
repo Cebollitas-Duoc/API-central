@@ -93,7 +93,9 @@ def ListDocs(request, idRsv):
 @api_view(('GET', 'POST'))
 @isUserLogged(permission=1)
 def CreateCheckOut(request, idRsv):
-    return Response(data={functions.createCheckOut(idRsv)})
+    data = {}
+    data["FileSaved"], data["FileName"] = functions.createCheckOut(idRsv)
+    return Response(data=data)
 
 @api_view(('GET', 'POST'))
 def test(request):
