@@ -64,6 +64,7 @@ def ValidateSession(request):
     result = procedimientos.isSessionValid(sessionKey)
     data["Valid"] = result[0]
     data["userId"] = result[1]
+    data["nombre"] = result[4]
 
     return Response(data=data)
 

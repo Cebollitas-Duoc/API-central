@@ -45,13 +45,14 @@ def createUser(email, hashedPassword, name, name2, lastName, lastName2, rut, add
     
 def isSessionValid(sessionKey):
     cursor = connection.cursor()
-    r = cursor.callproc("PCK_SESION.P_SESION_Valida", [sessionKey, "", 0, 0, 0, 0])
+    r = cursor.callproc("PCK_SESION.P_SESION_Valida", [sessionKey, "", 0, 0, 0, "", 0])
     isValid    = r[1] == "True"
     id_usuario = r[2]
     id_permiso = r[3]
     id_estado = r[4]
+    nombre = r[5]
 
-    return (isValid, id_usuario, id_permiso, id_estado)
+    return (isValid, id_usuario, id_permiso, id_estado, nombre)
 
 def updatePassword(id_usuario, password):
     cursor = connection.cursor()
