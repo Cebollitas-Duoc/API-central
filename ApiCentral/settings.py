@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "reservas.apps.ReservasConfig",
     "graficos.apps.GraficosConfig",
     "pagos.apps.PagosConfig",
+    "chat.apps.ChatConfig",
     'rest_framework',
 
     "corsheaders",
