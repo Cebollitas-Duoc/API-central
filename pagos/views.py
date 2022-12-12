@@ -11,13 +11,16 @@ import time
 @api_view(('GET', 'POST'))
 def pagarReserva(request):
     cursor = getReserva(request.data["Id_Reserva"])
-
-    reserva = {}
-    reserva["VALORTOTAL"] = cursor["VALORTOTAL"]
-    date = int(time.time()) * 1000
-    dataPago = procedimientos.pagarReserva(request.data["Id_Estado_Pago"], reserva["VALORTOTAL"], date, request.data["Id_Reserva"])
-    if (dataPago[1]):
-        Documentos.createCheckIn(dataPago[0])
-        return Response(data={"Success":"El pago ha sido guardado"})
+    ID_PAGO = procedimientos.Get_Id_pago(request.data["Id_Reserva"])
+    if (ID_PAGO[0] == None):
+        reserva = {}
+        reserva["VALORTOTAL"] = cursor["VALORTOTAL"]
+        date = int(time.time()) * 1000
+        dataPago = procedimientos.pagarReserva(request.data["Id_Estado_Pago"], reserva["VALORTOTAL"], date, request.data["Id_Reserva"])
+        if (dataPago[1]):
+            Documentos.createCheckIn(dataPago[0])
+            return Response(data={"Success":"El pago ha sido guardado"})
+        else:
+            return Response(data={"Error":"No se pudo completar el pago de la reserva"})
     else:
-        return Response(data={"Error":"No se pudo completar el pago de la reserva"})
+        return Response(data={"Success":"La Reserva ya ha sido pagada"})
