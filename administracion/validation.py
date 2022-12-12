@@ -82,8 +82,16 @@ def validateAddService(request):
             "name": "Departamento",
             "type": "int"
         },
-        "IdServiceCategory" : {
+        "IdCategory" : {
             "name": "Categoria de servicio",
+            "type": "int"
+        },
+        "IdState" : {
+            "name": "Estado",
+            "type": "int"
+        },
+        "Ammount" : {
+            "name": "Cantidad",
             "type": "int"
         },
     }

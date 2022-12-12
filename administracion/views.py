@@ -223,12 +223,14 @@ def AddService(request):
 
     if (currentServices[1]):
         for srvArray in currentServices[0]:
-            if (srvArray[1] == int(request.data["IdServiceCategory"])):
+            if (srvArray[1] == int(request.data["IdCategory"])):
                 return Response(data={"Error": "Este departamento ya tiene este servicio"})
     
     returnCode = procedimientos.addService(
         request.data["IdDpto"],
-        request.data["IdServiceCategory"],
+        request.data["IdCategory"],
+        request.data["IdState"],
+        request.data["Ammount"]
     )
 
     return Response(data={"Servicio_Agregado": returnCode})
@@ -294,6 +296,7 @@ def EditExtraService(request):
     return Response(data={"Servicio_Modificado": returnCode})
 #endregion servicios extra
 
+#region categoria de servicio
 @api_view(('GET', 'POST'))
 @authD.isUserLogged(permission=1)
 def AddServiceCategory(request):
@@ -312,9 +315,7 @@ def AddServiceCategory(request):
         return Response(data=data)
 
     return Response(data={"category_added": returnCode})
-
-
-#endregion servicios
+#endregion categoria de servicio
 
 #region inventario
 
