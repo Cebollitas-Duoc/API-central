@@ -7,6 +7,7 @@ from .validation import *
 from . import procedimientos
 from . import functions
 import time
+from rut_chile import rut_chile
 
 # Create your views here.
 
@@ -192,6 +193,11 @@ def listReserves(request):
             reserve["Value"]         = reserveArray[10]
             reserve["RawCreateDate"] = reserveArray[11]
             reserve["UserName"]      = reserveArray[12]
+            reserve["Rut"]           = reserveArray[13]
+
+            reserve["Rut"] = str(reserve["Rut"])
+            reserve["Rut"] += rut_chile.get_verification_digit(reserve["Rut"])
+            reserve["Rut"] = rut_chile.format_rut_with_dots(reserve["Rut"])
 
             reserve["StartDate"]  = time.strftime('%d-%m-%Y', time.gmtime(reserve["RawStartDate"]/1000))
             reserve["EndDate"]    = time.strftime('%d-%m-%Y', time.gmtime(reserve["RawEndDate"]/1000))
