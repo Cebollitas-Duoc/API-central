@@ -95,6 +95,8 @@ def ListDocs(request, idRsv):
 def CreateCheckOut(request, idRsv):
     data = {}
     data["FileSaved"], data["FileName"] = functions.createCheckOut(idRsv)
+    if data["FileSaved"]:
+        procedimientos.finishReserve(idRsv)
     return Response(data=data)
 
 @api_view(('GET', 'POST'))

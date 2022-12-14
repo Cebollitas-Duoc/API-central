@@ -37,3 +37,8 @@ def listarDocs(idRsv):
     r = cursor.callproc("PCK_FILES.P_GET_RSV_DOCS", [idRsv, docs, 0])
     return (r[1], r[-1] == 1)
 #endregion documents
+
+def finishReserve(id_reserva):
+    cursor = connection.cursor()
+    r = cursor.callproc("PCK_RESERVA.P_Finalizar_Reserva", [id_reserva, 0])
+    return r[-1] == 1

@@ -37,7 +37,7 @@ def validateEditProfile(request):
         "Phone" : {
             "name": "Numero de telefono",
             "type": "int",
-            "min": 8
+            "len": 9
         },
     }
 

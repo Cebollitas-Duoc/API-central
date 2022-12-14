@@ -49,7 +49,6 @@ def createCheckOut(idRsv):
     encodedPdf = htmlToPdf(html)
     return saveEncodedFile(2, idRsv, "application/pdf", encodedPdf, "pdf")
 
-
 def generateDocument_CheckIn(idRsv):
     baseDir = str(settings.BASE_DIR)
     templatesPath = "archivos/documentTemplates"

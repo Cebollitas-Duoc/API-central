@@ -65,7 +65,7 @@ def validateCreateUserData(request):
         "Phone" : {
             "name": "Numero de telefono",
             "type": "int",
-            "min": 8
+            "len": 9
         },
     }
 

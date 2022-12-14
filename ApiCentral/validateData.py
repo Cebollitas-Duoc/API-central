@@ -34,6 +34,8 @@ def validateData(data, format):
         isOfType,
         isUnderMax,
         isOverMin,
+        isIntUnder,
+        isIntOver,
         lenEquals,
         hasPattern
 
@@ -97,6 +99,26 @@ def isOverMin(data, format):
         if min == 1:
             return (False, f"{name}Debe tener por lo menos 1 caracter")
         return (False, f"{name}Debe tener por lo menos {min} caracteres")
+    return (True, "")
+
+def isIntUnder(data, format):
+    name = getFormatName(format)
+    max = format.get("intMax", None)
+    if (max == None):
+        return (True, "")
+    
+    if (int(data) > int(max)):
+        return (False, f"{name}Es mayor a {max}")
+    return (True, "")
+
+def isIntOver(data, format):
+    name = getFormatName(format)
+    min = format.get("intMin", None)
+    if (min == None):
+        return (True, "")
+    
+    if (int(data) < int(min)):
+        return (False, f"{name}Es menor a {min}")
     return (True, "")
 
 def canBeNull(data, format):

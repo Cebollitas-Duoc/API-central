@@ -17,7 +17,8 @@ def validateEditExtraService(request):
         },
         "Valor" : {
             "name": "Valor",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         },
         "Description" : {
             "name": "Descripcion",
@@ -49,7 +50,8 @@ def validateAddExtraService(request):
         },
         "Valor" : {
             "name": "Valor",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         },
         "Description" : {
             "name": "Descripcion",
@@ -71,7 +73,8 @@ def validateEditService(request):
         },
         "Cantidad" : {
             "name": "Cantidad",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         },
     }
     return  validateDictionary(request.data, dataFormat)
@@ -92,7 +95,8 @@ def validateAddService(request):
         },
         "Ammount" : {
             "name": "Cantidad",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         },
     }
     return  validateDictionary(request.data, dataFormat)
@@ -234,7 +238,8 @@ def validateAddItem(request):
         },
         "Ammount" : {
             "name": "Cantidad",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         }
     }
 
@@ -252,7 +257,8 @@ def validateEditItem(request):
         },
         "Ammount" : {
             "name": "Cantidad",
-            "type": "int"
+            "type": "int",
+            "intMin": 1
         }
     }
 
