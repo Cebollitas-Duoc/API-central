@@ -24,3 +24,15 @@ def pagarReserva(request):
             return Response(data={"Error":"No se pudo completar el pago de la reserva"})
     else:
         return Response(data={"Success":"La Reserva ya ha sido pagada"})
+
+@api_view(('GET', 'POST'))
+def pagarServicio(request):
+    ID_PAGO = procedimientos.Get_Id_pago_extra(request.data["Id_Reserva"])
+    if (ID_PAGO[0] == None):
+        dataPago = procedimientos.pagarServicios(request.data["Id_Reserva"])
+        if (dataPago[1]):
+            return Response(data={"Success":"El pago ha sido guardado"})
+        else:
+            return Response(data={"Error":"No se pudo completar el pago de la reserva"})
+    else:
+        return Response(data={"Success":"La Reserva ya ha sido pagada"})
